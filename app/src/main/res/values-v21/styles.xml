@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent_light</item>
+    </style>
+
+
+    <style name="AppTheme" parent="Base.AppTheme" >
+        <item name="android:windowBackground">@color/pale_grey</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+    </style>
+
+
+    <style name="AppTheme.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar.Overflow</item>
+    </style>
+
+
+</resources>

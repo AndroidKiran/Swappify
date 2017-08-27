@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Swappify</string>
+    <string name="intro_page_one_title" >Title 1</string>
+    <string name="intro_page_two_title" >Title 2</string>
+    <string name="intro_page_three_title">Title 3</string>
+
+    <string name="intro_page_one_desc" >Desc 1</string>
+    <string name="intro_page_two_desc" >Desc 2</string>
+    <string name="intro_page_three_desc">Desc 3</string>
+
+    <string name="str_sign_up">Sign up</string>
+    <string name="str_next">Next</string>
+    <string name="str_already_have_otp">In case already have OTP , click here</string>
+    <string name="str_mobile_num">Phone number</string>
+    <string name="str_country_code">Country code</string>
+    <string name="str_otp_msg">We need to text you the otp to authenticate your account</string>
+    <string name="str_enter_otp">Enter OTP</string>
+    <string name="str_verify_otp">Verify OTP</string>
+    <string name="str_resend_otp">Resend OTP ?</string>
+    <string name="str_verify_account">We have sent an OTP on your number</string>
+    <string name="str_verify_number">Verify your number !</string>
 </resources>

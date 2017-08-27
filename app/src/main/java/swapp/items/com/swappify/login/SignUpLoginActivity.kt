@@ -1,25 +1,42 @@
 package swapp.items.com.swappify.login
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AppCompatActivity
 import swapp.items.com.swappify.BuildConfig
+import swapp.items.com.swappify.R
 
-class SignUpLoginActivity : Fragment() {
 
-    val SIGNUP_ACTION = BuildConfig.APPLICATION_ID + ".action" + ".SIGN_UP"
+class SignUpLoginActivity : AppCompatActivity(), SignUpActionListener{
+
+    companion object {
+        val ACTION_SIGNUP : String = BuildConfig.APPLICATION_ID + ".action" +".SIGNUP"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_fragment_loader_only)
+
+        if (null == savedInstanceState) {
+            loadValidatePhoneNumFragment()
+        }
+
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+
+    private fun loadValidatePhoneNumFragment(){
+        PhoneNumValidationFragment.newInstance(supportFragmentManager, null, R.id.container)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun loadValidateSmsFragment() {
+        OtpVerificationFragment.newInstance(supportFragmentManager, null, R.id.container)
+    }
+
+
+    override fun onOtpVerificationButtonClicked() {
+        println("OnVerifiy clicked")
+    }
+
+    override fun onNextButtonClicked() {
+        loadValidateSmsFragment()
     }
 }
