@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.intro
+package swapp.items.com.swappify.controllers.intro
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

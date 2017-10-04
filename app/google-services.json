@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "513087713915",
+    "firebase_url": "https://swappify-a7a4f.firebaseio.com",
+    "project_id": "swappify-a7a4f",
+    "storage_bucket": "swappify-a7a4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513087713915:android:23feaf2f3cc288a1",
+        "android_client_info": {
+          "package_name": "swapp.items.com.swappify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513087713915-n13mu8mteabr29e5d09l7st9chlkvt97.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "swapp.items.com.swappify",
+            "certificate_hash": "b825332f504eb36f4fdcc94b72aef60d0b03d4f8"
+          }
+        },
+        {
+          "client_id": "513087713915-hfkfe28irb8is7be77plbcatprd9andn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl4uVo8YcNHubO2EquQ5jpVAms-arsB-M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513087713915-hfkfe28irb8is7be77plbcatprd9andn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

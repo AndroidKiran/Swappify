@@ -1,0 +1,63 @@
+ext {
+
+    androidBuildToolsVersion = "26.0.1"
+    androidMinSdkVersion = 16
+    androidTargetSdkVersion = 26
+    androidCompileSdkVersion = 26
+    versionCode = 1
+    versionName = "1.0"
+
+    versions = [
+            kotlin          : "1.1.4-2",
+            rxKotlin        : "2.1.0",
+            gson            : "2.8.1",
+            supportLibrary  : "26.0.1",
+            glide           : "4.0.0",
+            dagger          : "2.11",
+            multiDex        : "1.0.0",
+
+            //Testing
+            jUnit           : "4.12",
+            espresso        : "3.0.0",
+
+            //UI
+            constraintLayout: "1.0.2"
+    ]
+
+    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
+    espressoCore   = "com.android.support.test.espresso:espresso-core:$versions.espresso"
+
+
+    supportDependencies = [
+            appCompatV7          : "com.android.support:appcompat-v7:$versions.supportLibrary",
+            androidSupportV4     : "com.android.support:support-v4:$versions.supportLibrary",
+            supportVectorDrawable: "com.android.support:support-vector-drawable:$versions.supportLibrary",
+            supportRecyclerView  : "com.android.support:recyclerview-v7:$versions.supportLibrary",
+            supportCardView      : "com.android.support:cardview-v7:$versions.supportLibrary",
+            supportDesign        : "com.android.support:design:$versions.supportLibrary"
+    ]
+
+    uiDependencies = [
+            constraintLayout: "com.android.support.constraint:constraint-layout:$versions.constraintLayout",
+            circleIndicator : "me.relex:circleindicator:1.2.2@aar"
+    ]
+
+
+    otherDependencies = [
+            gson          : "com.google.code.gson:gson:$versions.gson",
+            glide         : "com.github.bumptech.glide:glide:$versions.glide",
+            multiDex      : "com.android.support:multidex:$versions.multiDex",
+            kotlin        : "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin",
+            daggerSupport : "com.google.dagger:dagger-android-support:$versions.dagger",
+            rxKotlin      : "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlin"
+    ]
+
+    unitTestDependencies = [
+            junit: "junit:junit:$versions.jUnit",
+    ]
+
+    supportLibs = supportDependencies.values()
+    uiLibs = uiDependencies.values()
+    otherLibs = otherDependencies.values()
+    unitTestLibs = unitTestDependencies.values()
+}

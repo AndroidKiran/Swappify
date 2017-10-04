@@ -1,7 +1,9 @@
-package swapp.items.com.swappify
+package swapp.items.com.swappify.controllers
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import swapp.items.com.swappify.BuildConfig
+import swapp.items.com.swappify.R
 
 class MainActivity : AppCompatActivity() {
 

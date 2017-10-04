@@ -53,11 +53,18 @@
         <item name="cardPreventCornerOverlap">true</item>
         <item name="android:padding">@null</item>
         <item name="cardCornerRadius">@null</item>
-        <item name="android:layout_margin">@null</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:layout_marginBottom">@dimen/dimen_8</item>
+    </style>
+
+
+    <style name="AppTheme.Widget.CardView.Compat" parent="AppTheme.Widget.CardView">
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardCornerRadius">@dimen/dimen_4</item>
+        <item name="android:layout_margin">@dimen/dimen_16</item>
     </style>
 
 

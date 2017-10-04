@@ -16,7 +16,12 @@
     <string name="str_otp_msg">We need to text you the otp to authenticate your account</string>
     <string name="str_enter_otp">Enter OTP</string>
     <string name="str_verify_otp">Verify OTP</string>
-    <string name="str_resend_otp">Resend OTP ?</string>
+    <string name="str_resend_otp">Resend</string>
     <string name="str_verify_account">We have sent an OTP on your number</string>
     <string name="str_verify_number">Verify your number !</string>
+
+
+    <!--Country-->
+    <string name="str_choose_country">Select country</string>
+    <string name="str_cancel">Cancel</string>
 </resources>

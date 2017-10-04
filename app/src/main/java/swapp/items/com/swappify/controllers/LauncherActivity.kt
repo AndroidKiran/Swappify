@@ -1,10 +1,11 @@
-package swapp.items.com.swappify
+package swapp.items.com.swappify.controllers
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import swapp.items.com.swappify.intro.IntroActivity
+import swapp.items.com.swappify.R
+import swapp.items.com.swappify.controllers.intro.IntroActivity
 
 class LauncherActivity : AppCompatActivity() {
 
@@ -15,13 +16,10 @@ class LauncherActivity : AppCompatActivity() {
         startActivity(startIntroActivity(this))
     }
 
-
-    fun startMainActivity(context : Context ) : Intent {
-        return Intent(context , MainActivity::class.java)
-    }
+    private fun startMainActivity(context : Context ) : Intent =
+            Intent(context , MainActivity::class.java)
 
 
-    fun startIntroActivity(context : Context ) : Intent {
-        return Intent(context , IntroActivity::class.java)
-    }
+    private fun startIntroActivity(context : Context ) : Intent =
+            Intent(context , IntroActivity::class.java)
 }

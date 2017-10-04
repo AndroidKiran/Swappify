@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.intro
+package swapp.items.com.swappify.controllers.intro
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,11 +8,11 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_intro.*
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.login.SignUpLoginActivity
+import swapp.items.com.swappify.controllers.signup.SignUpLoginActivity
 
 class IntroActivity : AppCompatActivity() {
 
-    private val NUM_OF_PAGE = 3
+    private val NUM_OF_PAGE : Int = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +28,13 @@ class IntroActivity : AppCompatActivity() {
         })
     }
 
-    fun initViewPager() {
+    private fun initViewPager() {
         viewPager.offscreenPageLimit = NUM_OF_PAGE
         viewPager.adapter = IntroPager(supportFragmentManager)
         viewPager.setPageTransformer(false, IntroPageTransformer())
     }
 
-    fun initCircleIndicator() {
+    private fun initCircleIndicator() {
         circleIndicator.setViewPager(viewPager)
     }
 
@@ -43,10 +43,8 @@ class IntroActivity : AppCompatActivity() {
 
         override fun getCount(): Int = 3
 
-        override fun getItem(position: Int): Fragment = when(position) {
-            else -> {
-                IntroFragment newInstance(position)
-            }
+        override fun getItem(position: Int): Fragment = run {
+            IntroFragment newInstance(position)
         }
     }
 
