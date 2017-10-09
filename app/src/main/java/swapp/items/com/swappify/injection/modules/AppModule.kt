@@ -5,10 +5,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import swapp.items.com.swappify.Utils.PreferenceUtils
-import swapp.items.com.swappify.Utils.PreferencesHelper
+import swapp.items.com.swappify.utils.PreferenceUtils
+import swapp.items.com.swappify.utils.PreferencesHelper
+import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.data.AppDataManager
 import swapp.items.com.swappify.data.DataManagerHelper
 import swapp.items.com.swappify.data.auth.AuthDataSourceRemote
@@ -27,12 +29,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
-class AppModule  @Inject constructor(val context: Context){
+class AppModule @Inject constructor(val application: SwapApplication) {
 
 
     @Provides
     @Singleton
-    fun provideApplication(): Context = context
+    fun provideApplication(): Context = application
 
 
     @Provides
@@ -86,5 +88,9 @@ class AppModule  @Inject constructor(val context: Context){
     @Provides
     @Singleton
     internal fun provideSharedPreference(preferenceUtils: PreferenceUtils): PreferencesHelper = preferenceUtils
+
+    @Provides
+    @Singleton
+    internal fun provideGson(): Gson = Gson()
 
 }

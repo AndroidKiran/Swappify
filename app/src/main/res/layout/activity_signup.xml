@@ -9,17 +9,17 @@
     <data>
         <variable
             name="viewModel"
-            type="swapp.items.com.swappify.controllers.signup.model.SignUpLogInViewModel" />
+            type="swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/fragment_code_validation"
+        <include layout="@layout/include_code_validation"
             bind:viewModel="@{viewModel}"/>
 
-        <include layout="@layout/fragment_phone_validation"
+        <include layout="@layout/include_phone_validation"
             bind:viewModel="@{viewModel}"/>
 
     </FrameLayout>

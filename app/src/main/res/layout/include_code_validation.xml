@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="swapp.items.com.swappify.controllers.signup.model.SignUpLogInViewModel" />
+            type="swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel" />
     </data>
 
 
@@ -17,7 +17,7 @@
         android:background="?attr/colorPrimary">
 
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView"
             style="@style/AppTheme.ImageView.icon_96"
             app:layout_constraintBottom_toTopOf="@+id/textView3"

@@ -3,34 +3,44 @@ package swapp.items.com.swappify.controllers.signup
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.BuildConfig
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.base.BaseActivity
+import swapp.items.com.swappify.controllers.base.BaseActivity
+import swapp.items.com.swappify.controllers.country.CountryPickerFragment
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.model.SignUpLogInViewModel
+import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel
 import swapp.items.com.swappify.databinding.ActivitySignupBinding
 
 import javax.inject.Inject
 
 
-class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewModel>() , SignUpLogInNavigator {
+class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewModel>() , SignUpLogInNavigator, HasSupportFragmentInjector {
+
 
     companion object {
         val ACTION_SIGNUP: String = BuildConfig.APPLICATION_ID + ".action" + ".SIGNUP"
     }
 
     @Inject
-    lateinit var mViewFactory: ViewModelProvider.Factory
+    lateinit var viewFactory: ViewModelProvider.Factory
 
-    private lateinit var mSignUpLogInViewModel: SignUpLogInViewModel
-    private lateinit var mActivitySignUpBinding: ActivitySignupBinding
+    @Inject
+    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    private lateinit var signUpLogInViewModel: SignUpLogInViewModel
+
+    private lateinit var activitySignupBinding: ActivitySignupBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mActivitySignUpBinding = getViewDataBinding()
-        mSignUpLogInViewModel.setNavigator(this)
+        activitySignupBinding = viewDataBinding
+        signUpLogInViewModel.baseNavigator = this
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -38,12 +48,12 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
     override fun getLayoutId(): Int = R.layout.activity_signup
 
     override fun getViewModel(): SignUpLogInViewModel {
-        mSignUpLogInViewModel = ViewModelProviders.of(this, mViewFactory).get(SignUpLogInViewModel::class.java)
-        return mSignUpLogInViewModel
+        signUpLogInViewModel = ViewModelProviders.of(this, viewFactory).get(SignUpLogInViewModel::class.java)
+        return signUpLogInViewModel
     }
 
     override fun openCountryCodeDialog() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        CountryPickerFragment.newInstance(Bundle()).show(supportFragmentManager, CountryPickerFragment.TAG)
     }
 
     override fun verifyPhoneNumber() {
@@ -57,5 +67,7 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
     override fun handleOnError(error: Throwable) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
 }

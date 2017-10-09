@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
+        <variable
+            name="itemViewModel"
+            type="swapp.items.com.swappify.controllers.country.model.CountryItemViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> itemViewModel.onItemClick()}">
 
 
         <TextView
@@ -21,7 +25,8 @@
             android:layout_marginLeft="@dimen/dimen_16"
             android:layout_marginRight="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
-            android:gravity="center"
+            android:gravity="left"
+            android:text="@{itemViewModel.isoCode}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,6 +40,7 @@
             android:layout_marginLeft="@dimen/dimen_16"
             android:layout_marginRight="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
+            android:text="@{itemViewModel.countryName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/textView2"
             app:layout_constraintTop_toTopOf="parent"

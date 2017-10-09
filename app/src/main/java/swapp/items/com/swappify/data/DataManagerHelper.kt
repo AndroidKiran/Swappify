@@ -1,18 +1,12 @@
 package swapp.items.com.swappify.data
 
-import swapp.items.com.swappify.Utils.PreferencesHelper
+import com.google.gson.Gson
+import swapp.items.com.swappify.utils.PreferencesHelper
 import swapp.items.com.swappify.data.auth.AuthDataSourceRemoteHelper
 import swapp.items.com.swappify.firebase.analytics.AnalyticsHelper
 import swapp.items.com.swappify.firebase.crashlytics.CrashReportHelper
 
-/**
- * Created by ravi on 02/10/17.
- */
 interface DataManagerHelper {
-
-//    fun getValue(): String
-//
-//    fun setValue(value: String)
 
     fun getAuthRespository(): AuthDataSourceRemoteHelper
 
@@ -21,4 +15,6 @@ interface DataManagerHelper {
     fun getCrashLytics(): CrashReportHelper
 
     fun getPreferences(): PreferencesHelper
+
+    fun getGson(): Gson
 }

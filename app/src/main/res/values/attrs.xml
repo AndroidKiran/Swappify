@@ -11,4 +11,10 @@
             <enum name="loading" value="3" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="SnackbarStyle">
+        <attr name="android:textColor"/>
+        <attr name="android:background"/>
+    </declare-styleable>
+
 </resources>

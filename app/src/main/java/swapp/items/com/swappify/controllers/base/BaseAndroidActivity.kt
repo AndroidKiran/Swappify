@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.base
+package swapp.items.com.swappify.controllers.base
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -11,25 +11,27 @@ import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import dagger.android.AndroidInjection
-import swapp.items.com.swappify.base.BaseFragment.Callback
 
-abstract class BaseActivity<out B, out V> : AppCompatActivity(), Callback  where B : ViewDataBinding, V : BaseViewModel<*> {
+abstract class BaseAndroidActivity<out B, out V> : AppCompatActivity(), FragmentCallback  where B : ViewDataBinding, V : BaseAndroidViewModel<*> {
 
-    private lateinit var mViewDataBinding: B
-    private lateinit var mViewModel: V
+    private lateinit var baseViewDataBinding: B
+    val viewDataBinding: B
+        get() = baseViewDataBinding
+
+    private lateinit var baseViewModel: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         performDependencyInjection()
         performDataBinding()
-        mViewModel.onViewCreated()
+        baseViewModel.onViewCreated()
     }
 
     private fun performDataBinding() {
-        mViewDataBinding = DataBindingUtil.setContentView<B>(this, getLayoutId())
-        mViewModel = getViewModel()
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel)
-        mViewDataBinding.executePendingBindings()
+        baseViewDataBinding = DataBindingUtil.setContentView<B>(this, getLayoutId())
+        baseViewModel = getViewModel()
+        baseViewDataBinding.setVariable(getBindingVariable(), baseViewModel)
+        baseViewDataBinding.executePendingBindings()
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -44,7 +46,7 @@ abstract class BaseActivity<out B, out V> : AppCompatActivity(), Callback  where
             Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
 
     override fun onDestroy() {
-        mViewModel.onDestroyView()
+        baseViewModel.onDestroyView()
         super.onDestroy()
     }
 
@@ -55,9 +57,6 @@ abstract class BaseActivity<out B, out V> : AppCompatActivity(), Callback  where
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
-
-
-    fun getViewDataBinding(): B = mViewDataBinding
 
     abstract fun getViewModel(): V
 

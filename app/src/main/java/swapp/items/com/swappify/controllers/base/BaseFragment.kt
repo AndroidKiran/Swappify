@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.base
+package swapp.items.com.swappify.controllers.base
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -13,10 +13,13 @@ import dagger.android.support.AndroidSupportInjection
 
 abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding, V : BaseViewModel<*> {
 
-    private lateinit var mActivity: BaseActivity<*, *>
-    private lateinit var mViewDataBinding: B
-    private lateinit var mViewModel: V
-    private lateinit var mRootView: View
+    private lateinit var baseActivity: FragmentCallback
+    private lateinit var baseViewDataBinding: B
+    val viewDataBinding: B
+        get() = baseViewDataBinding
+
+    private lateinit var baseViewModel: V
+    private lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         performDependencyInjection()
@@ -26,24 +29,25 @@ abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mViewDataBinding = DataBindingUtil.inflate<B>(inflater, getLayoutId(), container, false)
-        mRootView = mViewDataBinding.root
-        return mRootView
+        baseViewDataBinding = DataBindingUtil.inflate<B>(inflater, getLayoutId(), container, false)
+        rootView = baseViewDataBinding.root
+        return rootView
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel = getViewModel()
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel)
-        mViewDataBinding.executePendingBindings()
-        mViewModel.onViewCreated()
+        baseViewModel = getViewModel()
+        baseViewDataBinding.setVariable(getBindingVariable(), baseViewModel)
+        baseViewDataBinding.executePendingBindings()
+        baseViewModel.onViewCreated()
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is BaseActivity<*, *>) {
-            this.mActivity = context
-            mActivity.onFragmentAttached()
+        if (context is FragmentCallback) {
+            val activity = context as FragmentCallback
+            this.baseActivity = activity
+            activity.onFragmentAttached()
         }
     }
 
@@ -51,13 +55,9 @@ abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding
         super.onDetach()
     }
 
-    fun getBaseActivity(): BaseActivity<*, *> = mActivity
-
-    fun getViewDataBinding(): B = mViewDataBinding
-
 
     override fun onDestroyView() {
-        mViewModel.onDestroyView()
+        baseViewModel.onDestroyView()
         super.onDestroyView()
     }
 
@@ -65,30 +65,9 @@ abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding
         AndroidSupportInjection.inject(this)
     }
 
-    interface Callback {
-
-        fun onFragmentAttached()
-
-        fun onFragmentDetached(tag: String)
-    }
-
-    /**
-     * Override for set view model
-     *
-     * @return view model instance
-     */
     abstract fun getViewModel(): V
 
-    /**
-     * Override for set binding variable
-     *
-     * @return variable id
-     */
     abstract fun getBindingVariable(): Int
 
-    /**
-     * @return layout resource id
-     */
-    @LayoutRes
-    abstract fun getLayoutId(): Int
+    @LayoutRes abstract fun getLayoutId(): Int
 }

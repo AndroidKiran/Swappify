@@ -17,15 +17,14 @@ class PhoneAuthDataModel private constructor(state: Int,
         fun create(init: Builder.() -> Unit) = Builder(init).build()
     }
 
-    class Builder private constructor() {
+    class Builder private constructor(var state: Int) {
 
         lateinit var firebaseException: FirebaseException
         lateinit var phoneAuthCredential: PhoneAuthCredential
         lateinit var verificationId: String
         lateinit var token: PhoneAuthProvider.ForceResendingToken
-        var state: Int = 0
 
-        constructor(init: Builder.() -> Unit): this(){
+        constructor(init: Builder.() -> Unit): this(0) {
             init()
         }
 

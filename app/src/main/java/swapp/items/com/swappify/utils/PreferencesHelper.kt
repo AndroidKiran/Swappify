@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.Utils
+package swapp.items.com.swappify.utils
 
 /**
  * Created by ravi on 02/10/17.

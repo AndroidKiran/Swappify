@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="android.graphics.drawable.Drawable"/>
+        <import type="android.view.View.OnClickListener"/>
+
+        <variable
+            name="errorViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            style="@style/AppTheme.ImageView.icon_96"
+            android:layout_margin="@dimen/dimen_16"
+            app:imageDrawable="@{errorViewConfig.errorDrawable}" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textView3"
+            style="@style/AppTheme.Widget.TextView.Primary.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_16"
+            android:gravity="center"
+            android:text="@{errorViewConfig.errorText}"
+            android:textSize="@dimen/font_18" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/retryBtn"
+            style="@style/AppTheme.Button.Borderless"
+            android:onClick="@{errorViewConfig.clickListener}"
+            android:text="@string/str_retry" />
+
+
+    </LinearLayout>
+
+</layout>

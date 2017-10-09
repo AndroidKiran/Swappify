@@ -1,8 +1,6 @@
 package swapp.items.com.swappify.components;
 
-/**
- * Created by ravikiran on 02/02/16.
- */
+
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,13 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import swapp.items.com.swappify.R;
 
-/**
- * View that contains 4 different states: Content, Error, Empty, and Loading.<br>
- * Each state has their own separate layout which can be shown/hidden by setting
- * the {@link MultiStateView.ViewState} accordingly
- * Every MultiStateView <b><i>MUST</i></b> contain a content view. The content view
- * is obtained from whatever is inside of the tags of the view via its XML declaration
- */
+
 public class MultiStateView extends FrameLayout {
 
     public static final int VIEW_STATE_CONTENT = 0;
@@ -110,7 +102,6 @@ public class MultiStateView extends FrameLayout {
                 mViewState = VIEW_STATE_LOADING;
                 break;
         }
-
         a.recycle();
     }
 

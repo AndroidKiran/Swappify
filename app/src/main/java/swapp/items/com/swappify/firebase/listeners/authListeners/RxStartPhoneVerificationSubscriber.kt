@@ -7,9 +7,9 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.SingleEmitter
 import io.reactivex.SingleOnSubscribe
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.model.SignUpLogInViewModel.Companion.STATE_CODE_SENT
-import swapp.items.com.swappify.controllers.signup.model.SignUpLogInViewModel.Companion.STATE_VERIFY_FAILED
-import swapp.items.com.swappify.controllers.signup.model.SignUpLogInViewModel.Companion.STATE_VERIFY_SUCCESS
+import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel.Companion.STATE_CODE_SENT
+import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel.Companion.STATE_VERIFY_FAILED
+import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel.Companion.STATE_VERIFY_SUCCESS
 
 
 import java.util.concurrent.TimeUnit

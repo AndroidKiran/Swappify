@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+        <import type="android.graphics.drawable.Drawable"/>
+
+        <variable
+            name="emptyViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            style="@style/AppTheme.ImageView.icon_96"
+            android:layout_marginBottom="@dimen/dimen_16"
+            app:imageDrawable="@{emptyViewConfig.errorDrawable}" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textView3"
+            style="@style/AppTheme.Widget.TextView.Primary.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{emptyViewConfig.errorText}"
+            android:textSize="@dimen/font_18" />
+
+
+    </LinearLayout>
+
+
+</layout>

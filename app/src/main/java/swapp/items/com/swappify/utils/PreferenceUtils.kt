@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.Utils
+package swapp.items.com.swappify.utils
 
 import android.content.Context
 import android.content.SharedPreferences

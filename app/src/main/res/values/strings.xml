@@ -24,4 +24,8 @@
     <!--Country-->
     <string name="str_choose_country">Select country</string>
     <string name="str_cancel">Cancel</string>
+
+
+    <!--Multistate-->
+    <string name="str_retry">Retry</string>
 </resources>
