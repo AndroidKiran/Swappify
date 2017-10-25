@@ -1,6 +1,5 @@
 package swapp.items.com.swappify.controllers.base
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -12,19 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 
-abstract class BaseAndroidDialogFragment<out B, out V> : DialogFragment() where B : ViewDataBinding, V : BaseAndroidViewModel<*> {
+abstract class BaseAndroidDialogFragment<B, out V> : DialogFragment() where B : ViewDataBinding, V : BaseAndroidViewModel<*> {
 
-    private lateinit var baseActivity: FragmentCallback
     private lateinit var baseViewDataBinding: B
-    val viewDataBinding: B
-        get() = baseViewDataBinding
 
     private lateinit var baseViewModel: V
     private lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        performDependencyInjection()
         super.onCreate(savedInstanceState)
+        performDependencyInjection()
         setHasOptionsMenu(false)
     }
 
@@ -38,24 +34,10 @@ abstract class BaseAndroidDialogFragment<out B, out V> : DialogFragment() where 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         baseViewModel = getViewModel()
-        baseViewDataBinding.setVariable(getBindingVariable(), baseViewModel)
-        baseViewDataBinding.executePendingBindings()
+        executePendingVariablesBinding()
         baseViewModel.onViewCreated()
+        baseViewDataBinding.executePendingBindings()
     }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is FragmentCallback) {
-            val activity = context as FragmentCallback
-            this.baseActivity = activity
-            activity.onFragmentAttached()
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
 
     override fun onDestroyView() {
         baseViewModel.onDestroyView()
@@ -68,10 +50,12 @@ abstract class BaseAndroidDialogFragment<out B, out V> : DialogFragment() where 
 
     abstract fun getViewModel(): V
 
-    abstract fun getBindingVariable(): Int
-
     @LayoutRes
     abstract fun getLayoutId(): Int
+
+    abstract fun executePendingVariablesBinding()
+
+    fun getViewDataBinding(): B? = baseViewDataBinding
 
 
     override fun show(fragmentManager: FragmentManager, tag: String) {
@@ -85,7 +69,6 @@ abstract class BaseAndroidDialogFragment<out B, out V> : DialogFragment() where 
     }
 
     fun dismissDialog(tag: String) {
-        dismiss()
-        baseActivity.onFragmentDetached(tag)
+        dialog.dismiss()
     }
 }

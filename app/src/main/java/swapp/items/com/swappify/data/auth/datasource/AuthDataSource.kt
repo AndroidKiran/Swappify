@@ -10,11 +10,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthDataSource @Inject constructor(val firebaseAuth: FirebaseAuth, val firebaseObservableListeners: FirebaseObservableListeners): AuthDataSourceHelper {
+class AuthDataSource @Inject constructor(val firebaseAuth: FirebaseAuth, val firebaseObservableListeners: FirebaseObservableListeners) {
 
-    override fun startPhoneVerificationObservable(phoneNumber: String, activity: Activity): Single<PhoneAuthDataModel> =
+    fun startPhoneVerificationObservable(phoneNumber: String, activity: Activity): Single<PhoneAuthDataModel> =
             firebaseObservableListeners.startPhoneVerificationListener(phoneNumber = phoneNumber, activity = activity)
 
-    override fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken): Single<PhoneAuthDataModel> =
+    fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken): Single<PhoneAuthDataModel> =
             firebaseObservableListeners.resendVerificationCodeListener(phoneNumber = phoneNumber, activity = activity, token = token)
 }

@@ -18,7 +18,7 @@ class EmptyViewConfiguration : BaseObservable() {
             field = value
         }
 
-    fun setConfig(errorDrawable: Drawable, errorText: String) {
+    fun setEmptyViewConfig(errorDrawable: Drawable?, errorText: String?) {
         this.errorDrawable = errorDrawable
         this.errorText = errorText
         notifyChange()

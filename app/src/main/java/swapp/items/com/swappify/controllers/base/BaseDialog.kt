@@ -1,7 +1,6 @@
 package swapp.items.com.swappify.controllers.base
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,21 +13,6 @@ import android.widget.RelativeLayout
 
 
 abstract class BaseDialog : DialogFragment() {
-
-    lateinit var baseActivity: FragmentCallback
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is FragmentCallback) {
-            val activity = context as FragmentCallback
-            this.baseActivity = activity
-            activity.onFragmentAttached()
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // the content
@@ -72,6 +56,6 @@ abstract class BaseDialog : DialogFragment() {
 
     fun dismissDialog(tag: String) {
         dismiss()
-        baseActivity.onFragmentDetached(tag)
     }
+
 }

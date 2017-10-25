@@ -1,33 +1,29 @@
 package swapp.items.com.swappify.controllers.country.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
-import swapp.items.com.swappify.utils.AppUtils
+import android.databinding.ObservableArrayList
 import swapp.items.com.swappify.controllers.base.BaseAndroidViewModel
 import swapp.items.com.swappify.controllers.country.CountryPickerNavigator
 import swapp.items.com.swappify.controllers.country.model.Countries
-import swapp.items.com.swappify.data.DataManagerHelper
+import swapp.items.com.swappify.data.AppDataManager
+import swapp.items.com.swappify.utils.AppUtils
 
 
-class CountryPickerViewModel constructor(dataManagerHelper: DataManagerHelper, application: Context) : BaseAndroidViewModel<CountryPickerNavigator>(dataManagerHelper, application) {
-    override fun onRetryClick() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class CountryPickerViewModel constructor(dataManager: AppDataManager, application: Context) : BaseAndroidViewModel<CountryPickerNavigator>(dataManager, application) {
 
     val jsonPath: String = "json/countries.json"
 
-    var countriesLiveData: MutableLiveData<ArrayList<Countries.Country>> = MutableLiveData()
-
-    fun onCancel() {
-        baseNavigator.onCancel()
-    }
+    var countriesLiveData: ObservableArrayList<Countries.Country>? = ObservableArrayList()
 
     fun fetchCountries() {
-        val countries: Countries = dataManager.getGson().fromJson(AppUtils.loadJSONFromAsset(
-                context = context, assetPath = jsonPath),
-                Countries::class.java
-        )
-        baseNavigator.update(countries)
+        if (countriesLiveData!!.isEmpty()) {
+            val countries: Countries? = dataManager.gson?.fromJson(AppUtils.loadJSONFromAsset(
+                    context = context, assetPath = jsonPath),
+                    Countries::class.java
+            )
+            countriesLiveData?.addAll(countries?.countries!!)
+        }
+        getNavigator()?.updateAdapter()
     }
 
 }

@@ -19,6 +19,7 @@
     <string name="str_resend_otp">Resend</string>
     <string name="str_verify_account">We have sent an OTP on your number</string>
     <string name="str_verify_number">Verify your number !</string>
+    <string name="err_verify_number">Provide valid mobile number</string>
 
 
     <!--Country-->
@@ -28,4 +29,5 @@
 
     <!--Multistate-->
     <string name="str_retry">Retry</string>
+    <string name="str_no_countries">No countries available to choose</string>
 </resources>

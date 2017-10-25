@@ -8,11 +8,7 @@ import javax.inject.Singleton
  * Created by ravi on 03/10/17.
  */
 @Singleton
-class AppAnalytics @Inject constructor(firebaseAnalytics: FirebaseAnalytics): AnalyticsHelper {
+class AppAnalytics @Inject constructor(val firebaseAnalytics: FirebaseAnalytics) {
 
-    private val mFirebaseAnalytics: FirebaseAnalytics
 
-    init {
-        mFirebaseAnalytics = firebaseAnalytics;
-    }
 }

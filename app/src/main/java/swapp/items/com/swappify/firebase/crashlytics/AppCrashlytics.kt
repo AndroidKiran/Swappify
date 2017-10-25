@@ -8,16 +8,16 @@ import javax.inject.Singleton
  * Created by ravi on 03/10/17.
  */
 @Singleton
-class AppCrashlytics @Inject constructor(): CrashReportHelper {
+class AppCrashlytics @Inject constructor() {
 
-    override fun reportError(throwable: Throwable, vararg args: Any) {
+    fun reportError(throwable: Throwable, vararg args: Any) {
         if (args.isNotEmpty()) {
             FirebaseCrash.log(argumentsAsString(*args))
         }
         FirebaseCrash.report(throwable)
     }
 
-    override fun argumentsAsString(vararg args: Any): String {
+    fun argumentsAsString(vararg args: Any): String {
         val builder = StringBuilder()
         val length = args.size
         for (i in 0 until length) {

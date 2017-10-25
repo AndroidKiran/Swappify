@@ -71,9 +71,6 @@
     <style name="AppTheme.TextInputLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">@dimen/dimen_16</item>
-        <item name="android:paddingRight">@dimen/dimen_8</item>
-        <item name="android:paddingBottom">@dimen/dimen_16</item>
     </style>
 
     <style name="AppTheme.TextInputLayout.First.Child" parent="AppTheme.TextInputLayout">

@@ -8,23 +8,11 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import swapp.items.com.swappify.utils.PreferenceUtils
-import swapp.items.com.swappify.utils.PreferencesHelper
 import swapp.items.com.swappify.controllers.SwapApplication
-import swapp.items.com.swappify.data.AppDataManager
-import swapp.items.com.swappify.data.DataManagerHelper
-import swapp.items.com.swappify.data.auth.AuthDataSourceRemote
-import swapp.items.com.swappify.data.auth.AuthDataSourceRemoteHelper
-import swapp.items.com.swappify.data.auth.datasource.AuthDataSource
-import swapp.items.com.swappify.data.auth.datasource.AuthDataSourceHelper
-import swapp.items.com.swappify.firebase.analytics.AnalyticsHelper
 import swapp.items.com.swappify.firebase.analytics.AppAnalytics
 import swapp.items.com.swappify.firebase.config.AppRemoteConfig
-import swapp.items.com.swappify.firebase.config.RemoteConfigHelper
 import swapp.items.com.swappify.firebase.crashlytics.AppCrashlytics
-import swapp.items.com.swappify.firebase.crashlytics.CrashReportHelper
-import swapp.items.com.swappify.firebase.listeners.FirebaseObservableListeners
-import swapp.items.com.swappify.firebase.listeners.FirebaseObsevableListenerHelper
+import swapp.items.com.swappify.utils.PreferenceUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -51,22 +39,6 @@ class AppModule @Inject constructor(val application: SwapApplication) {
 
     @Provides
     @Singleton
-    internal fun provideFirebaseListeners(firebaseObservableListeners: FirebaseObservableListeners): FirebaseObsevableListenerHelper = firebaseObservableListeners
-
-    @Provides
-    @Singleton
-    internal fun provideAuthDataSource(authDataSource: AuthDataSource): AuthDataSourceHelper = authDataSource
-
-    @Provides
-    @Singleton
-    internal fun provideAuthRepository(authDataSourceRemote: AuthDataSourceRemote): AuthDataSourceRemoteHelper = authDataSourceRemote
-
-    @Provides
-    @Singleton
-    internal fun provideDataManager(appDataManager: AppDataManager): DataManagerHelper = appDataManager
-
-    @Provides
-    @Singleton
     internal fun provideFirebaseAnalytics(context: Context): FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
     @Provides
@@ -75,22 +47,21 @@ class AppModule @Inject constructor(val application: SwapApplication) {
 
     @Provides
     @Singleton
-    internal fun provideAppAnalytics(appAnalytics: AppAnalytics): AnalyticsHelper = appAnalytics
+    internal fun provideAppAnalytics(firebaseAnalytics : FirebaseAnalytics): AppAnalytics = AppAnalytics(firebaseAnalytics)
 
     @Provides
     @Singleton
-    internal fun provideAppRemoteConfigHelper(appRemoteConfig: AppRemoteConfig): RemoteConfigHelper = appRemoteConfig
+    internal fun provideAppRemoteConfigHelper(appRemoteConfig: AppRemoteConfig): AppRemoteConfig = appRemoteConfig
 
     @Provides
     @Singleton
-    internal fun provideFirebaseCrashReportHelper(appCrashlytics: AppCrashlytics): CrashReportHelper = appCrashlytics
+    internal fun provideFirebaseCrashReportHelper(): AppCrashlytics = AppCrashlytics()
 
     @Provides
     @Singleton
-    internal fun provideSharedPreference(preferenceUtils: PreferenceUtils): PreferencesHelper = preferenceUtils
+    internal fun provideSharedPreference(context: Context): PreferenceUtils = PreferenceUtils(context = context)
 
     @Provides
     @Singleton
     internal fun provideGson(): Gson = Gson()
-
 }

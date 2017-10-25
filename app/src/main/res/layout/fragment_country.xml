@@ -7,11 +7,26 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="androidViewModel"
             type="swapp.items.com.swappify.controllers.country.viewmodel.CountryPickerViewModel" />
+
+        <variable
+            name="toolbarConfig"
+            type="swapp.items.com.swappify.controllers.configs.ToolbarConfiguration" />
+
+        <variable
+            name="recyclerViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration" />
+
+        <variable
+            name="emptyViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration" />
+
+        <variable
+            name="errorViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
+
     </data>
 
 
@@ -19,52 +34,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/primary"
-            android:text="@string/str_choose_country" />
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/include_toolbar"
+            bind:toolbarConfig="@{toolbarConfig}" />
 
-        <Button
-            android:id="@+id/button2"
-            style="@style/AppTheme.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:onClick="@{() -> androidViewModel.onCancel()}"
-            android:text="@string/str_cancel" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_above="@id/button2"
-            android:background="@color/pale_grey" />
-
-        <swapp.items.com.swappify.components.MultiStateView
-            android:id="@+id/multiStateView"
+        <include
+            android:id="@+id/multiStateViewLayout"
+            layout="@layout/include_multistate_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/view"
-            android:layout_below="@id/textView"
-            app:msv_emptyView="@layout/include_empty_view"
-            app:msv_errorView="@layout/include_error_view"
-            app:msv_loadingView="@layout/include_content_loading"
-            app:msv_viewState="loading">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_country" />
-
-        </swapp.items.com.swappify.components.MultiStateView>
-
+            android:layout_below="@id/toolbarLayout"
+            bind:emptyViewConfig="@{emptyViewConfig}"
+            bind:errorViewConfig="@{errorViewConfig}"
+            bind:recyclerViewConfig="@{recyclerViewConfig}"/>
 
     </RelativeLayout>
 

@@ -4,6 +4,7 @@ package swapp.items.com.swappify.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -17,6 +18,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import swapp.items.com.swappify.R;
+import swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration;
+import swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration;
+import swapp.items.com.swappify.databinding.IncludeEmptyViewBinding;
+import swapp.items.com.swappify.databinding.IncludeErrorViewBinding;
 
 
 public class MultiStateView extends FrameLayout {
@@ -28,6 +33,10 @@ public class MultiStateView extends FrameLayout {
     public static final int VIEW_STATE_EMPTY = 2;
 
     public static final int VIEW_STATE_LOADING = 3;
+
+    private IncludeEmptyViewBinding mEmptyViewBinding;
+
+    private IncludeErrorViewBinding mErrorViewBinding;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({VIEW_STATE_CONTENT, VIEW_STATE_ERROR, VIEW_STATE_EMPTY, VIEW_STATE_LOADING})
@@ -62,6 +71,7 @@ public class MultiStateView extends FrameLayout {
     }
 
     private void init(AttributeSet attrs) {
+
         mInflater = LayoutInflater.from(getContext());
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.MultiStateView);
 
@@ -75,12 +85,14 @@ public class MultiStateView extends FrameLayout {
         if (emptyViewResId > -1) {
             mEmptyView = mInflater.inflate(emptyViewResId, this, false);
             addView(mEmptyView, mEmptyView.getLayoutParams());
+            mEmptyViewBinding = DataBindingUtil.bind(mEmptyView);
         }
 
         int errorViewResId = a.getResourceId(R.styleable.MultiStateView_msv_errorView, -1);
         if (errorViewResId > -1) {
             mErrorView = mInflater.inflate(errorViewResId, this, false);
             addView(mErrorView, mErrorView.getLayoutParams());
+            mErrorViewBinding = DataBindingUtil.bind(mErrorView);
         }
 
         int viewState = a.getInt(R.styleable.MultiStateView_msv_viewState, VIEW_STATE_CONTENT);
@@ -303,5 +315,13 @@ public class MultiStateView extends FrameLayout {
 
     public void setViewForState(@LayoutRes int layoutRes, @ViewState int state) {
         setViewForState(layoutRes, state, false);
+    }
+
+    public void setEmptyViewConfiguration(EmptyViewConfiguration emptyViewConfiguration) {
+        mEmptyViewBinding.setEmptyViewConfig(emptyViewConfiguration);
+    }
+
+    public void setErrorViewConfiguration(ErrorViewConfiguration errorViewConfiguration) {
+        mErrorViewBinding.setErrorViewConfig(errorViewConfiguration);
     }
 }

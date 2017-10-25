@@ -4,30 +4,31 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.content.Context
 import io.reactivex.disposables.CompositeDisposable
-import swapp.items.com.swappify.data.DataManagerHelper
+import swapp.items.com.swappify.data.AppDataManager
 
 
-abstract class BaseAndroidViewModel<N> constructor(private val dataManagerHelper: DataManagerHelper,
-                                                   private val application: Context) :
-        AndroidViewModel(application as Application?) where N : Any {
+abstract class BaseAndroidViewModel<N> constructor(val dataManager: AppDataManager,
+                                                   val context: Context) :
+        AndroidViewModel(context as Application?) where N : Any {
 
-    val context: Context
-        get() = application.applicationContext
 
-    val dataManager: DataManagerHelper
-        get() = dataManagerHelper
+    private var baseCompositeDisposable: CompositeDisposable? = null
 
-    lateinit var baseCompositeDisposable: CompositeDisposable
-
-    lateinit var baseNavigator: N
-
-    abstract fun onRetryClick()
+    private var baseNavigator: N? = null
 
     fun onViewCreated() {
         baseCompositeDisposable = CompositeDisposable()
     }
 
     fun onDestroyView() {
-        baseCompositeDisposable.dispose()
+        baseCompositeDisposable?.dispose()
     }
+
+    fun setBaseNavigator(navigator: N) {
+        baseNavigator = navigator
+    }
+
+    fun getNavigator(): N? = baseNavigator
+
+    fun getCompositeDisposable(): CompositeDisposable? = baseCompositeDisposable
 }

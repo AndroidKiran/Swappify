@@ -4,22 +4,15 @@
     xmlns:bind="http://schemas.android.com/tools">
     
     <data>
-        <import type="android.view.View" />
-        <import type="android.graphics.drawable.Drawable"/>
-        <import type="android.view.View.OnClickListener"/>
-
         <variable
             name="toolbarConfig"
             type="swapp.items.com.swappify.controllers.configs.ToolbarConfiguration"/>
     </data>
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="@{toolbarConfig.title}"
-        app:navigationIcon="@{toolbarConfig.navigationIcon}"
-        bind:navigationOnClickListener="@{toolbarConfig.clickListener}"/>
-
-
+        bind:toolbarConfig="@{toolbarConfig}"/>
 </layout>

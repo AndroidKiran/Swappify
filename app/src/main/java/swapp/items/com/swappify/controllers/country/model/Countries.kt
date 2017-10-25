@@ -6,8 +6,12 @@ import com.google.gson.annotations.SerializedName
 
 class Countries {
 
+    companion object {
+        val COUNTRY_EXTRA: String = "country_extra"
+    }
+
     @SerializedName("countries")
-    val countries = listOf<Country>()
+    val countries = arrayListOf<Country>()
 
 
     data class Country constructor(@SerializedName("name") val name: String,
@@ -26,18 +30,12 @@ class Countries {
             parcel.writeString(code)
         }
 
-        override fun describeContents(): Int {
-            return 0
-        }
+        override fun describeContents(): Int = 0
 
         companion object CREATOR : Parcelable.Creator<Country> {
-            override fun createFromParcel(parcel: Parcel): Country {
-                return Country(parcel)
-            }
+            override fun createFromParcel(parcel: Parcel): Country = Country(parcel)
 
-            override fun newArray(size: Int): Array<Country?> {
-                return arrayOfNulls(size)
-            }
+            override fun newArray(size: Int): Array<Country?> = arrayOfNulls(size)
         }
     }
 }

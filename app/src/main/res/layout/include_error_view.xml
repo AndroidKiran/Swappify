@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View" />
-        <import type="android.graphics.drawable.Drawable"/>
-        <import type="android.view.View.OnClickListener"/>
 
         <variable
             name="errorViewConfig"
@@ -23,24 +21,28 @@
             android:id="@+id/imageView"
             style="@style/AppTheme.ImageView.icon_96"
             android:layout_margin="@dimen/dimen_16"
-            app:imageDrawable="@{errorViewConfig.errorDrawable}" />
+            app:imageDrawable="@{errorViewConfig.errorDrawable}"
+            tools:src="@drawable/black_radius"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView3"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold"
+            style="@style/AppTheme.Widget.TextView.Secondary.Regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_16"
+            android:layout_marginLeft="@dimen/dimen_16"
+            android:layout_marginRight="@dimen/dimen_16"
             android:gravity="center"
             android:text="@{errorViewConfig.errorText}"
-            android:textSize="@dimen/font_18" />
+            android:textSize="@dimen/font_14"
+            tools:text="@string/str_no_countries"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/retryBtn"
             style="@style/AppTheme.Button.Borderless"
+            android:layout_margin="@dimen/dimen_16"
             android:onClick="@{errorViewConfig.clickListener}"
-            android:text="@string/str_retry" />
-
+            android:text="@string/str_retry"
+            android:textSize="@dimen/font_18"/>
 
     </LinearLayout>
 

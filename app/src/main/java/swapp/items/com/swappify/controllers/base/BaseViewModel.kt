@@ -2,12 +2,10 @@ package swapp.items.com.swappify.controllers.base
 
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
-import swapp.items.com.swappify.data.DataManagerHelper
+import swapp.items.com.swappify.data.AppDataManager
 
-abstract class BaseViewModel<N> constructor(private val dataManagerHelper: DataManagerHelper) : ViewModel() where N : Any {
+abstract class BaseViewModel<N> constructor(val dataManager: AppDataManager) : ViewModel() where N : Any {
 
-    val dataManager: DataManagerHelper
-        get() = dataManagerHelper
 
     lateinit var baseCompositeDisposable: CompositeDisposable
 

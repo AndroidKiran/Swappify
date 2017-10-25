@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="recyclerViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration" />
+
+        <variable
+            name="emptyViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration" />
+
+        <variable
+            name="errorViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
+
+    </data>
+
+
+    <swapp.items.com.swappify.components.MultiStateView
+        android:id="@+id/multiStateView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:msv_emptyView="@layout/include_empty_view"
+        app:msv_errorView="@layout/include_error_view"
+        app:msv_loadingView="@layout/include_content_loading"
+        app:msv_viewState="loading"
+        bind:emptyViewConfig="@{emptyViewConfig}"
+        bind:errorViewConfig="@{errorViewConfig}">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:recyclerConfig="@{recyclerViewConfig}"
+            tools:listitem="@layout/item_country" />
+
+    </swapp.items.com.swappify.components.MultiStateView>
+
+
+</layout>

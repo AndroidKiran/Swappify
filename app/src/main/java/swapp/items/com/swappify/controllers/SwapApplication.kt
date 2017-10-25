@@ -19,6 +19,6 @@ class SwapApplication : MultiDexApplication(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder().application(this).appModule(AppModule(this)).build().inject(this)
+        DaggerAppComponent.builder().application(this).injectAppModule(AppModule(this)).build().inject(this)
     }
 }

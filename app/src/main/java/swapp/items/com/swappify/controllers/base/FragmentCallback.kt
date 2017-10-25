@@ -1,10 +1,10 @@
 package swapp.items.com.swappify.controllers.base
 
+import android.os.Bundle
+
 
 interface FragmentCallback {
 
-    fun onFragmentAttached()
-
-    fun onFragmentDetached(tag: String)
+    fun onFragmentInteraction(bundle: Bundle?)
 
 }

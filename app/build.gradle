@@ -96,7 +96,7 @@ android {
 }
 
 kapt {
-    correctErrorTypes = true
+    generateStubs = true
 }
 
 dependencies {
@@ -117,6 +117,7 @@ dependencies {
     compile "com.google.dagger:dagger-android-support:$dagger"
     kapt "com.google.dagger:dagger-compiler:$dagger"
     kapt "com.google.dagger:dagger-android-processor:$dagger"
+
     kapt "com.android.databinding:compiler:$dataBinding"
 
     compile "com.google.firebase:firebase-storage:$playService"
@@ -128,7 +129,6 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$playService"
     compile "com.googlecode.libphonenumber:libphonenumber:$phoneLib"
     compile 'me.relex:circleindicator:1.2.2@aar'
-
 
     testCompile "junit:junit:$jUnit"
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

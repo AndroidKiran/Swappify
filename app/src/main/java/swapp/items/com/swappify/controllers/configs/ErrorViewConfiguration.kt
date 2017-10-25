@@ -25,10 +25,15 @@ class ErrorViewConfiguration : BaseObservable() {
             field = value
         }
 
-    fun setConfig(errorDrawable: Drawable, errorText: String, clickListener: View.OnClickListener) {
+    fun setErrorViewConfig(errorDrawable: Drawable?, errorText: String?) {
         this.errorDrawable = errorDrawable
         this.errorText = errorText
+        notifyChange()
+    }
+
+    fun setErrorRetryListener(clickListener: View.OnClickListener?) {
         this.clickListener = clickListener
         notifyChange()
     }
+
 }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View" />
 
         <variable
             name="itemViewModel"
@@ -14,18 +13,19 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> itemViewModel.onItemClick()}">
+        android:onClick="@{() -> itemViewModel.onItemClick()}"
+        android:background="?android:attr/selectableItemBackground">
 
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="@dimen/dimen_60"
+            android:layout_width="@dimen/dimen_56"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="@dimen/dimen_16"
             android:layout_marginRight="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
-            android:gravity="left"
+            android:gravity="start"
             android:text="@{itemViewModel.isoCode}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -37,9 +37,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
-            android:layout_marginLeft="@dimen/dimen_16"
             android:layout_marginRight="@dimen/dimen_16"
+            android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{itemViewModel.countryName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/textView2"

@@ -11,4 +11,6 @@ interface SignUpLogInNavigator {
     fun handleOnSucces(phoneAuthDataModel: PhoneAuthDataModel)
 
     fun handleOnError(error: Throwable)
+
+    fun onNextClick(phoneNumber: String)
 }

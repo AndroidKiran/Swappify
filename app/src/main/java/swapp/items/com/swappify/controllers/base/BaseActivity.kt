@@ -12,11 +12,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import dagger.android.AndroidInjection
 
-abstract class BaseActivity<out B, out V> : AppCompatActivity(), FragmentCallback  where B : ViewDataBinding, V : BaseViewModel<*> {
+abstract class BaseActivity<out B, out V> : AppCompatActivity()  where B : ViewDataBinding, V : BaseViewModel<*> {
 
     private lateinit var baseViewDataBinding: B
-    val viewDataBinding: B
-        get() = baseViewDataBinding
 
     private lateinit var baseViewModel: V
 
@@ -24,13 +22,13 @@ abstract class BaseActivity<out B, out V> : AppCompatActivity(), FragmentCallbac
         super.onCreate(savedInstanceState)
         performDependencyInjection()
         performDataBinding()
-        baseViewModel.onViewCreated()
     }
 
     private fun performDataBinding() {
         baseViewDataBinding = DataBindingUtil.setContentView<B>(this, getLayoutId())
         baseViewModel = getViewModel()
-        baseViewDataBinding.setVariable(getBindingVariable(), baseViewModel)
+        executePendingVariablesBinding()
+        baseViewModel.onViewCreated()
         baseViewDataBinding.executePendingBindings()
     }
 
@@ -60,20 +58,16 @@ abstract class BaseActivity<out B, out V> : AppCompatActivity(), FragmentCallbac
 
     abstract fun getViewModel(): V
 
-    abstract fun getBindingVariable(): Int
-
     @LayoutRes
     abstract fun getLayoutId(): Int
+
+    abstract fun executePendingVariablesBinding()
 
     private fun performDependencyInjection() {
         AndroidInjection.inject(this)
     }
 
-    override fun onFragmentAttached() {
+    fun getViewDataBinding(): B = baseViewDataBinding
 
-    }
 
-    override fun onFragmentDetached(tag: String) {
-
-    }
 }

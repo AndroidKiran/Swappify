@@ -12,11 +12,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import dagger.android.AndroidInjection
 
-abstract class BaseAndroidActivity<out B, out V> : AppCompatActivity(), FragmentCallback  where B : ViewDataBinding, V : BaseAndroidViewModel<*> {
+abstract class BaseAndroidActivity<out B, out V> : AppCompatActivity()  where B : ViewDataBinding, V : BaseAndroidViewModel<*> {
 
     private lateinit var baseViewDataBinding: B
-    val viewDataBinding: B
-        get() = baseViewDataBinding
 
     private lateinit var baseViewModel: V
 
@@ -58,6 +56,9 @@ abstract class BaseAndroidActivity<out B, out V> : AppCompatActivity(), Fragment
         }
     }
 
+    fun getViewDataBinding(): B = baseViewDataBinding
+
+
     abstract fun getViewModel(): V
 
     abstract fun getBindingVariable(): Int
@@ -67,13 +68,5 @@ abstract class BaseAndroidActivity<out B, out V> : AppCompatActivity(), Fragment
 
     private fun performDependencyInjection() {
         AndroidInjection.inject(this)
-    }
-
-    override fun onFragmentAttached() {
-
-    }
-
-    override fun onFragmentDetached(tag: String) {
-
     }
 }

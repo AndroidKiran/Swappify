@@ -14,16 +14,14 @@ class CountryAdapter<N> : RecyclerView.Adapter<BaseViewHolder>() where N : Count
 
     fun setData(countries: List<Countries.Country>) {
         countriesList.addAll(countries)
-        notifyDataSetChanged()
+        this.notifyDataSetChanged()
     }
 
-    private lateinit var baseNavigator: CountryPickerNavigator
-    var navigator: CountryPickerNavigator? = null
-        set(navigator) {
-            baseNavigator = navigator!!
-            field = baseNavigator
-        }
-        get() = baseNavigator
+    private var baseNavigator: N? = null
+
+    fun setBaseNavigator(navigator: N) {
+        baseNavigator = navigator
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
         val itemCountryViewBinding = ItemCountryBinding.inflate(LayoutInflater.from(parent?.getContext()),
@@ -39,18 +37,17 @@ class CountryAdapter<N> : RecyclerView.Adapter<BaseViewHolder>() where N : Count
 
     inner class CountryViewHolder constructor(private val binding: ItemCountryBinding) : BaseViewHolder(binding.root), CountryItemViewModel.CountryItemViewModelListener {
 
+
         override fun onBind(position: Int) {
             val country: Countries.Country = countriesList.get(position)
             binding.itemViewModel = CountryItemViewModel(
-                    country = country,
-                    countryItemViewModelListener = this
+                    country = country, countryItemViewModelListener = this@CountryViewHolder
             )
             binding.executePendingBindings()
         }
 
-        override fun onItemClick(country: Countries.Country) {
-            baseNavigator.onSelect(country)
+        override fun onItemClick(country: Countries.Country?) {
+            baseNavigator?.onSelect(country)
         }
-
     }
 }

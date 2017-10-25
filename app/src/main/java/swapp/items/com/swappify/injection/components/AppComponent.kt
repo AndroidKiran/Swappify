@@ -18,7 +18,7 @@ interface AppComponent {
         @BindsInstance
         fun application(application: MultiDexApplication): Builder
 
-        fun appModule(appModule: AppModule): Builder
+        fun injectAppModule(appModule: AppModule): Builder
 
         fun build(): AppComponent
 
