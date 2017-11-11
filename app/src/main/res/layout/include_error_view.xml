@@ -21,7 +21,7 @@
             android:id="@+id/imageView"
             style="@style/AppTheme.ImageView.icon_96"
             android:layout_margin="@dimen/dimen_16"
-            app:imageDrawable="@{errorViewConfig.errorDrawable}"
+            app:imageDrawable="@{errorViewConfig.errorScreenDrawable}"
             tools:src="@drawable/black_radius"/>
 
         <android.support.v7.widget.AppCompatTextView
@@ -32,7 +32,7 @@
             android:layout_marginLeft="@dimen/dimen_16"
             android:layout_marginRight="@dimen/dimen_16"
             android:gravity="center"
-            android:text="@{errorViewConfig.errorText}"
+            android:text="@{errorViewConfig.errorScreenText}"
             android:textSize="@dimen/font_14"
             tools:text="@string/str_no_countries"/>
 
@@ -40,7 +40,7 @@
             android:id="@+id/retryBtn"
             style="@style/AppTheme.Button.Borderless"
             android:layout_margin="@dimen/dimen_16"
-            android:onClick="@{errorViewConfig.clickListener}"
+            android:onClick="@{errorViewConfig.errorRetryClickListener}"
             android:text="@string/str_retry"
             android:textSize="@dimen/font_18"/>
 

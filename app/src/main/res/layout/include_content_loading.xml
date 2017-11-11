@@ -1,11 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.ContentLoadingProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contentLoadingProgress"
-    style="?android:attr/progressBarStyleLarge"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="contentLoadingConfigView"
+            type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_trans_gradient"
+        android:visibility="@{contentLoadingConfigView.isContentLoading ? View.VISIBLE : View.GONE}">
+
+        <android.support.v4.widget.ContentLoadingProgressBar
+            android:id="@+id/contentLoadingProgress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/contentLoadingMsg"
+            style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_16"
+            android:text="@{contentLoadingConfigView.contentLoadingText}"
+            android:textSize="@dimen/font_16"
+            tools:text="Loading ..." />
+
+
+    </LinearLayout>
+
+
+</layout>
+
+
 
 
 

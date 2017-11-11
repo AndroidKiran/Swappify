@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.injection.scopes
+package swapp.items.com.swappify.injection.qualifiers
 
 import android.arch.lifecycle.ViewModel
 import dagger.MapKey

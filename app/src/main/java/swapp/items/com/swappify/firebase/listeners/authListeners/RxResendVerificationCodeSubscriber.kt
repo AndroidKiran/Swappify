@@ -14,7 +14,9 @@ import swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewMode
 
 import java.util.concurrent.TimeUnit
 
-class RxResendVerificationCodeSubscriber(val phoneNumber: String, val activity: Activity, val token: PhoneAuthProvider.ForceResendingToken) : SingleOnSubscribe<PhoneAuthDataModel> {
+class RxResendVerificationCodeSubscriber(private val phoneNumber: String,
+                                         private val activity: Activity,
+                                         private val token: PhoneAuthProvider.ForceResendingToken) : SingleOnSubscribe<PhoneAuthDataModel> {
 
     override fun subscribe(emitter: SingleEmitter<PhoneAuthDataModel>) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(

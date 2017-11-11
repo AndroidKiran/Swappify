@@ -2,37 +2,47 @@ package swapp.items.com.swappify.controllers.configs
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.view.View
+import swapp.items.com.swappify.components.MultiStateView
 
 class ErrorViewConfiguration : BaseObservable() {
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("errorViewConfig")
+        fun bindErrorViewConfiguration(multiStateView: MultiStateView?, errorViewConfiguration: ErrorViewConfiguration?) {
+            multiStateView?.setErrorViewConfiguration(errorViewConfiguration)
+        }
+    }
+
     @get:Bindable
-    var errorDrawable: Drawable? = null
+    var errorScreenDrawable: Drawable? = null
         private set (value) {
             field = value
         }
 
     @get:Bindable
-    var errorText: String? = null
+    var errorScreenText: String? = null
         private set (value) {
             field = value
         }
 
     @get:Bindable
-    var clickListener: View.OnClickListener? = null
+    var errorRetryClickListener: View.OnClickListener? = null
         private set (value) {
             field = value
         }
 
-    fun setErrorViewConfig(errorDrawable: Drawable?, errorText: String?) {
-        this.errorDrawable = errorDrawable
-        this.errorText = errorText
+    fun setErrorViewConfig(errorScreenDrawable: Drawable?, errorScreenText: String?) {
+        this.errorScreenDrawable = errorScreenDrawable
+        this.errorScreenText = errorScreenText
         notifyChange()
     }
 
-    fun setErrorRetryListener(clickListener: View.OnClickListener?) {
-        this.clickListener = clickListener
+    fun setErrorRetryListener(errorRetryClickListener: View.OnClickListener?) {
+        this.errorRetryClickListener = errorRetryClickListener
         notifyChange()
     }
 

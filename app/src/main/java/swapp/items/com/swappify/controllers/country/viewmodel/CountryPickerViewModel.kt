@@ -1,29 +1,34 @@
 package swapp.items.com.swappify.controllers.country.viewmodel
 
-import android.content.Context
-import android.databinding.ObservableArrayList
-import swapp.items.com.swappify.controllers.base.BaseAndroidViewModel
-import swapp.items.com.swappify.controllers.country.CountryPickerNavigator
+import android.arch.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import swapp.items.com.swappify.controllers.SwapApplication
+import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.country.model.Countries
-import swapp.items.com.swappify.data.AppDataManager
+import swapp.items.com.swappify.controllers.country.ui.CountryPickerNavigator
+import swapp.items.com.swappify.data.AppUtilManager
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.utils.AppUtils
+import javax.inject.Inject
 
+@PerActivity
+class CountryPickerViewModel @Inject constructor(countryPickerDataManager: CountryPickerDataManager?, application: SwapApplication) : BaseViewModel<CountryPickerNavigator>(application) {
 
-class CountryPickerViewModel constructor(dataManager: AppDataManager, application: Context) : BaseAndroidViewModel<CountryPickerNavigator>(dataManager, application) {
+    private val jsonPath: String = "json/countries.json"
 
-    val jsonPath: String = "json/countries.json"
+    private var countriesLiveData: MutableLiveData<ArrayList<Countries.Country>> = MutableLiveData()
 
-    var countriesLiveData: ObservableArrayList<Countries.Country>? = ObservableArrayList()
+    private val appUtilDataManager: AppUtilManager? = countryPickerDataManager?.appUtilManager
+
+    private val gson: Gson? = appUtilDataManager?.gson
 
     fun fetchCountries() {
-        if (countriesLiveData!!.isEmpty()) {
-            val countries: Countries? = dataManager.gson?.fromJson(AppUtils.loadJSONFromAsset(
-                    context = context, assetPath = jsonPath),
-                    Countries::class.java
-            )
-            countriesLiveData?.addAll(countries?.countries!!)
-        }
-        getNavigator()?.updateAdapter()
+        val countries: Countries? = gson?.fromJson(AppUtils.loadJSONFromAsset(
+                getApplication<SwapApplication>(), jsonPath),
+                Countries::class.java
+        )
+        countriesLiveData.value = countries?.countries
     }
 
+    fun getCountriesLiveData(): MutableLiveData<ArrayList<Countries.Country>> = countriesLiveData
 }

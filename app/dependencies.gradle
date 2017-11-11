@@ -8,56 +8,96 @@ ext {
     versionName = "1.0"
 
     versions = [
-            kotlin          : "1.1.4-2",
-            rxKotlin        : "2.1.0",
-            gson            : "2.8.1",
-            supportLibrary  : "26.0.1",
-            glide           : "4.0.0",
-            dagger          : "2.11",
-            multiDex        : "1.0.0",
+            kotlinVersion          : "1.1.51",
+            rxKotlinVersion        : "2.1.0",
+            rxAndroidVersion       : "2.0.1",
+            gsonVersion            : "2.8.1",
+            supportLibraryVersion  : "26.1.0",
+            playServiceVersion     : "11.4.2",
+            glideVersion           : "4.0.0",
+            daggerVersion          : "2.12",
+            multiDexVersion        : "1.0.2",
+            phoneLibVersion        : "8.6.0",
+            lifeCycleVersion       : "1.0.0",
+            dataBindingVersion     : "2.3.1",
+            easyPermissionVersion  : "1.0.1",
 
             //Testing
-            jUnit           : "4.12",
-            espresso        : "3.0.0",
+            jUnitVersion           : "4.12",
+            espressoVersion        : "3.0.0",
 
             //UI
-            constraintLayout: "1.0.2"
+            constraintLayoutVersion: "1.0.2",
+            jsr305Version          : "3.0.1",
+
+            //retrofit
+            retrofitVersion        : "2.3.0",
+            okhttpVersion          : "3.8.0"
     ]
 
-    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
-    espressoCore   = "com.android.support.test.espresso:espresso-core:$versions.espresso"
-
-
     supportDependencies = [
-            appCompatV7          : "com.android.support:appcompat-v7:$versions.supportLibrary",
-            androidSupportV4     : "com.android.support:support-v4:$versions.supportLibrary",
-            supportVectorDrawable: "com.android.support:support-vector-drawable:$versions.supportLibrary",
-            supportRecyclerView  : "com.android.support:recyclerview-v7:$versions.supportLibrary",
-            supportCardView      : "com.android.support:cardview-v7:$versions.supportLibrary",
-            supportDesign        : "com.android.support:design:$versions.supportLibrary"
+            appCompatV7          : "com.android.support:appcompat-v7:$versions.supportLibraryVersion",
+            androidSupportV4     : "com.android.support:support-v4:$versions.supportLibraryVersion",
+            supportVectorDrawable: "com.android.support:support-vector-drawable:$versions.supportLibraryVersion",
+            supportRecyclerView  : "com.android.support:recyclerview-v7:$versions.supportLibraryVersion",
+            supportCardView      : "com.android.support:cardview-v7:$versions.supportLibraryVersion",
+            supportDesign        : "com.android.support:design:$versions.supportLibraryVersion"
+    ]
+
+    playServiceDependencies = [
+            firebaseStorage  : "com.google.firebase:firebase-storage:$versions.playServiceVersion",
+            firebaseAuth     : "com.google.firebase:firebase-auth:$versions.playServiceVersion",
+            firebaseDatabase : "com.google.firebase:firebase-firestore:$versions.playServiceVersion",
+            firebaseMessaging: "com.google.firebase:firebase-messaging:$versions.playServiceVersion",
+            firebaseConfig   : "com.google.firebase:firebase-config:$versions.playServiceVersion",
+            firebaseCore     : "com.google.firebase:firebase-core:$versions.playServiceVersion",
+            firebaseCrash    : "com.google.firebase:firebase-crash:$versions.playServiceVersion"
     ]
 
     uiDependencies = [
-            constraintLayout: "com.android.support.constraint:constraint-layout:$versions.constraintLayout",
+            constraintLayout: "com.android.support.constraint:constraint-layout:$versions.constraintLayoutVersion",
             circleIndicator : "me.relex:circleindicator:1.2.2@aar"
     ]
 
+    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.daggerVersion"
+    daggerProcessor = "com.google.dagger:dagger-android-processor:$versions.daggerVersion"
+    dataBinding = "com.android.databinding:compiler:$versions.dataBindingVersion"
 
-    otherDependencies = [
-            gson          : "com.google.code.gson:gson:$versions.gson",
-            glide         : "com.github.bumptech.glide:glide:$versions.glide",
-            multiDex      : "com.android.support:multidex:$versions.multiDex",
-            kotlin        : "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin",
-            daggerSupport : "com.google.dagger:dagger-android-support:$versions.dagger",
-            rxKotlin      : "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlin"
+    daggerDependencies = [
+            dagger       : "com.google.dagger:dagger:$versions.daggerVersion",
+            daggerSupport: "com.google.dagger:dagger-android-support:$versions.daggerVersion"
     ]
 
-    unitTestDependencies = [
-            junit: "junit:junit:$versions.jUnit",
+    network = [
+            retrofit         : "com.squareup.retrofit2:retrofit:$versions.retrofitVersion",
+            retrofitConvertor: "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion",
+            retrofitAdapter  : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofitVersion",
+            okhttp           : "com.squareup.okhttp3:okhttp:$versions.okhttpVersion",
+            okhttpInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttpVersion"
+    ]
+
+
+    systemDependencies = [
+            gson           : "com.google.code.gson:gson:$versions.gsonVersion",
+            glide          : "com.github.bumptech.glide:glide:$versions.glideVersion",
+            multiDex       : "com.android.support:multidex:$versions.multiDexVersion",
+            kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlinVersion",
+            rxKotlin       : "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlinVersion",
+            rxAndroid      : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroidVersion",
+            phoneLib       : "com.googlecode.libphonenumber:libphonenumber:$versions.phoneLibVersion",
+            mvvmLifeCycle  : "android.arch.lifecycle:extensions:$versions.lifeCycleVersion",
+            easyPermissions: "pub.devrel:easypermissions:$versions.easyPermissionVersion"
+    ]
+
+    testDependencies = [
+            junit       : "junit:junit:$versions.jUnitVersion",
+            espressoCore: "com.android.support.test.espresso:espresso-core:$versions.espressoVersion"
     ]
 
     supportLibs = supportDependencies.values()
+    playServiceLibs = playServiceDependencies.values()
     uiLibs = uiDependencies.values()
-    otherLibs = otherDependencies.values()
-    unitTestLibs = unitTestDependencies.values()
+    daggerLibs = daggerDependencies.values()
+    systemLibs = systemDependencies.values()
+    testLibs = testDependencies.values()
 }

@@ -14,23 +14,23 @@ class RecyclerViewConfiguration : BaseObservable() {
         }
 
     @get:Bindable
-    var adapter: RecyclerView.Adapter<*>? = null
+    var recyclerAdapter: RecyclerView.Adapter<*>? = null
         private set(value) {
             field = value
         }
 
     @get:Bindable
-    var orientation: Int = LinearLayoutManager.VERTICAL
+    var recyclerOrientation: Int = LinearLayoutManager.VERTICAL
         private set(value) {
             field = value
         }
 
     fun setRecyclerConfig(layoutManager: RecyclerView.LayoutManager?,
-                          adapter: RecyclerView.Adapter<*>?,
-                          orientation: Int = LinearLayoutManager.VERTICAL) {
+                          recyclerAdapter: RecyclerView.Adapter<*>?,
+                          recyclerOrientation: Int = LinearLayoutManager.VERTICAL) {
         this.layoutManager = layoutManager
-        this.adapter = adapter
-        this.orientation = orientation
+        this.recyclerAdapter = recyclerAdapter
+        this.recyclerOrientation = recyclerOrientation
         notifyChange()
     }
 }

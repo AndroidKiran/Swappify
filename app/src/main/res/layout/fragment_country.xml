@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="swapp.items.com.swappify.controllers.country.CountryPickerFragment">
+    tools:context="swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment">
 
     <data>
 
@@ -27,6 +26,10 @@
             name="errorViewConfig"
             type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
 
+        <variable
+            name="contentLoadingViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration"/>
+
     </data>
 
 
@@ -45,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbarLayout"
+            bind:contentLoadingViewConfig="@{contentLoadingViewConfig}"
             bind:emptyViewConfig="@{emptyViewConfig}"
             bind:errorViewConfig="@{errorViewConfig}"
             bind:recyclerViewConfig="@{recyclerViewConfig}"/>

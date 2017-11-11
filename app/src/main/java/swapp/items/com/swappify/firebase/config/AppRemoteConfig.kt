@@ -1,12 +1,12 @@
 package swapp.items.com.swappify.firebase.config
 
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by ravi on 03/10/17.
  */
-@Singleton
+@PerActivity
 class AppRemoteConfig @Inject constructor()  {
 
 }

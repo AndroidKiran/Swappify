@@ -7,9 +7,10 @@ import dagger.android.support.AndroidSupportInjectionModule
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.injection.builder.ActivityBuilder
 import swapp.items.com.swappify.injection.modules.AppModule
-import javax.inject.Singleton
+import swapp.items.com.swappify.injection.modules.FirebaseModule
+import swapp.items.com.swappify.injection.scopes.PerApplication
 
-@Singleton
+@PerApplication
 @Component(modules = arrayOf(AndroidSupportInjectionModule::class, AppModule::class, ActivityBuilder::class))
 interface AppComponent {
 
@@ -18,7 +19,9 @@ interface AppComponent {
         @BindsInstance
         fun application(application: MultiDexApplication): Builder
 
-        fun injectAppModule(appModule: AppModule): Builder
+        fun appModule(appModule: AppModule): Builder
+
+        fun fireBaseModule(firebaseModule: FirebaseModule): Builder
 
         fun build(): AppComponent
 

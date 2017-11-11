@@ -3,39 +3,35 @@ package swapp.items.com.swappify.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PreferenceUtils @Inject constructor(val context: Context) {
+@PerActivity
+class PreferenceUtils @Inject constructor(val context: Context?) {
 
-    val mSharedPreference: SharedPreferences
+    private val mSharedPreference: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    init {
-        mSharedPreference = PreferenceManager.getDefaultSharedPreferences(context)
-    }
+    fun getBooleanPreference(key: String?): Boolean? = getBooleanPreference(key!!, false)
 
-    fun getBooleanPreference(key: String): Boolean = getBooleanPreference(key, false)
+    fun getBooleanPreference(key: String?, defaultValue: Boolean?): Boolean? = mSharedPreference.getBoolean(key, defaultValue!!)
 
-    fun getBooleanPreference(key: String, defaultValue: Boolean): Boolean = mSharedPreference.getBoolean(key, defaultValue!!)
+    fun getStringPreference(key: String?): String? = mSharedPreference.getString(key, "")
 
-    fun getStringPreference(key: String): String = mSharedPreference.getString(key, "")
+    fun getStringPreference(key: String?, defaultValue: String?): String? = mSharedPreference.getString(key, defaultValue)
 
-    fun getStringPreference(key: String, defaultValue: String): String = mSharedPreference.getString(key, defaultValue)
+    fun getIntegerPreference(key: String?): Int = mSharedPreference.getInt(key, 0)
 
-    fun getIntegerPreference(key: String): Int = mSharedPreference.getInt(key, 0)
+    fun getIntegerPreference(key: String?, defaultValue: Int): Int = mSharedPreference.getInt(key, defaultValue)
 
-    fun getIntegerPreference(key: String, defaultValue: Int): Int = mSharedPreference.getInt(key, defaultValue)
+    fun getLongPreference(key: String?): Long = mSharedPreference.getLong(key, 0L)
 
-    fun getLongPreference(key: String): Long = mSharedPreference.getLong(key, 0L)
+    fun getLongPreference(key: String?, defaultValue: Long): Long = mSharedPreference.getLong(key, defaultValue)
 
-    fun getLongPreference(key: String, defaultValue: Long): Long = mSharedPreference.getLong(key, defaultValue)
+    fun getFloatPreference(key: String?): Float = mSharedPreference.getFloat(key, 0f)
 
-    fun getFloatPreference(key: String): Float = mSharedPreference.getFloat(key, 0f)
+    fun getFloatPreference(key: String?, defaultValue: Long): Float = mSharedPreference.getFloat(key, defaultValue.toFloat())
 
-    fun getFloatPreference(key: String, defaultValue: Long): Float = mSharedPreference.getFloat(key, defaultValue.toFloat())
-
-    operator fun set(key: String, value: Any) {
+    operator fun set(key: String?, value: Any?) {
         val sharedPreferenceEditor = mSharedPreference.edit()
         if (value is String) {
             sharedPreferenceEditor.putString(key, value)
@@ -51,7 +47,7 @@ class PreferenceUtils @Inject constructor(val context: Context) {
         sharedPreferenceEditor.apply()
     }
 
-    fun remove(key: String) {
+    fun remove(key: String?) {
         mSharedPreference.edit().remove(key).apply()
     }
 
@@ -59,5 +55,5 @@ class PreferenceUtils @Inject constructor(val context: Context) {
         mSharedPreference.edit().clear().apply()
     }
 
-    operator fun contains(key: String): Boolean = mSharedPreference.contains(key)
+    operator fun contains(key: String?): Boolean = mSharedPreference.contains(key)
 }

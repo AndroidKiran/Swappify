@@ -5,13 +5,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import swapp.items.com.swappify.controllers.country.CountryPickerFragment
+import swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment
 import swapp.items.com.swappify.controllers.country.viewmodel.CountryPickerViewModel
-import swapp.items.com.swappify.injection.scopes.ViewModelKey
+import swapp.items.com.swappify.injection.qualifiers.ViewModelKey
 
-/**
- * Created by ravi on 05/10/17.
- */
 
 @Module
 abstract class CountryPickerProviderModule {

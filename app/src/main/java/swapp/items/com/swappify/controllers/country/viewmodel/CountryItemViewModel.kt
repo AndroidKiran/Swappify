@@ -1,13 +1,14 @@
-package swapp.items.com.swappify.controllers.country.model
+package swapp.items.com.swappify.controllers.country.viewmodel
 
 import android.databinding.ObservableField
+import swapp.items.com.swappify.controllers.country.model.Countries
 
 
 class CountryItemViewModel constructor(val country: Countries.Country?, private val countryItemViewModelListener: CountryItemViewModelListener?) {
 
-    val isoCode: ObservableField<String> = ObservableField<String>(country?.isoCode)
+    var isoCode: ObservableField<String> = ObservableField<String>(country?.isoCode)
 
-    val countryName: ObservableField<String> = ObservableField<String>(country?.name)
+    var countryName: ObservableField<String> = ObservableField<String>(country?.name)
 
     fun onItemClick() {
         countryItemViewModelListener?.onItemClick(country!!)

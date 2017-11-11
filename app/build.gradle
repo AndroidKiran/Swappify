@@ -3,39 +3,15 @@ apply plugin: 'kotlin-android' // apply kotlin android plugin
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-ext {
-    kotlin = "1.1.51"
-    rxKotlin = "2.+"
-    gson = "2.+"
-    supportLibrary = "26.0.1"
-    glide = "4.0.0"
-    dagger = "2.11"
-    multiDex = "1.0.1"
-    jsr305Version = "3.0.1"
-    playService = "11.4.0"
-    phoneLib = "8.6.0"
-    rxjava2 = "2.+"
-    rxandroid = "2.+"
-    lifeCycle = "1.0.0-beta1"
-    dataBinding = "2.3.1"
-
-    //Testing
-    jUnit = "4.+"
-    espresso = "2.2.2"
-
-    //UI
-    constraintLayout = "1.+"
-}
 
 android {
-
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion build_versions.targetSdk
+    buildToolsVersion build_versions.build_tools
 
     defaultConfig {
         applicationId "swapp.items.com.swappify"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion build_versions.minSdk
+        targetSdkVersion build_versions.targetSdk
         versionCode 1
         versionName '1.0'
         multiDexEnabled = true
@@ -70,14 +46,13 @@ android {
     dexOptions {
         preDexLibraries = false
         dexInProcess = false
-        javaMaxHeapSize "4g"
+        javaMaxHeapSize "8g"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
 
     lintOptions {
         quiet true
@@ -89,9 +64,12 @@ android {
         enabled = true
     }
 
-    configurations.all {
-        resolutionStrategy.force "com.android.support:support-annotations:$supportLibrary"
-        resolutionStrategy.force "com.google.code.findbugs:jsr305:$jsr305Version"
+    applicationVariants.all { variant ->
+
+        variant.getAnnotationProcessorConfiguration().resolutionStrategy {
+            force deps.support.annotations
+            force deps.jsr
+        }
     }
 }
 
@@ -99,46 +77,62 @@ kapt {
     generateStubs = true
 }
 
+
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:support-v4:$supportLibrary"
-    compile "com.android.support:support-vector-drawable:$supportLibrary"
-    compile "com.android.support:recyclerview-v7:$supportLibrary"
-    compile "com.android.support:cardview-v7:$supportLibrary"
-    compile "com.android.support:design:$supportLibrary"
-    compile "com.android.support.constraint:constraint-layout:$constraintLayout"
-    compile "com.google.code.gson:gson:$gson"
-    compile "com.github.bumptech.glide:glide:$glide"
-    compile "com.android.support:multidex:$multiDex"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin"
-    compile "io.reactivex.rxjava2:rxkotlin:$rxKotlin"
+    implementation deps.support.appCompat
+    implementation deps.support.recyclerview
+    implementation deps.support.cardview
+    implementation deps.support.design
+    implementation deps.support.v4
+    implementation deps.support.vector_drawable
 
-    compile "com.google.dagger:dagger:$dagger"
-    compile "com.google.dagger:dagger-android-support:$dagger"
-    kapt "com.google.dagger:dagger-compiler:$dagger"
-    kapt "com.google.dagger:dagger-android-processor:$dagger"
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.java8
 
-    kapt "com.android.databinding:compiler:$dataBinding"
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.convertor
+    implementation deps.retrofit.adpater
 
-    compile "com.google.firebase:firebase-storage:$playService"
-    compile "com.google.firebase:firebase-auth:$playService"
-    compile "com.google.firebase:firebase-database:$playService"
-    compile "com.google.firebase:firebase-messaging:$playService"
-    compile "com.google.firebase:firebase-config:$playService"
-    compile "com.google.firebase:firebase-core:$playService"
-    compile "com.google.firebase:firebase-crash:$playService"
-    compile "com.googlecode.libphonenumber:libphonenumber:$phoneLib"
-    compile 'me.relex:circleindicator:1.2.2@aar'
+    implementation deps.okhttp.client
+    implementation deps.okhttp.interceptor
 
-    testCompile "junit:junit:$jUnit"
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
 
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha3"
+    implementation deps.kotlin.stdlib
 
-}
+    implementation deps.rx.kotlin
+    implementation deps.rx.android
 
-repositories {
-    mavenCentral()
+    implementation deps.firebase.storage
+    implementation deps.firebase.auth
+    implementation deps.firebase.firestore
+    implementation deps.firebase.messaging
+    implementation deps.firebase.config
+    implementation deps.firebase.core
+    implementation deps.firebase.crash
+
+    implementation deps.glide
+    implementation deps.constraint_layout
+    implementation deps.gson
+    implementation deps.multi_dex
+    implementation deps.phone_lib
+    implementation deps.easy_permissions
+    implementation deps.circle_indicator
+
+    kapt deps.dagger.compiler
+    kapt deps.dagger.processor
+    kapt deps.data_binding
+    kapt deps.lifecycle.compiler
+
+    testImplementation deps.junit
+    androidTestImplementation(deps.espresso_core, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    })
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,13 +1,13 @@
 package swapp.items.com.swappify.firebase.crashlytics
 
 import com.google.firebase.crash.FirebaseCrash
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by ravi on 03/10/17.
  */
-@Singleton
+@PerActivity
 class AppCrashlytics @Inject constructor() {
 
     fun reportError(throwable: Throwable, vararg args: Any) {

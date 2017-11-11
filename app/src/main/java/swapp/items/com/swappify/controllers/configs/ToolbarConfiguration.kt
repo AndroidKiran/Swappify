@@ -2,6 +2,7 @@ package swapp.items.com.swappify.controllers.configs
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.support.v7.widget.Toolbar
 import android.view.View
@@ -10,59 +11,74 @@ import swapp.items.com.swappify.R
 
 class ToolbarConfiguration : BaseObservable() {
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("toolbarConfig")
+        fun bindToolbarConfiguration(toolbar: Toolbar?, toolbarConfiguration: ToolbarConfiguration?) {
+            toolbar?.navigationIcon = toolbarConfiguration?.toolbarNavigationIcon
+            toolbar?.title = toolbarConfiguration?.toolbarTitle
+            toolbar?.setTitleTextColor(toolbarConfiguration?.toolbarTitleColor!!)
+            toolbar?.setNavigationOnClickListener(toolbarConfiguration?.toolbarOnNavigationClickListener)
+            if (toolbarConfiguration?.toolbarMenu != 0) {
+                toolbar?.inflateMenu(toolbarConfiguration?.toolbarMenu!!)
+            }
+            toolbar?.setOnMenuItemClickListener(toolbarConfiguration?.toolbarOnMenuItemClickListener)
+        }
+    }
+
     @get:Bindable
-    var title: String? = null
+    var toolbarTitle: String? = null
         private set (value) {
             field = value
         }
 
     @get:Bindable
-    var clickListener: View.OnClickListener? = null
+    var toolbarOnNavigationClickListener: View.OnClickListener? = null
         private set (value) {
             field = value
         }
 
     @get:Bindable
-    var navigationIcon: Drawable? = null
+    var toolbarNavigationIcon: Drawable? = null
         private set (value) {
             field = value
         }
 
     @get:Bindable
-    var titleColor: Int = 0
+    var toolbarTitleColor: Int = 0
         private set(value) {
             field = value
         }
 
     @get:Bindable
-    var menu: Int = 0
+    var toolbarMenu: Int = 0
         private set(value) {
             field = value
         }
 
     @get:Bindable
-    var onMenuItemClickListener: Toolbar.OnMenuItemClickListener? = null
+    var toolbarOnMenuItemClickListener: Toolbar.OnMenuItemClickListener? = null
         private set(value) {
             field = value
         }
 
-    fun setToolbarConfig(title: String?, titleColor: Int = R.color.white, clickListener: View.OnClickListener?,
-                  navigationIcon: Drawable?) {
-        this.title = title
-        this.titleColor = titleColor
-        this.clickListener = clickListener
-        this.navigationIcon = navigationIcon
+    fun setToolbarConfig(toolbarTitle: String?, toolbarTitleColor: Int = R.color.white, toolbarOnNavigationClickListener: View.OnClickListener?,
+                         toolbarNavigationIcon: Drawable?) {
+        this.toolbarTitle = toolbarTitle
+        this.toolbarTitleColor = toolbarTitleColor
+        this.toolbarOnNavigationClickListener = toolbarOnNavigationClickListener
+        this.toolbarNavigationIcon = toolbarNavigationIcon
         notifyChange()
     }
 
-    fun setToolbarConfig(title: String?, titleColor: Int = R.color.white, menu: Int, clickListener: View.OnClickListener?,
-                  navigationIcon: Drawable?, onMenuItemClickListener: Toolbar.OnMenuItemClickListener?) {
-        this.title = title
-        this.titleColor = titleColor
-        this.clickListener = clickListener
-        this.navigationIcon = navigationIcon
-        this.menu = menu
-        this.onMenuItemClickListener = onMenuItemClickListener
+    fun setToolbarConfig(toolbarTitle: String?, toolbarTitleColor: Int = R.color.white, toolbarMenu: Int, toolbarOnNavigationClickListener: View.OnClickListener?,
+                         toolbarNavigationIcon: Drawable?, toolbarOnMenuItemClickListener: Toolbar.OnMenuItemClickListener?) {
+        this.toolbarTitle = toolbarTitle
+        this.toolbarTitleColor = toolbarTitleColor
+        this.toolbarOnNavigationClickListener = toolbarOnNavigationClickListener
+        this.toolbarNavigationIcon = toolbarNavigationIcon
+        this.toolbarMenu = toolbarMenu
+        this.toolbarOnMenuItemClickListener = toolbarOnMenuItemClickListener
         notifyChange()
     }
 }

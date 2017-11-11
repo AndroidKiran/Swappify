@@ -54,8 +54,8 @@ abstract class BaseDialog : DialogFragment() {
         show(transaction, tag)
     }
 
-    fun dismissDialog(tag: String) {
-        dismiss()
+    fun dismissDialog() {
+        dialog.dismiss()
     }
 
 }

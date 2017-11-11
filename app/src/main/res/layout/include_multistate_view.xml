@@ -18,6 +18,10 @@
             name="errorViewConfig"
             type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
 
+        <variable
+            name="contentLoadingViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
+
     </data>
 
 
@@ -27,8 +31,9 @@
         android:layout_height="wrap_content"
         app:msv_emptyView="@layout/include_empty_view"
         app:msv_errorView="@layout/include_error_view"
-        app:msv_loadingView="@layout/include_content_loading"
+        app:msv_loadingView="@layout/include_content_loading_type2"
         app:msv_viewState="loading"
+        bind:contentLoadingViewConfig="@{contentLoadingViewConfig}"
         bind:emptyViewConfig="@{emptyViewConfig}"
         bind:errorViewConfig="@{errorViewConfig}">
 

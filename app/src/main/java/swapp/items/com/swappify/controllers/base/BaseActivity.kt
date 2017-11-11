@@ -1,11 +1,8 @@
 package swapp.items.com.swappify.controllers.base
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
-import android.os.Build
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
@@ -19,29 +16,18 @@ abstract class BaseActivity<out B, out V> : AppCompatActivity()  where B : ViewD
     private lateinit var baseViewModel: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         performDependencyInjection()
+        super.onCreate(savedInstanceState)
         performDataBinding()
     }
 
     private fun performDataBinding() {
-        baseViewDataBinding = DataBindingUtil.setContentView<B>(this, getLayoutId())
+        baseViewDataBinding = DataBindingUtil.setContentView<B>(this@BaseActivity, getLayoutId())
         baseViewModel = getViewModel()
         executePendingVariablesBinding()
         baseViewModel.onViewCreated()
         baseViewDataBinding.executePendingBindings()
     }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    fun requestPermissionsSafely(permissions: Array<String>, requestCode: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(permissions, requestCode)
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    fun hasPermission(permission: String): Boolean =
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
 
     override fun onDestroy() {
         baseViewModel.onDestroyView()

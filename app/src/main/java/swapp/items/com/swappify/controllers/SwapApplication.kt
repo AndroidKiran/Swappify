@@ -7,6 +7,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import swapp.items.com.swappify.injection.components.DaggerAppComponent
 import swapp.items.com.swappify.injection.modules.AppModule
+import swapp.items.com.swappify.injection.modules.FirebaseModule
 import javax.inject.Inject
 
 
@@ -19,6 +20,10 @@ class SwapApplication : MultiDexApplication(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder().application(this).injectAppModule(AppModule(this)).build().inject(this)
+        DaggerAppComponent.builder().application(this@SwapApplication)
+                .appModule(AppModule(this@SwapApplication))
+                .fireBaseModule(FirebaseModule(this@SwapApplication))
+                .build()
+                .inject(this@SwapApplication)
     }
 }

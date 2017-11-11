@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
-    tools:context="swapp.items.com.swappify.controllers.signup.SignUpLoginActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="swapp.items.com.swappify.controllers.signup.ui.SignUpLoginActivity">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel" />
@@ -16,11 +18,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/include_code_validation"
-            bind:viewModel="@{viewModel}"/>
+        <include
+            layout="@layout/include_code_validation"
+            android:visibility="@{viewModel.verifyCodeScreenEnabled? View.VISIBLE : View.GONE}"
+            bind:viewModel="@{viewModel}" />
 
-        <include layout="@layout/include_phone_validation"
-            bind:viewModel="@{viewModel}"/>
+        <include
+            layout="@layout/include_phone_validation"
+            android:visibility="@{viewModel.verifyCodeScreenEnabled? View.GONE : View.VISIBLE}"
+            bind:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/include_content_loading"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_200"
+            android:layout_gravity="bottom"
+            bind:contentLoadingConfigView="@{viewModel.contentLoadingConfigView}" />
 
     </FrameLayout>
 

@@ -1,9 +1,9 @@
-package swapp.items.com.swappify.controllers.country
+package swapp.items.com.swappify.controllers.country.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.databinding.ObservableArrayList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -12,19 +12,17 @@ import android.view.View
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.components.MultiStateView
-import swapp.items.com.swappify.controllers.base.BaseAndroidDialogFragment
+import swapp.items.com.swappify.controllers.base.BaseDialogFragment
 import swapp.items.com.swappify.controllers.base.FragmentCallback
-import swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration
-import swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration
-import swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration
-import swapp.items.com.swappify.controllers.configs.ToolbarConfiguration
+import swapp.items.com.swappify.controllers.configs.*
 import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.country.model.Countries.Companion.COUNTRY_EXTRA
 import swapp.items.com.swappify.controllers.country.viewmodel.CountryPickerViewModel
 import swapp.items.com.swappify.databinding.FragmentCountryBinding
 import javax.inject.Inject
 
-class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, CountryPickerViewModel>(), CountryPickerNavigator {
+class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, CountryPickerViewModel>(),
+        CountryPickerNavigator {
 
 
     @Inject lateinit var countryAdapter: CountryAdapter<CountryPickerNavigator>
@@ -43,13 +41,15 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
 
     lateinit var errorViewConfiguration: ErrorViewConfiguration
 
+    lateinit var contentLoadingConfiguration: ContentLoadingConfiguration
+
     private var fragmentCountryPickerBinding: FragmentCountryBinding? = null
 
     private var mListener: FragmentCallback? = null
 
 
     companion object {
-        val TAG: String = CountryPickerFragment.javaClass.simpleName
+        val TAG: String = CountryPickerFragment::class.java.simpleName
 
         fun newInstance(bundle: Bundle?): CountryPickerFragment {
             val fragment = CountryPickerFragment()
@@ -65,6 +65,7 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
         errorViewConfiguration = ErrorViewConfiguration()
         recyclerViewConfiguration = RecyclerViewConfiguration()
         toolbarConfiguration = ToolbarConfiguration()
+        contentLoadingConfiguration = ContentLoadingConfiguration()
         countryAdapter.setBaseNavigator(this)
     }
 
@@ -78,10 +79,11 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
 
         initErrorView(getString(R.string.str_no_countries),
                 ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
+        initLoadingView(getString(R.string.msg_loading))
 
         setRetryListener()
 
-        countryPickerViewModel.setBaseNavigator(this)
+        countryPickerViewModel.setNavigator(this@CountryPickerFragment)
         countryPickerViewModel.fetchCountries()
     }
 
@@ -100,9 +102,9 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
         val title: String = getString(R.string.str_choose_country)
         val titleColor: Int = ContextCompat.getColor(context, R.color.white)
         val navigationIcon: Drawable = ContextCompat.getDrawable(context, R.drawable.vc_cross_white)
-        toolbarConfiguration.setToolbarConfig(title, titleColor,
-                View.OnClickListener { onNavigationBackClickListener() }, navigationIcon)
+        toolbarConfiguration.setToolbarConfig(title, titleColor, toolbarClickListener, navigationIcon)
     }
+
 
     private fun initRecyclerView() {
         recyclerViewConfiguration.setRecyclerConfig(layoutManager, countryAdapter)
@@ -116,8 +118,13 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
         errorViewConfiguration.setErrorViewConfig(errorDrawable, errorMsg)
     }
 
+    private fun initLoadingView(string: String?) {
+        contentLoadingConfiguration.contentLoadingText.set(string)
+    }
+
     override fun getViewModel(): CountryPickerViewModel {
-        countryPickerViewModel = ViewModelProviders.of(this, viewFactory).get(countryPickerViewModel::class.java)
+        countryPickerViewModel = ViewModelProviders.of(this@CountryPickerFragment,
+                viewFactory).get(countryPickerViewModel::class.java)
         return countryPickerViewModel
     }
 
@@ -130,24 +137,30 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
         fragmentCountryPickerBinding?.setVariable(BR.recyclerViewConfig, recyclerViewConfiguration)
         fragmentCountryPickerBinding?.setVariable(BR.errorViewConfig, errorViewConfiguration)
         fragmentCountryPickerBinding?.setVariable(BR.emptyViewConfig, emptyViewConfiguration)
+        fragmentCountryPickerBinding?.setVariable(BR.contentLoadingViewConfig, contentLoadingConfiguration)
     }
 
-    override fun updateAdapter() {
-        val countries: ObservableArrayList<Countries.Country>? = countryPickerViewModel.countriesLiveData
-        if (countries!!.isNotEmpty()) {
-            fragmentCountryPickerBinding?.multiStateViewLayout?.multiStateView?.viewState = MultiStateView.VIEW_STATE_CONTENT
-            countryAdapter.setData(countries)
-        } else {
-            fragmentCountryPickerBinding?.multiStateViewLayout?.multiStateView?.viewState = MultiStateView.VIEW_STATE_ERROR
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observerLiveData()
+    }
+
+    private fun observerLiveData() {
+        countryPickerViewModel.getCountriesLiveData().observe(this@CountryPickerFragment,
+                Observer<ArrayList<Countries.Country>?> { countryList: ArrayList<Countries.Country>? ->
+                    if (countryList!!.isNotEmpty()) {
+                        countryAdapter.setData(countryList)
+                        fragmentCountryPickerBinding?.multiStateViewLayout?.multiStateView?.viewState =
+                                MultiStateView.VIEW_STATE_CONTENT
+                    } else {
+                        fragmentCountryPickerBinding?.multiStateViewLayout?.multiStateView?.viewState =
+                                MultiStateView.VIEW_STATE_ERROR
+                    }
+                })
     }
 
     private fun setRetryListener() {
         errorViewConfiguration.setErrorRetryListener(View.OnClickListener { onRetryClickListener() })
-    }
-
-    private fun onNavigationBackClickListener() {
-        dismissDialog(TAG)
     }
 
     private fun onRetryClickListener() {
@@ -155,13 +168,13 @@ class CountryPickerFragment : BaseAndroidDialogFragment<FragmentCountryBinding, 
     }
 
     override fun onSelect(country: Countries.Country?) {
-        dismissDialog(TAG)
+        dismissDialog()
         val bundle = Bundle()
         bundle.putParcelable(COUNTRY_EXTRA, country)
         mListener?.onFragmentInteraction(bundle)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    val toolbarClickListener = View.OnClickListener {
+        dismissDialog()
     }
 }

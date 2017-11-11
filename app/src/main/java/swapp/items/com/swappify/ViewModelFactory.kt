@@ -1,10 +1,12 @@
-package swapp.items.com.swappify.injection.qualifiers
+package swapp.items.com.swappify
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
 import javax.inject.Provider
 
+@PerActivity
 class ViewModelFactory @Inject constructor(private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>)
     : ViewModelProvider.Factory {
 

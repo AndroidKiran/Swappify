@@ -7,11 +7,11 @@ import com.google.gson.annotations.SerializedName
 class Countries {
 
     companion object {
-        val COUNTRY_EXTRA: String = "country_extra"
+        const val COUNTRY_EXTRA: String = "country_extra"
     }
 
     @SerializedName("countries")
-    val countries = arrayListOf<Country>()
+    val countries = ArrayList<Country>()
 
 
     data class Country constructor(@SerializedName("name") val name: String,

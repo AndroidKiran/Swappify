@@ -20,14 +20,24 @@
     <string name="str_verify_account">We have sent an OTP on your number</string>
     <string name="str_verify_number">Verify your number !</string>
     <string name="err_verify_number">Provide valid mobile number</string>
-
+    <string name="err_invalid_phone">Invalid mobile number</string>
+    <string name="str_otp_sent_msg">Please enter the verification code sent via sms to %s%s</string>
+    <string name="err_invalid_otp">Invalid verification code</string>
 
     <!--Country-->
     <string name="str_choose_country">Select country</string>
     <string name="str_cancel">Cancel</string>
 
-
     <!--Multistate-->
     <string name="str_retry">Retry</string>
     <string name="str_no_countries">No countries available to choose</string>
+    <string name="rationale_sms">This app needs access to your sms to read all your great messages.</string>
+    <string name="perm_telephony">android.provider.Telephony.SMS_RECEIVED</string>
+
+    <!--Progress msgs-->
+    <string name="msg_validating">Validating\u2026</string>
+    <string name="msg_otp_read">%d Secs\u2026</string>
+    <string name="msg_otp_resend">Re-sending OTP\u2026</string>
+    <string name="msg_loading">Loading\u2026</string>
+
 </resources>

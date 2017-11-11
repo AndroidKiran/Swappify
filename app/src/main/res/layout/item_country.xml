@@ -7,14 +7,18 @@
 
         <variable
             name="itemViewModel"
-            type="swapp.items.com.swappify.controllers.country.model.CountryItemViewModel" />
+            type="swapp.items.com.swappify.controllers.country.viewmodel.CountryItemViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:onClick="@{() -> itemViewModel.onItemClick()}"
-        android:background="?android:attr/selectableItemBackground">
+        android:paddingEnd="@dimen/dimen_16"
+        android:paddingLeft="@dimen/dimen_16"
+        android:paddingRight="@dimen/dimen_16"
+        android:paddingStart="@dimen/dimen_16">
 
 
         <TextView
@@ -22,7 +26,7 @@
             android:layout_width="@dimen/dimen_56"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="@dimen/dimen_16"
+            android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginRight="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
             android:gravity="start"
@@ -37,8 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
-            android:layout_marginRight="@dimen/dimen_16"
-            android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
             android:ellipsize="end"
             android:maxLines="1"

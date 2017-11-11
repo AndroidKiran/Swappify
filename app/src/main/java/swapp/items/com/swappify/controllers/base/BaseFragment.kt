@@ -33,8 +33,7 @@ abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         baseViewModel = getViewModel()
-        baseViewDataBinding.setVariable(getBindingVariable(), baseViewModel)
-        baseViewDataBinding.executePendingBindings()
+        executePendingVariablesBinding()
         baseViewModel.onViewCreated()
     }
 
@@ -43,6 +42,7 @@ abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding
         super.onDestroyView()
     }
 
+
     fun getViewDataBinding(): B = baseViewDataBinding
 
 
@@ -50,9 +50,9 @@ abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding
         AndroidSupportInjection.inject(this)
     }
 
-    abstract fun getViewModel(): V
+    abstract fun executePendingVariablesBinding()
 
-    abstract fun getBindingVariable(): Int
+    abstract fun getViewModel(): V
 
     @LayoutRes abstract fun getLayoutId(): Int
 }
