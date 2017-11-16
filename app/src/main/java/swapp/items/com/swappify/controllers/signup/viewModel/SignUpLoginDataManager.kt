@@ -7,5 +7,5 @@ import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
 
 @PerActivity
-class SignUpLoginDataManager @Inject constructor(appUtilManager: AppUtilManager?,
-                                         val loginRemoteService: LoginRemoteService?) : AppDataManager(appUtilManager)
+class SignUpLoginDataManager @Inject constructor(appUtilManager: AppUtilManager,
+                                         val loginRemoteService: LoginRemoteService) : AppDataManager(appUtilManager)

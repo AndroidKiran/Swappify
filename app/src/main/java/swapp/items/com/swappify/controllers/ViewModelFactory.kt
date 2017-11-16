@@ -1,4 +1,4 @@
-package swapp.items.com.swappify
+package swapp.items.com.swappify.controllers
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

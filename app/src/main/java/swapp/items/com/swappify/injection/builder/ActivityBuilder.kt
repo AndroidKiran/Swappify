@@ -2,6 +2,7 @@ package swapp.items.com.swappify.injection.builder
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import swapp.items.com.swappify.controllers.additem.module.AddItemModule
 import swapp.items.com.swappify.controllers.additem.module.AddItemProviderModule
 import swapp.items.com.swappify.controllers.additem.ui.AddItemActivity
 import swapp.items.com.swappify.controllers.country.module.CountryPickerModule
@@ -19,7 +20,7 @@ abstract class ActivityBuilder {
     abstract fun provideSignUpLogInActivity(): SignUpLoginActivity
 
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(AddItemProviderModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(AddItemModule::class, AddItemProviderModule::class))
     abstract fun provideAddItemActivity(): AddItemActivity
 
 }

@@ -12,62 +12,61 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import swapp.items.com.swappify.BuildConfig
+import swapp.items.com.swappify.injection.scopes.PerApplication
+import swapp.items.com.swappify.network.AuthenticateInterceptor
 import swapp.items.com.swappify.network.HostSelectionInterceptor
 import swapp.items.com.swappify.utils.Constant
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 
 @Module
 class NetworkModule {
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
+        if (BuildConfig.DEBUG) {
+            level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BODY
+        } else {
+            level = HttpLoggingInterceptor.Level.NONE
+        }
+
     }
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor,
-                            headerMap: Map<String, String>,
+                            authenticatorInterceptor: AuthenticateInterceptor,
                             hostSelectionInterceptor: HostSelectionInterceptor): OkHttpClient =
             OkHttpClient.Builder()
                     .connectTimeout(Constant.TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+                    .addNetworkInterceptor(authenticatorInterceptor)
+                    .addNetworkInterceptor(hostSelectionInterceptor)
                     .addInterceptor(loggingInterceptor)
-                    .addInterceptor(hostSelectionInterceptor)
-                    .addNetworkInterceptor { chain ->
-                        chain.proceed(chain.request().let {
-                            val requestBuilder = it.newBuilder()
-                            headerMap.forEach { (key, value) ->
-                                requestBuilder.addHeader(key, value)
-                            }
-                            requestBuilder.build()
-                        })
-                    }
                     .build()
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideGson(): Gson = GsonBuilder().setLenient().create()
 
+    @PerApplication
     @Provides
-    @Singleton
     fun providesGsonConverterFactory(gson: Gson): Converter.Factory =
             GsonConverterFactory.create(gson)
 
 
+    @PerApplication
     @Provides
-    @Singleton
     fun providesCallAdapterFactory(): CallAdapter.Factory = RxJava2CallAdapterFactory.create()
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient,
                         gsonConverterFactory: Converter.Factory,
                         callAdapterFactor: CallAdapter.Factory) =
             Retrofit.Builder()
-                    .baseUrl("")
+                    .baseUrl(BuildConfig.GAME_API_URL)
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(callAdapterFactor)
                     .client(okHttpClient)

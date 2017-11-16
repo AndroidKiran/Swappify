@@ -13,7 +13,7 @@ import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.components.MultiStateView
 import swapp.items.com.swappify.controllers.base.BaseDialogFragment
-import swapp.items.com.swappify.controllers.base.FragmentCallback
+import swapp.items.com.swappify.controllers.base.IFragmentCallback
 import swapp.items.com.swappify.controllers.configs.*
 import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.country.model.Countries.Companion.COUNTRY_EXTRA
@@ -22,10 +22,10 @@ import swapp.items.com.swappify.databinding.FragmentCountryBinding
 import javax.inject.Inject
 
 class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, CountryPickerViewModel>(),
-        CountryPickerNavigator {
+        ICountryPickerNavigator {
 
 
-    @Inject lateinit var countryAdapter: CountryAdapter<CountryPickerNavigator>
+    @Inject lateinit var countryAdapter: CountryAdapter<ICountryPickerNavigator>
 
     @Inject lateinit var layoutManager: LinearLayoutManager
 
@@ -45,7 +45,7 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
 
     private var fragmentCountryPickerBinding: FragmentCountryBinding? = null
 
-    private var mListener: FragmentCallback? = null
+    private var mListener: IFragmentCallback? = null
 
 
     companion object {
@@ -90,7 +90,7 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        mListener = context as FragmentCallback
+        mListener = context as IFragmentCallback
     }
 
     override fun onDetach() {

@@ -5,6 +5,8 @@ import android.databinding.ObservableField
 import android.text.TextUtils
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.components.TextChangeListener
 import swapp.items.com.swappify.controllers.SwapApplication
@@ -12,13 +14,16 @@ import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration
 import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.ui.SignUpLogInNavigator
+import swapp.items.com.swappify.controllers.signup.ui.ISignUpLogInNavigator
 import swapp.items.com.swappify.injection.scopes.PerActivity
+import swapp.items.com.swappify.rx.utils.getObservableAsync
+import swapp.items.com.swappify.rx.utils.getSingleAsync
 import swapp.items.com.swappify.utils.AppUtils.Companion.isValidPhone
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @PerActivity
-class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManager: SignUpLoginDataManager?, application: SwapApplication) : BaseViewModel<SignUpLogInNavigator>(application) {
+class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManager: SignUpLoginDataManager, application: SwapApplication) : BaseViewModel<ISignUpLogInNavigator>(application) {
 
     companion object {
         val STATE_INITIALIZED = 1
@@ -56,14 +61,11 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
 
     var contentLoadingConfigView: ObservableField<ContentLoadingConfiguration> = ObservableField<ContentLoadingConfiguration>()
 
-    var countDownValue: Int? = 0
+    var countDownValue: Int? = 60
 
-    init {
-        verifyCodeScreenEnabled.set(false)
-        enableNxtBtn.set(false)
-        updateContentLoading(false)
-        enableOtpVerificationBtn.set(false)
-    }
+    private val schedulerProvider = signUpLoginDataManager.appUtilManager.schedulerProvider
+
+    private val loginRemoteService = signUpLoginDataManager.loginRemoteService
 
 
     fun onCodeClick() {
@@ -90,9 +92,10 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
     internal fun startPhoneNumberVerification(activity: Activity) {
         val phoneNumber: String = countryCode.get().plus(mobileNumber.get())
         getCompositeDisposable().add(
-                signUpLoginDataManager?.loginRemoteService?.startPhoneVerification(
+                loginRemoteService.startPhoneVerification(
                         phoneNumber = phoneNumber,
-                        activity = activity)!!
+                        activity = activity)
+                        .getSingleAsync(schedulerProvider)
                         .subscribe(
                                 { handleOnSucces(phoneAuthDataModel = it) },
                                 { handleOnError(error = it) }
@@ -104,10 +107,11 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
     internal fun resendVerificationCode(activity: Activity) {
         val phoneNumber: String = countryCode.get().plus(mobileNumber.get())
         getCompositeDisposable().add(
-                signUpLoginDataManager?.loginRemoteService?.resendVerificationCode(
+                loginRemoteService.resendVerificationCode(
                         phoneNumber = phoneNumber,
                         activity = activity,
-                        token = token.get())!!
+                        token = token.get())
+                        .getSingleAsync(schedulerProvider)
                         .subscribe(
                                 { handleOnSucces(phoneAuthDataModel = it) },
                                 { handleOnError(error = it) }
@@ -210,26 +214,52 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
 
     }
 
-    private fun authenticateWithFirebase(credential: PhoneAuthCredential?) {
-        signUpLoginDataManager?.loginRemoteService?.loginWithPhoneNumber(credential)!!
+    private fun authenticateWithFirebase(credential: PhoneAuthCredential?) =
+        loginRemoteService.loginWithPhoneNumber(credential)
+                .getSingleAsync(schedulerProvider)
                 .subscribe({ phoneAuthDataModel -> handleOnSucces(phoneAuthDataModel) })
-    }
 
-    private fun saveUser(model: PhoneAuthDataModel?) {
-        signUpLoginDataManager?.loginRemoteService?.saveUserToDB(model)!!
+    private fun saveUser(model: PhoneAuthDataModel?) =
+        loginRemoteService.saveUserToDB(model)
+                .getObservableAsync(schedulerProvider)
                 .subscribe({ phoneAuthDataModel -> handleOnSucces(phoneAuthDataModel) })
-    }
 
-    fun updateContentLoading(enable: Boolean?, message: String? = getApplication<SwapApplication>().getString(R.string.msg_validating)) {
-        val contentLoading: ContentLoadingConfiguration
-        if (contentLoadingConfigView.get() == null) {
-            contentLoading = ContentLoadingConfiguration()
-        } else {
-            contentLoading = contentLoadingConfigView.get()
-        }
+
+    fun updateContentLoading(enable: Boolean?, message: String? = getApplication<SwapApplication>()
+            .getString(R.string.msg_validating)) {
+        val contentLoading =
+                if (contentLoadingConfigView.get() == null) {
+                    ContentLoadingConfiguration()
+                } else {
+                    contentLoadingConfigView.get()
+                }
+
         contentLoading.contentLoadingText.set(message)
         contentLoading.isContentLoading.set(enable)
         contentLoadingConfigView.set(contentLoading)
+    }
+
+
+    fun startOtpCountDown(time: Int) =
+            getCompositeDisposable().add(
+                    Observable.interval(1, TimeUnit.SECONDS)
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map({ increaseTime: Long -> time - increaseTime.toInt() })
+                            .take(time + 1.toLong())
+                            .getObservableAsync(schedulerProvider)
+                            .subscribe({ timeLeft: Int -> updateCountDown(timeLeft) })
+            )
+
+
+    private fun updateCountDown(timeLeft: Int) {
+        if (timeLeft > 0) {
+            updateContentLoading(true, getApplication<SwapApplication>()
+                    .getString(R.string.msg_otp_read, countDownValue))
+        } else {
+            updateContentLoading(false)
+        }
+        countDownValue = timeLeft
     }
 
 }

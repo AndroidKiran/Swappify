@@ -1,20 +1,49 @@
 package swapp.items.com.swappify.controllers.additem.ui
 
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
+import android.view.View
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
+import swapp.items.com.swappify.components.SlideAnimation
 import swapp.items.com.swappify.controllers.additem.viewmodel.AddItemViewModel
 import swapp.items.com.swappify.controllers.base.BaseActivity
 import swapp.items.com.swappify.databinding.ActivityAddItemBinding
 import javax.inject.Inject
 
 
-class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>(), HasSupportFragmentInjector {
+
+
+
+class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>(),
+        HasSupportFragmentInjector, AppBarLayout.OnOffsetChangedListener {
+
+    companion object {
+        fun startAddItemActivity(activity: Activity) {
+            val intent: Intent = Intent(activity, AddItemActivity::class.java)
+            activity.startActivity(intent)
+            activity.finish()
+        }
+    }
+
+    private val PERCENTAGE_TO_SHOW_ANCHOR = 60
+    private var isAnchorHidden: Boolean = false
+    private var isViewHidden: Boolean = false
+    private var maxScrollSize = 0
+    private val SCALE_ANIMATION_DURATION: Long = 400
+    private val TRANSLATE_ANIMATION_DURATION: Long = 600
+    private val MAX_SCALE_VALUE = 1f
+    private val MIN_SCALE_VALUE = 0f
+
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -40,6 +69,74 @@ class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>()
         activityAddItemBinding = getViewDataBinding()
         activityAddItemBinding.setVariable(BR.addItemViewModel, addItemViewModel)
         activityAddItemBinding.executePendingBindings()
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activityAddItemBinding.appbar.addOnOffsetChangedListener(this@AddItemActivity)
+    }
+
+
+    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+        if (maxScrollSize == 0)
+            maxScrollSize = activityAddItemBinding.appbar.getTotalScrollRange()
+
+        val currentScrollPercentage = Math.abs(verticalOffset) * 100 / maxScrollSize
+
+        scaleViewOnScroll(activityAddItemBinding.anchorLayout, currentScrollPercentage)
+        handleVisibilityOnScroll(activityAddItemBinding.sliderView, currentScrollPercentage)
+    }
+
+
+    private fun scaleViewOnScroll(view: View?, scrollPercent: Int) {
+
+        if (scrollPercent >= PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (!isAnchorHidden) {
+                isAnchorHidden = true
+                ViewCompat.animate(view)
+                        .scaleY(MIN_SCALE_VALUE)
+                        .scaleX(MIN_SCALE_VALUE)
+                        .setDuration(SCALE_ANIMATION_DURATION)
+                        .start()
+            }
+        }
+
+        if (scrollPercent < PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (isAnchorHidden) {
+                isAnchorHidden = false
+                ViewCompat.animate(view)
+                        .scaleY(MAX_SCALE_VALUE)
+                        .scaleX(MAX_SCALE_VALUE)
+                        .setDuration(SCALE_ANIMATION_DURATION)
+                        .start()
+            }
+        }
+    }
+
+    private fun handleVisibilityOnScroll(view: View?, scrollPercent: Int) {
+
+        if (scrollPercent >= PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (!isViewHidden) {
+                isViewHidden = true
+                createTransformUpAnimation(activityAddItemBinding.sliderView,
+                        resources.getDimension(R.dimen.dimen_16).toInt())
+            }
+        }
+
+        if (scrollPercent < PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (isViewHidden) {
+                isViewHidden = false
+                createTransformUpAnimation(activityAddItemBinding.sliderView,
+                        resources.getDimension(R.dimen.dimen_110).toInt())
+            }
+        }
+    }
+
+    private fun createTransformUpAnimation(view: View?, targetMargin: Int) {
+        val animation = SlideAnimation(view, targetMargin)
+        animation.duration = TRANSLATE_ANIMATION_DURATION
+        view?.startAnimation(animation)
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector

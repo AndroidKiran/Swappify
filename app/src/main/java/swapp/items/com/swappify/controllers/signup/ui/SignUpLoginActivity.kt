@@ -11,16 +11,13 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.BuildConfig
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.controllers.base.BaseActivity
-import swapp.items.com.swappify.controllers.base.FragmentCallback
+import swapp.items.com.swappify.controllers.base.IFragmentCallback
 import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.country.model.Countries.Companion.COUNTRY_EXTRA
 import swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment
@@ -28,14 +25,13 @@ import swapp.items.com.swappify.controllers.signup.SMSReceiver
 import swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel
 import swapp.items.com.swappify.databinding.ActivitySignupBinding
 import swapp.items.com.swappify.utils.AppUtils.Companion.getLocale
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
 
 
 class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewModel>(),
-        SignUpLogInNavigator, FragmentCallback, HasSupportFragmentInjector, EasyPermissions.PermissionCallbacks, SMSReceiver.SMSReceivedListener {
+        ISignUpLogInNavigator, IFragmentCallback, HasSupportFragmentInjector, EasyPermissions.PermissionCallbacks, SMSReceiver.SMSReceivedListener {
 
     companion object {
         const val ACTION_SIGNUP: String = BuildConfig.APPLICATION_ID + ".action" + ".SIGNUP"
@@ -58,13 +54,10 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
 
     private var smsReceiver: SMSReceiver? = null
 
-    private var otpTimerDisposable: Disposable? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         signUpLogInViewModel.setNavigator(this@SignUpLoginActivity)
         initViews()
-        handleRestartOtpRead()
     }
 
     override fun onStart() {
@@ -72,13 +65,8 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
         registerSmsReceiver()
     }
 
-    override fun onStop() {
-        unRegisterSmsReceiver()
-        super.onStop()
-    }
-
     override fun onDestroy() {
-        dismissOtpCountDown()
+        unRegisterSmsReceiver()
         super.onDestroy()
     }
 
@@ -136,10 +124,6 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
         signUpLogInViewModel.resendVerificationCode(this@SignUpLoginActivity)
     }
 
-    override fun onVerifyOtpClick() {
-
-    }
-
     override fun startHomeActivity() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -159,7 +143,7 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
             if (smsReceiver == null) {
                 smsReceiver = SMSReceiver(this@SignUpLoginActivity)
                 registerSmsReceiver()
-                otpTimerDisposable = startOtpCountDown(MAX_TIME_IN_SEC)
+                signUpLogInViewModel.startOtpCountDown(MAX_TIME_IN_SEC)
             }
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_sms),
@@ -185,44 +169,9 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
     }
 
     override fun onSMSReceived(bundle: Bundle?) {
-        dismissOtpCountDown()
         val otpCode: String? = bundle?.getString(SMSReceiver.VERIFICATION_CODE, "")
         signUpLogInViewModel.validateNewOtp(otpCode)
         signUpLogInViewModel.updateContentLoading(false)
         signUpLogInViewModel.onVerifyOtpClick()
-    }
-
-    private fun startOtpCountDown(time: Int): Disposable =
-            Observable.interval(1, TimeUnit.SECONDS)
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map({ increaseTime: Long -> time - increaseTime.toInt() })
-                    .take(time + 1.toLong())
-                    .subscribe({ timeLeft: Int -> updateCountDown(timeLeft) })
-
-    private fun dismissOtpCountDown() {
-        if (otpTimerDisposable != null && !otpTimerDisposable?.isDisposed!!) {
-            otpTimerDisposable?.dispose()
-        }
-    }
-
-    private fun updateCountDown(timeLeft: Int) {
-        if (timeLeft > 0) {
-            signUpLogInViewModel.updateContentLoading(true, getString(R.string.msg_otp_read, signUpLogInViewModel.countDownValue!!))
-        } else {
-            signUpLogInViewModel.updateContentLoading(false)
-            dismissOtpCountDown()
-        }
-        signUpLogInViewModel.countDownValue = timeLeft
-    }
-
-    private fun handleRestartOtpRead() {
-        if (signUpLogInViewModel.countDownValue == 0) {
-            return
-        }
-        if (otpTimerDisposable != null && !otpTimerDisposable?.isDisposed!!) {
-            return
-        }
-        otpTimerDisposable = startOtpCountDown(signUpLogInViewModel.countDownValue!!)
     }
 }

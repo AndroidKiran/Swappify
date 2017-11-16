@@ -3,11 +3,11 @@ package swapp.items.com.swappify.network
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
+import swapp.items.com.swappify.injection.scopes.PerApplication
 import java.io.IOException
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@PerApplication
 class HostSelectionInterceptor @Inject constructor() : Interceptor {
     private var host: String? = null
     private var scheme: String? = null

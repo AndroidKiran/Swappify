@@ -101,7 +101,7 @@ deps.espresso_core = "com.android.support.test.espresso:espresso-core:$versions.
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.minSdk = 16
+build_versions.minSdk = 17
 build_versions.targetSdk = 26
 build_versions.build_tools = "26.0.2"
 ext.build_versions = build_versions

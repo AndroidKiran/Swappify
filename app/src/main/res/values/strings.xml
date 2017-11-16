@@ -40,4 +40,18 @@
     <string name="msg_otp_resend">Re-sending OTP\u2026</string>
     <string name="msg_loading">Loading\u2026</string>
 
+
+    <string name="str_genre">Genre:</string>
+
+
+    <string name="lorem">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+		In mollis est vitae erat laoreet consectetur. Mauris dui mauris,
+		dictum vel egestas vel, porta sed ante. Phasellus congue viverra ipsum,
+		in elementum arcu ultricies nec.Morbi tincidunt nisl lacinia, placerat nisi eget, luctus tortor.
+		Morbi efficitur dictum leo, sit amet volutpat lorem sodales nec. Quisque et erat et turpis fringilla condimentum.
+	</string>
+    <string name="str_developer">Developer:</string>
+    <string name="str_release_date">Release Date:</string>
+    <string name="str_publisher">Publisher:</string>
 </resources>

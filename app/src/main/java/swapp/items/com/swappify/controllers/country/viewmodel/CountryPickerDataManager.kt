@@ -6,4 +6,4 @@ import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
 
 @PerActivity
-class CountryPickerDataManager @Inject constructor(appUtilManager: AppUtilManager?): AppDataManager(appUtilManager)
+class CountryPickerDataManager @Inject constructor(appUtilManager: AppUtilManager): AppDataManager(appUtilManager)

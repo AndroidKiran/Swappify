@@ -9,19 +9,23 @@ import io.reactivex.ObservableOnSubscribe
 import swapp.items.com.swappify.data.user.model.User
 import java.lang.Exception
 
-class SetValueOnSubscribe constructor(private val task: Task<Void>?,
-                                      private val returnValue: User?) : ObservableOnSubscribe<User> {
+class SetValueOnSubscribe constructor(
+        private val task: Task<Void>?,
+        private val returnValue: User?) : ObservableOnSubscribe<User> {
 
 
     override fun subscribe(emitter: ObservableEmitter<User>) {
-        task?.addOnSuccessListener(RxSetValueListener(emitter = emitter,
-                returnValue = returnValue))
-                ?.addOnFailureListener(RxSetValueListener(emitter = emitter,
-                        returnValue = returnValue))
+        task?.addOnSuccessListener(RxSetValueListener(
+                emitter = emitter,
+                returnValue = returnValue))?.addOnFailureListener(
+                RxSetValueListener(emitter = emitter, returnValue = returnValue))
 
     }
 
-    inner class RxSetValueListener constructor(private val emitter: ObservableEmitter<User>?, private val returnValue: User?) : OnSuccessListener<Void>, OnFailureListener {
+    inner class RxSetValueListener constructor(
+            private val emitter: ObservableEmitter<User>?,
+            private val returnValue: User?) : OnSuccessListener<Void>, OnFailureListener {
+
         override fun onSuccess(p0: Void?) {
             if (emitter!!.isDisposed) {
                 return
