@@ -11,10 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 
-abstract class BaseDialogFragment<out B, out V> : AppCompatDialogFragment() where B : ViewDataBinding, V : BaseViewModel<*> {
+abstract class BaseDialogFragment<out B : ViewDataBinding, out V : BaseViewModel> : AppCompatDialogFragment() {
 
     private lateinit var baseViewDataBinding: B
-
     private lateinit var baseViewModel: V
     private lateinit var rootView: View
 
@@ -56,7 +55,7 @@ abstract class BaseDialogFragment<out B, out V> : AppCompatDialogFragment() wher
 
     abstract fun executePendingVariablesBinding()
 
-    fun getViewDataBinding(): B? = baseViewDataBinding
+    fun getViewDataBinding(): B = baseViewDataBinding
 
     override fun show(fragmentManager: FragmentManager?, tag: String?) {
         val transaction = fragmentManager?.beginTransaction()

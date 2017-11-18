@@ -12,6 +12,14 @@
             name="viewModel"
             type="swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel" />
 
+        <variable
+        name="onClickCallBack"
+        type="swapp.items.com.swappify.controllers.signup.ui.ISignUpLogInNavigator" />
+
+        <variable
+            name="onTextChangeCallBack"
+            type="swapp.items.com.swappify.components.TextChangeListener"/>
+
     </data>
 
 
@@ -82,7 +90,7 @@
                         android:drawablePadding="@dimen/dimen_4"
                         android:drawableRight="@drawable/vc_down_cheveron_grey"
                         android:minHeight="@dimen/dimen_48"
-                        android:onClick="@{() -> viewModel.onCodeClick()}"
+                        android:onClick="@{() -> onClickCallBack.onClickCountryCode()}"
                         android:text="@{viewModel.countryCode}"
                         android:textSize="@dimen/font_16"
                         tools:text="+91" />
@@ -109,7 +117,7 @@
                             android:maxLength="15"
                             android:maxLines="1"
                             android:text="@{viewModel.mobileNumber}"
-                            app:addTextChangedListener="@{viewModel.phoneNumberTextWatcher}" />
+                            app:addTextChangedListener="@{onTextChangeCallBack}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -123,7 +131,7 @@
                     android:layout_below="@id/phoneNumInputLayout"
                     android:background="@{viewModel.enableNxtBtn ? @drawable/btn_color_accent : @drawable/btn_color_disabled}"
                     android:clickable="@{viewModel.enableNxtBtn}"
-                    android:onClick="@{() -> viewModel.onNextClick()}"
+                    android:onClick="@{() -> onClickCallBack.onClickNext()}"
                     android:text="@string/str_next" />
 
 

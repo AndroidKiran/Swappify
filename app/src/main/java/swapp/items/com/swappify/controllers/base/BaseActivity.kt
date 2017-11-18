@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import dagger.android.AndroidInjection
 
-abstract class BaseActivity<out B, out V> : AppCompatActivity()  where B : ViewDataBinding, V : BaseViewModel<*> {
+abstract class BaseActivity<out B : ViewDataBinding, out V : BaseViewModel> : AppCompatActivity() {
 
     private lateinit var baseViewDataBinding: B
 
@@ -54,6 +54,4 @@ abstract class BaseActivity<out B, out V> : AppCompatActivity()  where B : ViewD
     }
 
     fun getViewDataBinding(): B = baseViewDataBinding
-
-
 }

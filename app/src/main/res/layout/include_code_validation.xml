@@ -10,6 +10,14 @@
         <variable
             name="viewModel"
             type="swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel" />
+
+        <variable
+            name="onClickCallBack"
+            type="swapp.items.com.swappify.controllers.signup.ui.ISignUpLogInNavigator" />
+
+        <variable
+            name="onTextChangeCallBack"
+            type="swapp.items.com.swappify.components.TextChangeListener"/>
     </data>
 
 
@@ -67,7 +75,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="@{() -> viewModel.onResendClick()}"
+                    android:onClick="@{() -> onClickCallBack.onClickResendOtp()}"
                     android:text="@string/str_resend_otp" />
 
                 <android.support.design.widget.TextInputLayout
@@ -90,7 +98,7 @@
                         android:maxLines="1"
                         android:minEms="10"
                         android:text="@{viewModel.otpCode}"
-                        app:addTextChangedListener="@{viewModel.verificationCodeTextWatcher}" />
+                        app:addTextChangedListener="@{onTextChangeCallBack}" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -101,7 +109,7 @@
                     android:layout_below="@id/otpInputLayout"
                     android:background="@{viewModel.enableOtpVerificationBtn ? @drawable/btn_color_accent : @drawable/btn_color_disabled}"
                     android:clickable="@{viewModel.enableOtpVerificationBtn}"
-                    android:onClick="@{() -> viewModel.onVerifyOtpClick()}"
+                    android:onClick="@{() -> onClickCallBack.onClickVerifyOtp()}"
                     android:text="@string/str_verify_otp" />
 
 

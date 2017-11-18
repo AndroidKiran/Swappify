@@ -1,6 +1,7 @@
 package swapp.items.com.swappify.controllers.signup.viewModel
 
 import android.app.Activity
+import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableField
 import android.text.TextUtils
 import com.google.firebase.auth.PhoneAuthCredential
@@ -8,13 +9,11 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.components.TextChangeListener
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration
-import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.ui.ISignUpLogInNavigator
+import swapp.items.com.swappify.controllers.signup.ui.SignUpLoginActivity
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.rx.utils.getObservableAsync
 import swapp.items.com.swappify.rx.utils.getSingleAsync
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @PerActivity
-class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManager: SignUpLoginDataManager, application: SwapApplication) : BaseViewModel<ISignUpLogInNavigator>(application) {
+class SignUpLogInViewModel @Inject constructor(signUpLoginDataManager: SignUpLoginDataManager, application: SwapApplication) : BaseViewModel(application) {
 
     companion object {
         val STATE_INITIALIZED = 1
@@ -36,56 +35,40 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
         val STATE_USER_WRITE_SUCCESS = 8
     }
 
-    var verifyCodeScreenEnabled: ObservableField<Boolean> = ObservableField<Boolean>()
+    var verifyCodeScreenEnabled = ObservableField<Boolean>(false)
 
-    var countryCode: ObservableField<String> = ObservableField<String>()
+    var countryCode = ObservableField<String>()
 
-    var selectedCountry: ObservableField<Countries.Country> = ObservableField<Countries.Country>()
+    var mobileNumber = ObservableField<String>()
 
-    var mobileNumber: ObservableField<String> = ObservableField<String>()
+    var otpCode = ObservableField<String>()
 
-    var otpCode: ObservableField<String> = ObservableField<String>()
+    var enableNxtBtn = ObservableField<Boolean>()
 
-    var enableNxtBtn: ObservableField<Boolean> = ObservableField<Boolean>()
+    var enableOtpVerificationBtn = ObservableField<Boolean>()
 
-    var enableOtpVerificationBtn: ObservableField<Boolean> = ObservableField<Boolean>()
+    var phoneError = ObservableField<String>()
 
-    var phoneError: ObservableField<String> = ObservableField<String>()
+    var otpError = ObservableField<String>()
 
-    var otpError: ObservableField<String> = ObservableField<String>()
+    var verificationCode: String? = null
 
-    var verificationCode: ObservableField<String> = ObservableField<String>()
+    var token: PhoneAuthProvider.ForceResendingToken? = null
 
-    var token: ObservableField<PhoneAuthProvider.ForceResendingToken> =
-            ObservableField<PhoneAuthProvider.ForceResendingToken>()
+    var contentLoadingConfigView: ObservableField<ContentLoadingConfiguration> = ObservableField<ContentLoadingConfiguration>(ContentLoadingConfiguration(false, ""))
 
-    var contentLoadingConfigView: ObservableField<ContentLoadingConfiguration> = ObservableField<ContentLoadingConfiguration>()
+    var countDownValue: Int? = SignUpLoginActivity.MAX_TIME_IN_SEC
 
-    var countDownValue: Int? = 60
+    private var seekPermission = MutableLiveData<Boolean>()
 
     private val schedulerProvider = signUpLoginDataManager.appUtilManager.schedulerProvider
 
     private val loginRemoteService = signUpLoginDataManager.loginRemoteService
 
 
-    fun onCodeClick() {
-        getNavigator().openCountryCodeDialog()
-    }
-
-    fun onNextClick() {
-        phoneError.set(null)
-        updateContentLoading(true)
-        getNavigator().onNextClick()
-    }
-
-    fun onResendClick() {
-        updateContentLoading(true, getApplication<SwapApplication>().getString(R.string.msg_otp_resend))
-        getNavigator().onResendClick()
-    }
-
-    fun onVerifyOtpClick() {
+    fun onClickVerifyOtp() {
         updateContentLoading(true, getApplication<SwapApplication>().getString(R.string.msg_validating))
-        val credential = PhoneAuthProvider.getCredential(verificationCode.get(), otpCode.get())
+        val credential = PhoneAuthProvider.getCredential(verificationCode!!, otpCode.get())
         authenticateWithFirebase(credential = credential)
     }
 
@@ -110,7 +93,7 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
                 loginRemoteService.resendVerificationCode(
                         phoneNumber = phoneNumber,
                         activity = activity,
-                        token = token.get())
+                        token = token!!)
                         .getSingleAsync(schedulerProvider)
                         .subscribe(
                                 { handleOnSucces(phoneAuthDataModel = it) },
@@ -119,27 +102,7 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
         )
     }
 
-
-    var phoneNumberTextWatcher: TextChangeListener = object : TextChangeListener() {
-
-        override fun afterTextChanged(newValue: String?) {
-            mobileNumber.set(newValue)
-            validatePhoneNum()
-        }
-    }
-
-    var verificationCodeTextWatcher: TextChangeListener = object : TextChangeListener() {
-
-        override fun afterTextChanged(newValue: String?) {
-            if (TextUtils.isEmpty(newValue)) {
-                enableOtpVerificationBtn.set(false)
-            } else {
-                validateNewOtp(newValue)
-            }
-        }
-    }
-
-    internal fun validateNewOtp(newValue: String?) {
+    fun validateNewOtp(newValue: String?) {
         if (newValue != otpCode.get()) {
             otpCode.set(newValue)
             otpError.set(null)
@@ -169,7 +132,7 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
                 updateContentLoading(false)
                 verifyCodeScreenEnabled.set(true)
                 setPhoneAuthProperties(model = phoneAuthDataModel)
-                getNavigator().seekSmsReadPermission()
+                seekPermission.value = true
             }
 
             STATE_VERIFY_FAILED -> {
@@ -193,7 +156,7 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
 
             STATE_USER_WRITE_SUCCESS -> {
                 updateContentLoading(false)
-                getNavigator().startHomeActivity()
+//                getNavigator().startHomeActivity()
             }
 
             STATE_USER_WRITE_FAILED -> {
@@ -205,8 +168,8 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
     }
 
     private fun setPhoneAuthProperties(model: PhoneAuthDataModel?) {
-        token.set(model?.token)
-        verificationCode.set(model?.verificationId)
+        token = model?.token
+        verificationCode = model?.verificationId
     }
 
 
@@ -227,15 +190,7 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
 
     fun updateContentLoading(enable: Boolean?, message: String? = getApplication<SwapApplication>()
             .getString(R.string.msg_validating)) {
-        val contentLoading =
-                if (contentLoadingConfigView.get() == null) {
-                    ContentLoadingConfiguration()
-                } else {
-                    contentLoadingConfigView.get()
-                }
-
-        contentLoading.contentLoadingText.set(message)
-        contentLoading.isContentLoading.set(enable)
+        val contentLoading = ContentLoadingConfiguration(enable, message)
         contentLoadingConfigView.set(contentLoading)
     }
 
@@ -262,4 +217,5 @@ class SignUpLogInViewModel @Inject constructor(private val signUpLoginDataManage
         countDownValue = timeLeft
     }
 
+    fun getSeekPermission(): MutableLiveData<Boolean> = seekPermission
 }

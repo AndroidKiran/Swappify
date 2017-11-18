@@ -11,7 +11,7 @@ import swapp.items.com.swappify.injection.scopes.PerFragment
 import javax.inject.Inject
 
 @PerFragment
-class CountryAdapter<N> @Inject constructor() : RecyclerView.Adapter<BaseViewHolder>() where N : ICountryPickerNavigator {
+class CountryAdapter<N : ICountryPickerNavigator> @Inject constructor() : RecyclerView.Adapter<BaseViewHolder>() {
 
     var countriesList: ArrayList<Countries.Country> = ArrayList()
 

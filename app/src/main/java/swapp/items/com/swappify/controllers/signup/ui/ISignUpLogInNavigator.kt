@@ -2,13 +2,11 @@ package swapp.items.com.swappify.controllers.signup.ui
 
 interface ISignUpLogInNavigator {
 
-    fun openCountryCodeDialog()
+    fun onClickCountryCode()
 
-    fun onNextClick()
+    fun onClickNext()
 
-    fun onResendClick()
+    fun onClickResendOtp()
 
-    fun startHomeActivity()
-
-    fun seekSmsReadPermission()
+    fun onClickVerifyOtp()
 }

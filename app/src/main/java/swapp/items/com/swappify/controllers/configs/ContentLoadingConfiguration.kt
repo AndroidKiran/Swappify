@@ -4,7 +4,7 @@ import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import swapp.items.com.swappify.components.MultiStateView
 
-class ContentLoadingConfiguration {
+class ContentLoadingConfiguration constructor(isContentLoading: Boolean?, contentLoadingText: String?) {
 
     companion object {
         @JvmStatic
@@ -14,8 +14,10 @@ class ContentLoadingConfiguration {
         }
     }
 
-    var isContentLoading: ObservableField<Boolean> = ObservableField<Boolean>()
 
-    var contentLoadingText: ObservableField<String> = ObservableField<String>()
+
+    var isContentLoading: ObservableField<Boolean> = ObservableField<Boolean>(isContentLoading)
+
+    var contentLoadingText: ObservableField<String> = ObservableField<String>(contentLoadingText)
 
 }

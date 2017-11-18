@@ -5,13 +5,12 @@ import com.google.gson.Gson
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.country.model.Countries
-import swapp.items.com.swappify.controllers.country.ui.ICountryPickerNavigator
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.utils.AppUtils
 import javax.inject.Inject
 
 @PerActivity
-class CountryPickerViewModel @Inject constructor(countryPickerDataManager: CountryPickerDataManager, application: SwapApplication) : BaseViewModel<ICountryPickerNavigator>(application) {
+class CountryPickerViewModel @Inject constructor(countryPickerDataManager: CountryPickerDataManager, application: SwapApplication) : BaseViewModel(application) {
 
     private val jsonPath: String = "json/countries.json"
 

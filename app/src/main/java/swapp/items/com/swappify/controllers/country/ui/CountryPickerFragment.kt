@@ -65,7 +65,8 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
         errorViewConfiguration = ErrorViewConfiguration()
         recyclerViewConfiguration = RecyclerViewConfiguration()
         toolbarConfiguration = ToolbarConfiguration()
-        contentLoadingConfiguration = ContentLoadingConfiguration()
+        contentLoadingConfiguration = ContentLoadingConfiguration(false,
+                getString(R.string.msg_loading))
         countryAdapter.setBaseNavigator(this)
     }
 
@@ -79,11 +80,9 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
 
         initErrorView(getString(R.string.str_no_countries),
                 ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
-        initLoadingView(getString(R.string.msg_loading))
 
         setRetryListener()
 
-        countryPickerViewModel.setNavigator(this@CountryPickerFragment)
         countryPickerViewModel.fetchCountries()
     }
 
@@ -116,10 +115,6 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
 
     private fun initErrorView(errorMsg: String, errorDrawable: Drawable) {
         errorViewConfiguration.setErrorViewConfig(errorDrawable, errorMsg)
-    }
-
-    private fun initLoadingView(string: String?) {
-        contentLoadingConfiguration.contentLoadingText.set(string)
     }
 
     override fun getViewModel(): CountryPickerViewModel {
@@ -174,7 +169,7 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
         mListener?.onFragmentInteraction(bundle)
     }
 
-    val toolbarClickListener = View.OnClickListener {
+    private val toolbarClickListener = View.OnClickListener {
         dismissDialog()
     }
 }

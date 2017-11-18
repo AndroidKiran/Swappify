@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 
-abstract class BaseFragment<out B, out V> : Fragment() where B : ViewDataBinding, V : BaseViewModel<*> {
+abstract class BaseFragment<out B : ViewDataBinding, out V : BaseViewModel> : Fragment() {
 
     private lateinit var baseViewDataBinding: B
 
