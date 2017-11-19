@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
+import android.support.v4.view.ViewPropertyAnimatorListener
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -19,9 +21,6 @@ import swapp.items.com.swappify.controllers.additem.viewmodel.AddItemViewModel
 import swapp.items.com.swappify.controllers.base.BaseActivity
 import swapp.items.com.swappify.databinding.ActivityAddItemBinding
 import javax.inject.Inject
-
-
-
 
 
 class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>(),
@@ -96,9 +95,25 @@ class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>()
                 isAnchorHidden = true
                 ViewCompat.animate(view)
                         .scaleY(MIN_SCALE_VALUE)
-                        .scaleX(MIN_SCALE_VALUE)
+                        .alpha(MIN_SCALE_VALUE)
+                        .setInterpolator(AccelerateInterpolator())
                         .setDuration(SCALE_ANIMATION_DURATION)
+                        .setListener(object : ViewPropertyAnimatorListener {
+                            override fun onAnimationEnd(view: View?) {
+                                view?.visibility = View.GONE
+                            }
+
+                            override fun onAnimationCancel(view: View?) {
+                                // DO nothing
+                            }
+
+                            override fun onAnimationStart(view: View?) {
+                                // DO nothing
+                            }
+
+                        })
                         .start()
+
             }
         }
 
@@ -107,9 +122,26 @@ class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>()
                 isAnchorHidden = false
                 ViewCompat.animate(view)
                         .scaleY(MAX_SCALE_VALUE)
-                        .scaleX(MAX_SCALE_VALUE)
+                        .alpha(MAX_SCALE_VALUE)
+                        .setInterpolator(AccelerateInterpolator())
                         .setDuration(SCALE_ANIMATION_DURATION)
+                        .setListener(object : ViewPropertyAnimatorListener {
+                            override fun onAnimationEnd(view: View?) {
+                                // DO nothing
+                            }
+
+                            override fun onAnimationCancel(view: View?) {
+                                // DO nothing
+                            }
+
+                            override fun onAnimationStart(view: View?) {
+                                view?.visibility = View.VISIBLE
+                            }
+
+                        })
                         .start()
+
+
             }
         }
     }
@@ -119,7 +151,7 @@ class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>()
         if (scrollPercent >= PERCENTAGE_TO_SHOW_ANCHOR) {
             if (!isViewHidden) {
                 isViewHidden = true
-                createTransformUpAnimation(activityAddItemBinding.sliderView,
+                createTransformUpAnimation(view,
                         resources.getDimension(R.dimen.dimen_16).toInt())
             }
         }
@@ -127,7 +159,7 @@ class AddItemActivity : BaseActivity<ActivityAddItemBinding, AddItemViewModel>()
         if (scrollPercent < PERCENTAGE_TO_SHOW_ANCHOR) {
             if (isViewHidden) {
                 isViewHidden = false
-                createTransformUpAnimation(activityAddItemBinding.sliderView,
+                createTransformUpAnimation(view,
                         resources.getDimension(R.dimen.dimen_110).toInt())
             }
         }

@@ -9,7 +9,7 @@ versions.easy_permission = "1.0.1"
 versions.gson = "2.8.1"
 versions.glide = "4.0.0"
 versions.jsr305 = "3.0.1"
-versions.kotlin = "1.1.51"
+versions.kotlin = "1.1.60"
 versions.multi_dex = "1.0.2"
 versions.okhttp = "3.8.0"
 versions.play_service = "11.4.2"
@@ -23,6 +23,7 @@ versions.junit = "4.12"
 versions.espresso = "3.0.0"
 versions.android_gradle_plugin = "3.0.0"
 versions.google_service = "3.1.1"
+versions.material_spinner = "2.0.0"
 
 def deps = [:]
 
@@ -92,6 +93,7 @@ deps.phone_lib = "com.googlecode.libphonenumber:libphonenumber:$versions.phone_l
 deps.easy_permissions = "pub.devrel:easypermissions:$versions.easy_permission"
 deps.data_binding = "com.android.databinding:compiler:$versions.data_binding"
 deps.circle_indicator = "me.relex:circleindicator:1.2.2@aar"
+deps.material_spinner = "com.github.ganfra:material-spinner:$versions.material_spinner"
 
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.google_service = "com.google.gms:google-services:$versions.google_service"

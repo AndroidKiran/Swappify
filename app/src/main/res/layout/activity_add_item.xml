@@ -25,7 +25,7 @@
                 android:id="@+id/collapsingLayout"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                app:contentScrim="?colorPrimary"
+                app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleMarginBottom="94dp"
                 app:expandedTitleTextAppearance="@style/CollapsingTextAppearance.Inverse"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -44,10 +44,10 @@
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:requiresFadingEdge="vertical"
-            android:scrollbars="none"
+            android:fillViewport="true"
+            android:scrollbars="vertical"
             app:behavior_overlapTop="78dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -66,97 +66,148 @@
                     app:cardElevation="4dp"
                     app:cardPreventCornerOverlap="true">
 
-
-                        <RelativeLayout
-                            android:id="@+id/sliderView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dimen_110"
-                            android:clipToPadding="false"
-                            android:orientation="vertical">
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/sliderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_110">
 
 
-                            <TextView
-                                android:id="@+id/publisherKey"
-                                style="@style/AppTheme.Widget.TextView.Primary.Bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dimen_16"
-                                android:text="@string/str_publisher" />
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/developersTextInputLayout"
+                            style="@style/AppTheme.TextInputLayout.NoWidth"
+                            android:layout_width="0dp"
+                            android:layout_marginEnd="@dimen/dimen_8"
+                            android:layout_marginStart="@dimen/dimen_16"
+                            android:animateLayoutChanges="true"
+                            android:padding="@dimen/dimen_4"
+                            app:layout_constraintEnd_toStartOf="@id/genreTextInputLayout"
+                            app:layout_constraintHorizontal_chainStyle="spread"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
-                                android:id="@+id/publisherValue"
-                                style="@style/AppTheme.Widget.TextView.Secondary.Regular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dimen_8"
-                                android:layout_marginRight="@dimen/dimen_8"
-                                android:layout_toRightOf="@id/publisherKey"
-                                android:text="1Activision" />
+                            <android.support.design.widget.TextInputEditText
+                                style="@style/AppTheme.EditText.Item.Tiny"
+                                android:hint="@string/str_developer"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:minEms="12"
+                                tools:text="Black studio" />
 
-                            <TextView
-                                android:id="@+id/releaseDateKey"
-                                style="@style/AppTheme.Widget.TextView.Primary.Bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/publisherKey"
-                                android:layout_marginLeft="@dimen/dimen_16"
-                                android:layout_marginTop="@dimen/dimen_10"
-                                android:text="@string/str_release_date" />
-
-                            <TextView
-                                android:id="@+id/releaseDateValue"
-                                style="@style/AppTheme.Widget.TextView.Secondary.Regular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/publisherValue"
-                                android:layout_marginLeft="@dimen/dimen_8"
-                                android:layout_marginRight="@dimen/dimen_8"
-                                android:layout_marginTop="@dimen/dimen_10"
-                                android:layout_toRightOf="@id/releaseDateKey"
-                                android:text="12 April 2017" />
+                        </android.support.design.widget.TextInputLayout>
 
 
-                            <android.support.v7.widget.AppCompatTextView
-                                android:id="@+id/summary"
-                                style="@style/AppTheme.Widget.TextView.Secondary.Regular"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/genreTextInputLayout"
+                            style="@style/AppTheme.TextInputLayout.NoWidth"
+                            android:layout_width="0dp"
+                            android:layout_marginEnd="@dimen/dimen_8"
+                            android:layout_marginStart="@dimen/dimen_16"
+                            android:padding="@dimen/dimen_4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="spread"
+                            app:layout_constraintStart_toEndOf="@id/developersTextInputLayout"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <android.support.design.widget.TextInputEditText
+                                style="@style/AppTheme.EditText.Item.Tiny"
+                                android:hint="@string/str_genre"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:minEms="12"
+                                tools:text="Shooter" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/publisherTextInputLayout"
+                            style="@style/AppTheme.TextInputLayout.NoWidth"
+                            android:layout_width="0dp"
+                            android:layout_marginEnd="@dimen/dimen_8"
+                            android:layout_marginStart="@dimen/dimen_16"
+                            android:padding="@dimen/dimen_4"
+                            app:layout_constraintEnd_toStartOf="@id/releaseDateTextInputLayout"
+                            app:layout_constraintHorizontal_chainStyle="spread"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/developersTextInputLayout">
+
+                            <android.support.design.widget.TextInputEditText
+                                style="@style/AppTheme.EditText.Item.Tiny"
+                                android:hint="@string/str_publisher"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:minEms="12"
+                                tools:text="Activision slhjsdhjshdjhsdjhsdsdjsdhjsdjhsdjh" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/releaseDateTextInputLayout"
+                            style="@style/AppTheme.TextInputLayout.NoWidth"
+                            android:layout_width="0dp"
+                            android:layout_marginEnd="@dimen/dimen_8"
+                            android:layout_marginStart="@dimen/dimen_16"
+                            android:padding="@dimen/dimen_4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="spread"
+                            app:layout_constraintStart_toEndOf="@id/publisherTextInputLayout"
+                            app:layout_constraintTop_toBottomOf="@id/genreTextInputLayout">
+
+                            <android.support.design.widget.TextInputEditText
+                                style="@style/AppTheme.EditText.Item.Tiny"
+                                android:hint="@string/str_release_date"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:minEms="12"
+                                tools:text="12 APril 2018" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/summaryTextInputLayout"
+                            style="@style/AppTheme.TextInputLayout.NoWidth"
+                            android:layout_marginEnd="@dimen/dimen_8"
+                            android:layout_marginStart="@dimen/dimen_16"
+                            android:layout_marginTop="@dimen/dimen_16"
+                            android:padding="@dimen/dimen_4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/releaseDateTextInputLayout">
+
+                            <android.support.design.widget.TextInputEditText
+                                style="@style/AppTheme.EditText.Item.Tiny"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/releaseDateKey"
-                                android:layout_marginBottom="@dimen/dimen_16"
-                                android:layout_marginLeft="@dimen/dimen_16"
-                                android:layout_marginRight="@dimen/dimen_8"
-                                android:layout_marginTop="16dp"
-                                android:fontFamily="sans-serif-light"
-                                android:lineSpacingExtra="8dp"
-                                android:text="@string/lorem"
-                                android:textSize="16sp" />
+                                android:gravity="top|start"
+                                android:hint="@string/str_summary"
+                                android:inputType="textMultiLine"
+                                android:minEms="10"
+                                android:minLines="3"
+                                android:scrollbars="vertical"
+                                tools:text="@string/lorem" />
 
-                            <Button
-                                android:id="@+id/nextButton"
-                                style="@style/AppTheme.Button.Raised"
-                                android:layout_below="@id/summary"
-                                android:text="@string/str_next" />
-
-                        </RelativeLayout>
+                        </android.support.design.widget.TextInputLayout>
 
 
+                        <Button
+                            android:id="@+id/nextButton"
+                            style="@style/AppTheme.Button.Raised"
+                            android:layout_marginTop="@dimen/dimen_16"
+                            android:text="@string/str_next"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/summaryTextInputLayout" />
+
+
+                    </android.support.constraint.ConstraintLayout>
 
                 </android.support.v7.widget.CardView>
 
-
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:elevation="8dp"
-            android:src="@drawable/black_radius" />
-
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/anchorLayout"
@@ -166,80 +217,72 @@
             app:layout_anchor="@id/cardview"
             app:layout_anchorGravity="top|left|end">
 
-
-            <ImageView
+            <FrameLayout
                 android:id="@+id/coverPage"
                 android:layout_width="@dimen/dimen_140"
                 android:layout_height="@dimen/dimen_180"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="16dp"
-                android:scaleType="centerCrop"
+                android:background="@color/window_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/london_flat" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/name"
-                style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_16"
-                android:layout_marginRight="@dimen/dimen_8"
-                android:layout_marginTop="48dp"
-                android:gravity="center_vertical"
-                android:text="Halo 2"
-                android:textSize="@dimen/font_24"
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/dimen_140"
+                    android:layout_height="@dimen/dimen_180"
+                    android:scaleType="centerCrop" />
+
+                <View
+                    android:layout_width="@dimen/dimen_40"
+                    android:layout_height="@dimen/dimen_40"
+                    android:layout_gravity="center"
+                    android:background="@drawable/vc_add_a_photo_grey" />
+
+            </FrameLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/nameTextInputLayout"
+                style="@style/AppTheme.TextInputLayout.NoWidth.White"
+                android:layout_marginEnd="@dimen/dimen_8"
+                android:layout_marginStart="@dimen/dimen_16"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/coverPage"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTheme.EditText.Item.White"
+                    android:layout_width="@dimen/dimen_180"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/str_name"
+                    android:inputType="text"
+                    android:maxLines="2"
+                    android:minEms="7"
+                    tools:text="Halo" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
-            <TextView
-                android:id="@+id/genreKey"
-                style="@style/AppTheme.Widget.TextView.Primary.Bold"
-                android:layout_width="wrap_content"
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/platformSpinner"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_16"
-                android:text="@string/str_genre"
-                app:layout_constraintBottom_toBottomOf="@+id/developerKey"
+                android:layout_marginEnd="@dimen/dimen_24"
+                android:layout_marginStart="@dimen/dimen_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/coverPage"
-                app:layout_constraintTop_toBottomOf="@+id/name" />
-
-            <TextView
-                android:id="@+id/genreValue"
-                style="@style/AppTheme.Widget.TextView.Secondary.Regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_8"
-                android:layout_marginRight="@dimen/dimen_8"
-                android:text="Shooter"
-                app:layout_constraintBottom_toBottomOf="@+id/developerValue"
-                app:layout_constraintStart_toEndOf="@+id/genreKey"
-                app:layout_constraintTop_toBottomOf="@+id/name" />
-
-            <TextView
-                android:id="@+id/developerKey"
-                style="@style/AppTheme.Widget.TextView.Primary.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/str_developer"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/genreKey"
-                app:layout_constraintTop_toBottomOf="@+id/genreKey" />
-
-            <TextView
-                android:id="@+id/developerValue"
-                style="@style/AppTheme.Widget.TextView.Secondary.Regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_8"
-                android:layout_marginRight="@dimen/dimen_8"
-                android:layout_marginTop="8dp"
-                android:text="Ubisoft"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/developerKey"
-                app:layout_constraintTop_toBottomOf="@+id/genreValue" />
+                app:layout_constraintTop_toBottomOf="@+id/nameTextInputLayout"
+                app:ms_alignLabels="true"
+                app:ms_arrowSize="@dimen/dimen_12"
+                app:ms_enableErrorLabel="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelText="Platform"
+                app:ms_hint="Choose platform"
+                app:ms_multiline="false"
+                app:ms_thickness="0.5dp" />
 
 
         </android.support.constraint.ConstraintLayout>

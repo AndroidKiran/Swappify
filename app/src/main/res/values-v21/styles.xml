@@ -16,9 +16,14 @@
     <style name="AppTheme.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:background">@color/window_background</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar.Overflow</item>
     </style>
 
+
+    <style name="AppTheme.EditText.Item.White" parent="AppTheme.EditText.Item">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/pale_grey</item>
+    </style>
 
 </resources>

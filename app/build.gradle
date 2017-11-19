@@ -35,9 +35,6 @@ android {
         }
 
         debug {
-            debuggable true
-            minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -126,6 +123,9 @@ dependencies {
     implementation deps.phone_lib
     implementation deps.easy_permissions
     implementation deps.circle_indicator
+    implementation(deps.material_spinner, {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    })
 
     kapt deps.dagger.compiler
     kapt deps.dagger.processor

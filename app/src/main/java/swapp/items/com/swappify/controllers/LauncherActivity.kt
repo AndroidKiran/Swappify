@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.controllers.signup.ui.SignUpLoginActivity
+import swapp.items.com.swappify.controllers.additem.ui.AddItemActivity
 
 class LauncherActivity : AppCompatActivity() {
 
@@ -21,5 +21,5 @@ class LauncherActivity : AppCompatActivity() {
 
 
     private fun startIntroActivity(context : Context ) : Intent =
-            Intent(context , SignUpLoginActivity::class.java)
+            Intent(context , AddItemActivity::class.java)
 }

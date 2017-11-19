@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.TextInputLayout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.TextInputLayout.First.Child" parent="AppTheme.TextInputLayout">
+        <item name="android:layout_marginTop">@dimen/dimen_16</item>
+    </style>
+
+    <style name="AppTheme.TextInputLayout.NoWidth">
+        <item name="android:layout_width">@dimen/dimen_0</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="AppTheme.TextInputLayout.NoWidth.White" parent="AppTheme.TextInputLayout.NoWidth">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorHint">@color/pale_grey</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+    </style>
+
+
+    <style name="AppTheme.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/dimen_16</item>
+        <item name="android:paddingBottom">@dimen/dimen_16</item>
+        <item name="android:textSize">@dimen/font_16</item>
+    </style>
+
+    <style name="AppTheme.EditText.Single.Line" parent="AppTheme.EditText">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
+
+    <style name="AppTheme.EditText.Item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_20</item>
+    </style>
+
+    <style name="AppTheme.EditText.Item.Tiny" parent="AppTheme.EditText.Item">
+        <item name="android:textSize">@dimen/font_12</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="AppTheme.EditText.Item.White" parent="AppTheme.EditText.Item">
+        <item name="android:textColor">@color/white</item>
+        <item name="colorControlNormal">@color/pale_grey</item>
+    </style>
+
+
+</resources>

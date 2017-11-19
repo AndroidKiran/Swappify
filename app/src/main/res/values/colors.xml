@@ -15,4 +15,6 @@
     <color name="pale_grey">#f0f0f6</color>
     <color name="faded_red">#d84c4d</color>
 
+    <color name="colorPrimary">@color/primary</color>
+
 </resources>
