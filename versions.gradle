@@ -39,9 +39,13 @@ support.vector_drawable = "com.android.support:support-vector-drawable:$versions
 deps.support = support
 
 def lifecycle = [:]
+lifecycle.runtime = "android.arch.lifecycle:runtime:$versions.arch"
 lifecycle.extensions = "android.arch.lifecycle:extensions:$versions.arch"
 lifecycle.java8 = "android.arch.lifecycle:common-java8:$versions.arch"
 lifecycle.compiler = "android.arch.lifecycle:compiler:$versions.arch"
+lifecycle.reactive = "android.arch.lifecycle:reactivestreams:$versions.arch"
+lifecycle.room_runtime = "android.arch.persistence.room:runtime:$versions.arch"
+lifecycle.room_compiler = "android.arch.persistence.room:compiler:$versions.arch"
 deps.lifecycle = lifecycle
 
 def retrofit = [:]

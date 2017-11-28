@@ -7,7 +7,7 @@ import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.injection.scopes.PerApplication
 import swapp.items.com.swappify.utils.PreferenceUtils
 
-@Module(includes = arrayOf(FirebaseModule::class, NetworkModule::class, ViewModelModule::class))
+@Module(includes = arrayOf(FirebaseModule::class, NetworkModule::class))
 class AppModule constructor(val application: SwapApplication) {
 
     @Provides
