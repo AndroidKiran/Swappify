@@ -8,7 +8,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="ContentLoadingViewConfig"
+            name="gradientLoadingConfigView"
             type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
 
     </data>
@@ -20,7 +20,8 @@
         android:focusable="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="@{ContentLoadingViewConfig.isContentLoading ? View.VISIBLE : View.GONE}">
+        android:background="@drawable/bg_trans_gradient"
+        android:visibility="@{gradientLoadingConfigView.isContentLoading ? View.VISIBLE : View.GONE}">
 
         <android.support.v4.widget.ContentLoadingProgressBar
             android:id="@+id/contentLoadingProgress"
@@ -35,13 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16"
-            android:text="@{ContentLoadingViewConfig.contentLoadingText}"
+            android:text="@{gradientLoadingConfigView.contentLoadingText}"
             android:textSize="@dimen/font_16"
             tools:text="Loading ..." />
 
-
     </LinearLayout>
-
 
 </layout>
 

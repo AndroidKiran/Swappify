@@ -8,7 +8,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="contentLoadingConfigView"
+            name="contentLoadingViewConfig"
             type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
 
     </data>
@@ -20,8 +20,7 @@
         android:focusable="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:background="@drawable/bg_trans_gradient"
-        android:visibility="@{contentLoadingConfigView.isContentLoading ? View.VISIBLE : View.GONE}">
+        android:visibility="@{contentLoadingViewConfig.isContentLoading ? View.VISIBLE : View.GONE}">
 
         <android.support.v4.widget.ContentLoadingProgressBar
             android:id="@+id/contentLoadingProgress"
@@ -32,11 +31,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/contentLoadingMsg"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
+            style="@style/AppTheme.Widget.TextView.Primary.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16"
-            android:text="@{contentLoadingConfigView.contentLoadingText}"
+            android:text="@{contentLoadingViewConfig.contentLoadingText}"
             android:textSize="@dimen/font_16"
             tools:text="Loading ..." />
 

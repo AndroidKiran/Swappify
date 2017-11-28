@@ -42,6 +42,7 @@
         <attr name="targetRotateY" format="float"/>
 
         <attr name="animation" format="reference"/>
+
     </declare-styleable>
 
 </resources>

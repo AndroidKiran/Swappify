@@ -17,8 +17,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        bind:recyclerConfig="@{recyclerViewConfig}"
-        tools:listitem="@layout/item_country" />
+        bind:recyclerBinding="@{recyclerViewConfig}"
+        tools:listitem="@layout/country_item" />
 
 
 </layout>

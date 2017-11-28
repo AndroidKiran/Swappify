@@ -62,5 +62,10 @@ class AppUtils {
             return phoneNumber.countryCode == 91 && phoneNumber.nationalNumber.toString().matches("[789]\\d{9}".toRegex())
         }
 
+        fun CharSequence.isEmpty(string: String?): Boolean = string == null || string.isEmpty()
+
+        fun CharSequence.isNotEmpty(string: String?): Boolean = string != null || string?.isNotEmpty(string)!!
+
+
     }
 }

@@ -4,7 +4,7 @@ import android.databinding.ObservableField
 import swapp.items.com.swappify.controllers.country.model.Countries
 
 
-class CountryItemViewModel constructor(val country: Countries.Country?, private val countryItemViewModelListener: CountryItemViewModelListener?) {
+data class CountryItemViewModel constructor(val country: Countries.Country?, private val countryItemViewModelListener: CountryItemViewModelListener?) {
 
     var isoCode: ObservableField<String> = ObservableField<String>(country?.isoCode)
 

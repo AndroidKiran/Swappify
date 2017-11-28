@@ -31,19 +31,19 @@
         android:layout_height="wrap_content"
         app:msv_emptyView="@layout/include_empty_view"
         app:msv_errorView="@layout/include_error_view"
-        app:msv_loadingView="@layout/include_content_loading_type2"
+        app:msv_loadingView="@layout/include_content_loading"
         app:msv_viewState="loading"
-        bind:contentLoadingViewConfig="@{contentLoadingViewConfig}"
-        bind:emptyViewConfig="@{emptyViewConfig}"
-        bind:errorViewConfig="@{errorViewConfig}">
+        bind:contentLoadingBinding="@{contentLoadingViewConfig}"
+        bind:emptyViewBinding="@{emptyViewConfig}"
+        bind:errorViewBinding="@{errorViewConfig}">
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:recyclerConfig="@{recyclerViewConfig}"
-            tools:listitem="@layout/item_country" />
+            bind:recyclerBinding="@{recyclerViewConfig}"
+            tools:listitem="@layout/country_item" />
 
     </swapp.items.com.swappify.components.MultiStateView>
 

@@ -81,18 +81,14 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/otpInputLayout"
                     style="@style/AppTheme.TextInputLayout.First.Child"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="@dimen/dimen_16"
                     android:layout_marginTop="@dimen/dimen_16"
                     app:errorEnabled="true"
-                    bind:textInputLayoutErrorText="@{viewModel.otpError}">
+                    bind:textInputLayoutErrorBinding="@{viewModel.otpError}">
 
                     <android.support.design.widget.TextInputEditText
                         style="@style/AppTheme.EditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:hint="@string/str_enter_otp"
                         android:inputType="number"
                         android:maxLines="1"

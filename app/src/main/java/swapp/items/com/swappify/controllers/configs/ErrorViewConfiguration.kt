@@ -5,13 +5,14 @@ import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.view.View
+import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.components.MultiStateView
 
 class ErrorViewConfiguration : BaseObservable() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter("errorViewConfig")
+        @BindingAdapter("errorViewBinding")
         fun bindErrorViewConfiguration(multiStateView: MultiStateView?, errorViewConfiguration: ErrorViewConfiguration?) {
             multiStateView?.setErrorViewConfiguration(errorViewConfiguration)
         }
@@ -43,7 +44,7 @@ class ErrorViewConfiguration : BaseObservable() {
 
     fun setErrorRetryListener(errorRetryClickListener: View.OnClickListener?) {
         this.errorRetryClickListener = errorRetryClickListener
-        notifyChange()
+        notifyPropertyChanged(BR.errorRetryClickListener)
     }
 
 }

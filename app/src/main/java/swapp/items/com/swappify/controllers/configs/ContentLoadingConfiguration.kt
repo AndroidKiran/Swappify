@@ -8,13 +8,11 @@ class ContentLoadingConfiguration constructor(isContentLoading: Boolean?, conten
 
     companion object {
         @JvmStatic
-        @BindingAdapter("contentLoadingViewConfig")
+        @BindingAdapter("contentLoadingBinding")
         fun bindContentLoadingViewConfig(multiStateView: MultiStateView?, contentLoadingConfiguration: ContentLoadingConfiguration?) {
             multiStateView?.setContentLoadingViewConfiguration(contentLoadingConfiguration)
         }
     }
-
-
 
     var isContentLoading: ObservableField<Boolean> = ObservableField<Boolean>(isContentLoading)
 

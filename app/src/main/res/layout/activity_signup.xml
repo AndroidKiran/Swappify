@@ -41,11 +41,11 @@
             bind:onTextChangeCallBack="@{textChangeCallBack}"/>
 
         <include
-            layout="@layout/include_content_loading"
+            layout="@layout/include_gradient_loading"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_200"
             android:layout_gravity="bottom"
-            bind:contentLoadingConfigView="@{viewModel.contentLoadingConfigView}" />
+            bind:gradientLoadingConfigView="@{viewModel.contentLoadingConfigView}" />
 
     </FrameLayout>
 

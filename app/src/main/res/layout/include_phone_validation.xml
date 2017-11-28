@@ -76,8 +76,7 @@
                     android:id="@+id/phoneNumContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
+                    android:gravity="center_horizontal">
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/countryCode"
@@ -105,17 +104,16 @@
                         android:layout_toEndOf="@id/countryCode"
                         android:layout_toRightOf="@id/countryCode"
                         app:errorEnabled="true"
-                        bind:textInputLayoutErrorText="@{viewModel.phoneError}">
+                        bind:textInputLayoutErrorBinding="@{viewModel.phoneError}">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/phoneNumEditText"
                             style="@style/AppTheme.EditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:hint="@string/str_mobile_num"
                             android:inputType="number"
                             android:maxLength="15"
                             android:maxLines="1"
+                            android:minEms="10"
                             android:text="@{viewModel.mobileNumber}"
                             app:addTextChangedListener="@{onTextChangeCallBack}" />
 

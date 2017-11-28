@@ -10,7 +10,7 @@ class EmptyViewConfiguration : BaseObservable() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter("emptyViewConfig")
+        @BindingAdapter("emptyViewBinding")
         fun bindEmptyViewConfiguration(multiStateView: MultiStateView?, emptyViewConfiguration: EmptyViewConfiguration?) {
             multiStateView?.setEmptyViewConfiguration(emptyViewConfiguration)
         }

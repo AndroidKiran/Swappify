@@ -7,7 +7,7 @@ versions.dagger = "2.12"
 versions.data_binding = "2.3.1"
 versions.easy_permission = "1.0.1"
 versions.gson = "2.8.1"
-versions.glide = "4.0.0"
+versions.glide = "4.3.1"
 versions.jsr305 = "3.0.1"
 versions.kotlin = "1.1.60"
 versions.multi_dex = "1.0.2"
@@ -21,7 +21,7 @@ versions.support = "26.1.0"
 
 versions.junit = "4.12"
 versions.espresso = "3.0.0"
-versions.android_gradle_plugin = "3.0.0"
+versions.android_gradle_plugin = "3.0.1"
 versions.google_service = "3.1.1"
 versions.material_spinner = "2.0.0"
 
@@ -39,7 +39,6 @@ support.vector_drawable = "com.android.support:support-vector-drawable:$versions
 deps.support = support
 
 def lifecycle = [:]
-lifecycle.runtime = "android.arch.lifecycle:runtime:$versions.arch"
 lifecycle.extensions = "android.arch.lifecycle:extensions:$versions.arch"
 lifecycle.java8 = "android.arch.lifecycle:common-java8:$versions.arch"
 lifecycle.compiler = "android.arch.lifecycle:compiler:$versions.arch"
@@ -85,7 +84,12 @@ firebase.core = "com.google.firebase:firebase-core:$versions.play_service"
 firebase.crash = "com.google.firebase:firebase-crash:$versions.play_service"
 deps.firebase = firebase
 
-deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
+def glide = [:]
+glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
+glide.compiler = "com.github.bumptech.glide:compiler:$versions.glide"
+glide.annotation = "com.github.bumptech.glide:annotations:$versions.glide"
+deps.glide = glide
+
 deps.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
 deps.gson = "com.google.code.gson:gson:$versions.gson"
 deps.multi_dex = "com.android.support:multidex:$versions.multi_dex"

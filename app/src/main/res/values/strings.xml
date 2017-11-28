@@ -60,4 +60,9 @@
     <string name="str_release_date">Release Date</string>
     <string name="str_publisher">Publisher</string>
     <string name="str_summary">Summary</string>
+
+    <string name="str_clear">Clear</string>
+    <string name="str_voice">Voice</string>
+    <string name="str_search">Search</string>
+
 </resources>

@@ -21,7 +21,7 @@ import swapp.items.com.swappify.R;
 import swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration;
 import swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration;
 import swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration;
-import swapp.items.com.swappify.databinding.IncludeContentLoadingType2Binding;
+import swapp.items.com.swappify.databinding.IncludeContentLoadingBinding;
 import swapp.items.com.swappify.databinding.IncludeEmptyViewBinding;
 import swapp.items.com.swappify.databinding.IncludeErrorViewBinding;
 
@@ -40,7 +40,7 @@ public class MultiStateView extends FrameLayout {
 
     private IncludeErrorViewBinding mErrorViewBinding;
 
-    private IncludeContentLoadingType2Binding mContentLoadingViewBinding;
+    private IncludeContentLoadingBinding mContentLoadingViewBinding;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({VIEW_STATE_CONTENT, VIEW_STATE_ERROR, VIEW_STATE_EMPTY, VIEW_STATE_LOADING})
