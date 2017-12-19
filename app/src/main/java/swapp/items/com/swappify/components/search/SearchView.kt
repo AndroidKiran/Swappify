@@ -11,8 +11,6 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Parcel
-import android.os.Parcelable
 import android.speech.RecognizerIntent
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
@@ -21,7 +19,6 @@ import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -30,45 +27,35 @@ import android.util.TypedValue
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
+import android.widget.Filterable
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.search_view.view.*
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.components.search.SearchView.Constants.ANIMATION_DURATION
-import swapp.items.com.swappify.components.search.SearchView.Constants.LAYOUT_TRANSITION_DURATION
-import swapp.items.com.swappify.components.search.SearchView.Constants.SPEECH_REQUEST_CODE
-import swapp.items.com.swappify.components.search.SearchView.Constants.THEME_DARK
-import swapp.items.com.swappify.components.search.SearchView.Constants.THEME_LIGHT
-import swapp.items.com.swappify.components.search.SearchView.Constants.VERSION_MARGINS_MENU_ITEM
-import swapp.items.com.swappify.components.search.SearchView.Constants.VERSION_MARGINS_TOOLBAR_BIG
-import swapp.items.com.swappify.components.search.SearchView.Constants.VERSION_MARGINS_TOOLBAR_SMALL
-import swapp.items.com.swappify.components.search.SearchView.Constants.VERSION_MENU_ITEM
-import swapp.items.com.swappify.components.search.SearchView.Constants.VERSION_TOOLBAR
 
 
 class SearchView : FrameLayout, View.OnClickListener {
 
-    object Constants {
-        val VERSION_TOOLBAR_ICON = 1000
-        val LAYOUT_TRANSITION_DURATION = 200
-        val ANIMATION_DURATION = 300
-        val VERSION_TOOLBAR = 1000
-        val VERSION_MENU_ITEM = 1002
-        val VERSION_MARGINS_TOOLBAR_SMALL = 2000
-        val VERSION_MARGINS_TOOLBAR_BIG = 2001
-        val VERSION_MARGINS_MENU_ITEM = 2002
-        val THEME_LIGHT = 3000
-        val THEME_DARK = 3001
-        val SPEECH_REQUEST_CODE = 4000
+    companion object Constants {
+        const val VERSION_TOOLBAR_ICON = 1000
+        const val LAYOUT_TRANSITION_DURATION = 200
+        const val ANIMATION_DURATION = 300
+        const val VERSION_TOOLBAR = 1000
+        const val VERSION_MENU_ITEM = 1002
+        const val VERSION_MARGINS_TOOLBAR_SMALL = 2000
+        const val VERSION_MARGINS_TOOLBAR_BIG = 2001
+        const val VERSION_MARGINS_MENU_ITEM = 2002
+        const val THEME_LIGHT = 3000
+        const val THEME_DARK = 3001
+        const val SPEECH_REQUEST_CODE = 4000
     }
 
 
-    private var onQueryChangeListener: OnQueryTextListener? = null
-    private var onOpenCloseListener: OnOpenCloseListener? = null
-    private var onMenuClickListener: OnMenuClickListener? = null
-    private var onVoiceClickListener: OnVoiceClickListener? = null
-    private var savedState: SavedState? = null
+    private var onQueryChangeListener: ISearchOnQueryChangeListener? = null
+    private var onClickListener: ISearchOnClickListener? = null;
+//    private var savedState: SavedState? = null
     private var animationDuration = ANIMATION_DURATION
-    private var isSearchArrowHamburgerState = SearchArrowDrawable.STATE_HAMBURGER
+    private var isSearchArrowHamburgerState = DrawerArrowDrawable.STATE_HAMBURGER
+    private var isSearchArrowSearchState = ASearchArrowDrawable.STATE_SEARCH
 
     private var voice: Boolean = true
     private var textColor: Int = 0
@@ -80,7 +67,8 @@ class SearchView : FrameLayout, View.OnClickListener {
     private var oldQueryText: CharSequence? = null
 
     private var isSearchOpen: Boolean = false
-    private var searchArrow: SearchArrowDrawable? = null
+    private var drawerArrow: DrawerArrowDrawable? = null
+    private var searchArrow: ASearchArrowDrawable? = null
 
     private var menuItemView: View? = null
     private var menuItemCx = -1
@@ -90,6 +78,11 @@ class SearchView : FrameLayout, View.OnClickListener {
     private var version: Int = 0
     private var shadow = true
 
+    private var adapter: RecyclerView.Adapter<*>? = null
+    private var activity: Activity? = null
+    private var fragment: Fragment? = null
+    private var supportFragment: android.support.v4.app.Fragment? = null
+
 
     constructor(context: Context) : this(context, null)
 
@@ -98,14 +91,12 @@ class SearchView : FrameLayout, View.OnClickListener {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init(context)
         initStyle(attrs, defStyleAttr)
-//        initSearch()
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         init(context)
         initStyle(attrs, defStyleAttr)
-//        initSearch()
     }
 
     private var iconColor: Int = 0
@@ -120,9 +111,14 @@ class SearchView : FrameLayout, View.OnClickListener {
         imageViewMic.colorFilter = colorFilter
         imageViewClear.colorFilter = colorFilter
 
-        if (searchArrow != null) {
+        if (drawerArrow != null) {
+            drawerArrow?.colorFilter = colorFilter
+        }
+
+        if(searchArrow != null) {
             searchArrow?.colorFilter = colorFilter
         }
+
     }
 
 
@@ -156,9 +152,10 @@ class SearchView : FrameLayout, View.OnClickListener {
     }
 
 
+
     private fun init(@NonNull context: Context) {
         val layoutInflater = LayoutInflater.from(context)
-        layoutInflater.inflate(R.layout.search_view, this, true);
+        layoutInflater.inflate(R.layout.search_view, this, true)
 
         viewDivider.visibility = View.GONE
 
@@ -172,6 +169,8 @@ class SearchView : FrameLayout, View.OnClickListener {
         imageViewClear.visibility = View.GONE
 
         initRecyclerView()
+
+        searchEditText.setSearchView(this@SearchView)
 
         searchEditText.setOnEditorActionListener({ textView, actionId, event ->
             onSubmitQuery()
@@ -333,38 +332,32 @@ class SearchView : FrameLayout, View.OnClickListener {
     }
 
     fun setNavigationIconArrowHamburger() {
-        searchArrow = SearchArrowDrawable(context)
+        drawerArrow = DrawerArrowDrawable(context)
+        imageViewArrowBack.setImageDrawable(drawerArrow)
+    }
+
+    fun setNavigationIconArrowSearch() {
+        searchArrow = ASearchArrowDrawable(context)
         imageViewArrowBack.setImageDrawable(searchArrow)
     }
 
     //@IntR
-    override fun setBackgroundColor(@ColorInt color: Int) {
-        searchCard.setCardBackgroundColor(color)
-    }
+    override fun setBackgroundColor(@ColorInt color: Int) = searchCard.setCardBackgroundColor(color)
 
-    private fun setTextInput(text: CharSequence?) {
-        searchEditText.setText(text)
-    }
+    fun setTextInput(text: CharSequence?) = searchEditText.setText(text)
 
-    private fun setTextInput(@StringRes text: Int) {
-        searchEditText.setText(text)
-    }
+    private fun setTextInput(@StringRes text: Int) = searchEditText.setText(text)
 
-    private fun setTextSize(size: Float) {
-        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-    }
+    private fun setTextSize(size: Float) =
+            searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
 
     private fun setHint(hint: CharSequence?) {
-        searchEditText.setHint(hint)
+        searchEditText.hint = hint
     }
 
-    fun setHint(@StringRes hint: Int) {
-        searchEditText.setHint(hint)
-    }
+    fun setHint(@StringRes hint: Int) = searchEditText.setHint(hint)
 
-    private fun setHintColor(@ColorInt color: Int) {
-        searchEditText.setHintTextColor(color)
-    }
+    private fun setHintColor(@ColorInt color: Int) = searchEditText.setHintTextColor(color)
 
     private fun setDivider(divider: Boolean) {
         if (divider) {
@@ -379,21 +372,16 @@ class SearchView : FrameLayout, View.OnClickListener {
         imageViewMic.visibility = if (voice && isVoiceAvailable()) View.VISIBLE else View.GONE
     }
 
-    private lateinit var activity: Activity
-
     fun setVoice(voice: Boolean, context: Activity) {
         activity = context
         setVoice(voice)
     }
 
-    private lateinit var fragment: Fragment
 
     fun setVoice(voice: Boolean, context: Fragment) {
         fragment = context
         setVoice(voice)
     }
-
-    private lateinit var supportFragment: android.support.v4.app.Fragment
 
     fun setVoice(voice: Boolean, context: android.support.v4.app.Fragment) {
         supportFragment = context
@@ -467,11 +455,9 @@ class SearchView : FrameLayout, View.OnClickListener {
     }
 
     private fun onSubmitQuery() {
-        val query = searchEditText.getText()
+        val query = searchEditText.text
         if (query != null && TextUtils.getTrimmedLength(query) > 0) {
-            if (onQueryChangeListener == null || !onQueryChangeListener?.onQueryTextSubmit(query.toString())!!) {
-                searchEditText.text = query
-            }
+            onQueryChangeListener!!.onQueryTextSubmit(query.toString())
         }
     }
 
@@ -479,9 +465,9 @@ class SearchView : FrameLayout, View.OnClickListener {
     private fun onTextChanged(newText: CharSequence) {
         val text = searchEditText.text
         userQuery = text
-//        if (mAdapter != null && mAdapter is Filterable) {
-//            (mAdapter as Filterable).filter.filter(text)
-//        }
+        if (adapter != null && adapter is Filterable) {
+            (adapter as Filterable).filter.filter(text)
+        }
         if (onQueryChangeListener != null && !TextUtils.equals(newText, oldQueryText)) {
             onQueryChangeListener?.onQueryTextChange(newText.toString())
         }
@@ -501,7 +487,8 @@ class SearchView : FrameLayout, View.OnClickListener {
 
     private fun addFocus() {
         isSearchOpen = true
-        setArrow()
+        setDrawerArrow()
+        setSearchArrow()
         showSuggestions()
         if (shadow) {
             SearchAnimator.fadeIn(shadowView, animationDuration)
@@ -510,8 +497,8 @@ class SearchView : FrameLayout, View.OnClickListener {
         showClearTextIcon()
         if (version != VERSION_MENU_ITEM) {
             postDelayed({
-                if (onOpenCloseListener != null) {
-                    onOpenCloseListener?.onOpen()
+                if (onClickListener != null) {
+                    onClickListener?.onOpen()
                 }
             }, animationDuration.toLong())
         }
@@ -519,7 +506,8 @@ class SearchView : FrameLayout, View.OnClickListener {
 
     private fun removeFocus() {
         isSearchOpen = false
-        setHamburger()
+        setDrawerHamburger()
+        setSearchIcon()
         if (shadow) {
             SearchAnimator.fadeOut(shadowView, animationDuration)
         }
@@ -528,8 +516,8 @@ class SearchView : FrameLayout, View.OnClickListener {
         hideClearTextIcon()
         if (version != VERSION_MENU_ITEM) {
             postDelayed({
-                if (onOpenCloseListener != null) {
-                    onOpenCloseListener?.onClose()
+                if (onClickListener != null) {
+                    onClickListener?.onClose()
                 }
             }, animationDuration.toLong())
         }
@@ -541,8 +529,6 @@ class SearchView : FrameLayout, View.OnClickListener {
 
     private fun setVersion(version: Int) {
         this.version = version
-        filtersContainer.visibility = View.GONE
-
         if (version == VERSION_TOOLBAR) {
             this@SearchView.visibility = View.VISIBLE
             searchEditText.clearFocus()
@@ -607,38 +593,55 @@ class SearchView : FrameLayout, View.OnClickListener {
         }
     }
 
-    fun setOnQueryTextListener(listener: OnQueryTextListener) {
-        onQueryChangeListener = listener
+    fun setOnQueryTextListener(onQueryChangelistener: ISearchOnQueryChangeListener) {
+       this.onQueryChangeListener = onQueryChangelistener
     }
 
-    override fun onSaveInstanceState(): Parcelable {
-        val superState = super.onSaveInstanceState()
-        savedState = SavedState(superState)
-        savedState?.query = if (userQuery != null) userQuery.toString() else null
-        savedState?.isSearchOpen = isSearchOpen
-        return savedState!!
+    fun setOnClickListeners(onClickListener: ISearchOnClickListener) {
+        this.onClickListener = onClickListener
     }
 
-    override fun onRestoreInstanceState(state: Parcelable?) {
-        if (state !is SavedState) {
-            super.onRestoreInstanceState(state)
-            return
-        }
-        savedState = state
-        if (savedState?.isSearchOpen!!) {
-            open(true)
-            setQueryWithoutSubmitting(savedState?.query)
-        }
-        super.onRestoreInstanceState(savedState?.superState)
-    }
+//    override fun onSaveInstanceState(): Parcelable {
+//        val superState = super.onSaveInstanceState()
+//        savedState = SavedState(superState)
+//        savedState?.query = if (userQuery != null) userQuery.toString() else null
+//        savedState?.isSearchOpen = isSearchOpen
+//        return savedState!!
+//    }
 
+//    override fun onRestoreInstanceState(state: Parcelable?) {
+//        if (state !is SavedState) {
+//            super.onRestoreInstanceState(state)
+//            return
+//        }
+//        savedState = state
+//        if (savedState!!.isSearchOpen) {
+//            open(true)
+//            setQueryWithoutSubmitting(savedState?.query)
+//        }
+//        super.onRestoreInstanceState(savedState?.superState)
+//    }
+
+    fun getAdapter(): RecyclerView.Adapter<*> = recyclerView.adapter
+
+
+    fun setAdapter(adapter: RecyclerView.Adapter<*>) {
+        this.adapter = adapter
+        recyclerView.adapter = adapter
+
+//        if (adapter is SearchAdapter)
+//            (adapter as SearchAdapter).addOnItemClickListener(object : SearchAdapter.OnItemClickListener() {
+//                fun onItemClick(view: View, position: Int) {
+//                    dispatchFilters()
+//                }
+//            }, 0)
+    }
 
     private fun open(animate: Boolean) {
         open(animate, null)
     }
 
     private fun open(animate: Boolean, menuItem: MenuItem?) {
-        filtersContainer.visibility = View.VISIBLE
         if (version == VERSION_MENU_ITEM) {
             visibility = View.VISIBLE
 
@@ -648,7 +651,7 @@ class SearchView : FrameLayout, View.OnClickListener {
                         getMenuItemPosition(menuItem.itemId)
                     reveal()
                 } else {
-                    SearchAnimator.fadeOpen(searchCard, animationDuration, searchEditText, shouldClearOnOpen, onOpenCloseListener)
+                    SearchAnimator.fadeOpen(searchCard, animationDuration, searchEditText, shouldClearOnOpen, onClickListener)
                 }
             } else {
                 searchCard.visibility = View.VISIBLE
@@ -656,8 +659,8 @@ class SearchView : FrameLayout, View.OnClickListener {
                     searchEditText.text.clear()
                 }
                 searchCard.requestFocus()
-                if (onOpenCloseListener != null) {
-                    onOpenCloseListener?.onOpen()
+                if (onClickListener != null) {
+                    onClickListener?.onOpen()
                 }
             }
         }
@@ -669,24 +672,23 @@ class SearchView : FrameLayout, View.OnClickListener {
         }
     }
 
-    private fun close(animate: Boolean) {
-        filtersContainer.visibility = View.GONE
+    fun close(animate: Boolean) {
         if (version == VERSION_MENU_ITEM) {
             if (animate) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    SearchAnimator.revealClose(searchCard, menuItemCx, animationDuration, context, searchEditText, shouldClearOnClose, this, onOpenCloseListener)
+                    SearchAnimator.revealClose(searchCard, menuItemCx, animationDuration, context, searchEditText, shouldClearOnClose, this, onClickListener)
                 } else {
-                    SearchAnimator.fadeClose(searchCard, animationDuration, searchEditText, shouldClearOnClose, this, onOpenCloseListener)
+                    SearchAnimator.fadeClose(searchCard, animationDuration, searchEditText, shouldClearOnClose, this, onClickListener)
                 }
             } else {
                 if (shouldClearOnClose && searchEditText.length() > 0) {
-                    searchEditText.getText().clear()
+                    searchEditText.text.clear()
                 }
                 searchEditText.clearFocus()
                 searchCard.visibility = View.GONE
                 visibility = View.GONE
-                if (onOpenCloseListener != null) {
-                    onOpenCloseListener?.onClose()
+                if (onClickListener != null) {
+                    onClickListener?.onClose()
                 }
             }
         }
@@ -700,23 +702,19 @@ class SearchView : FrameLayout, View.OnClickListener {
 
     private fun setQueryWithoutSubmitting(query: CharSequence?) {
         searchEditText.setText(query)
-        if (query != null) {
+        if (query != null && query.isNotEmpty()) {
             searchEditText.setSelection(searchEditText.length())
             userQuery = query
         } else {
-            searchEditText.getText().clear()
+            searchEditText.text.clear()
         }
     }
 
     private fun showSuggestions() {
         if (recyclerView.visibility == View.GONE) {
-//            if (mAdapter != null) {
-//                if (mAdapter.getItemCount() > 0) {
-//                    viewDivider.visibility = View.VISIBLE
-//                }
-//                recyclerView.visibility = View.VISIBLE
-//                SearchAnimator.fadeIn(recyclerView, animationDuration)
-//            }
+            recyclerView.visibility = View.VISIBLE
+            viewDivider.visibility = View.VISIBLE
+            SearchAnimator.fadeIn(recyclerView, animationDuration)
         }
     }
 
@@ -751,7 +749,7 @@ class SearchView : FrameLayout, View.OnClickListener {
         var viewParent: ViewParent? = parent
         while (viewParent != null && viewParent is View) {
             val parent = viewParent as View?
-            val view = parent!!.findViewById<View>(menuItemId)
+            val view = parent?.findViewById<View>(menuItemId)
             if (view != null) {
                 menuItemView = view
                 menuItemCx = getCenterX(menuItemView!!)
@@ -782,7 +780,7 @@ class SearchView : FrameLayout, View.OnClickListener {
         searchCard.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 searchCard.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                SearchAnimator.revealOpen(searchCard, menuItemCx, animationDuration, context, searchEditText, shouldClearOnOpen, onOpenCloseListener)
+                SearchAnimator.revealOpen(searchCard, menuItemCx, animationDuration, context, searchEditText, shouldClearOnOpen, onClickListener)
             }
         })
     }
@@ -791,11 +789,12 @@ class SearchView : FrameLayout, View.OnClickListener {
 
         when(view) {
             imageViewArrowBack -> {
-                if (searchArrow != null && isSearchArrowHamburgerState == SearchArrowDrawable.STATE_ARROW) {
+                if (drawerArrow != null && isSearchArrowHamburgerState == DrawerArrowDrawable.STATE_ARROW
+                        || searchArrow != null && isSearchArrowSearchState == ASearchArrowDrawable.STATE_ARROW ) {
                     close(true)
                 } else {
-                    if (onMenuClickListener != null) {
-                        onMenuClickListener?.onMenuClick()
+                    if (onClickListener != null) {
+                        onClickListener?.onMenuClick()
                     } else {
                         close(true)
                     }
@@ -819,8 +818,8 @@ class SearchView : FrameLayout, View.OnClickListener {
     }
 
     private fun onVoiceClicked() {
-        if (onVoiceClickListener != null) {
-            onVoiceClickListener?.onVoiceClick()
+        if (onClickListener != null) {
+            onClickListener?.onVoiceClick()
         }
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -828,11 +827,11 @@ class SearchView : FrameLayout, View.OnClickListener {
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
 
         if (activity != null) {
-            activity.startActivityForResult(intent, SPEECH_REQUEST_CODE)
+            activity?.startActivityForResult(intent, SPEECH_REQUEST_CODE)
         } else if (fragment != null) {
-            fragment.startActivityForResult(intent, SPEECH_REQUEST_CODE)
+            fragment?.startActivityForResult(intent, SPEECH_REQUEST_CODE)
         } else if (supportFragment != null) {
-            supportFragment.startActivityForResult(intent, SPEECH_REQUEST_CODE)
+            supportFragment?.startActivityForResult(intent, SPEECH_REQUEST_CODE)
         } else {
             if (context is Activity) {
                 (context as Activity).startActivityForResult(intent, SPEECH_REQUEST_CODE)
@@ -840,86 +839,65 @@ class SearchView : FrameLayout, View.OnClickListener {
         }
     }
 
-    private fun setArrow() {
+    private fun setDrawerArrow() {
+        if (drawerArrow != null) {
+            drawerArrow?.setVerticalMirror(false)
+            drawerArrow?.animate(DrawerArrowDrawable.STATE_ARROW, animationDuration)
+            isSearchArrowHamburgerState = DrawerArrowDrawable.STATE_ARROW
+        }
+    }
+
+    private fun setSearchArrow() {
         if (searchArrow != null) {
-            searchArrow?.setVerticalMirror(false)
-            searchArrow?.animate(SearchArrowDrawable.STATE_ARROW, animationDuration)
-            isSearchArrowHamburgerState = SearchArrowDrawable.STATE_ARROW
+            searchArrow?.verticalMirror = false
+            searchArrow?.animate(ASearchArrowDrawable.STATE_ARROW, animationDuration)
+            isSearchArrowSearchState = ASearchArrowDrawable.STATE_ARROW
         }
     }
 
-    private fun setHamburger() {
+
+
+    private fun setDrawerHamburger() {
+        if (drawerArrow != null) {
+            drawerArrow?.setVerticalMirror(true)
+            drawerArrow?.animate(DrawerArrowDrawable.STATE_HAMBURGER, animationDuration)
+            isSearchArrowHamburgerState = DrawerArrowDrawable.STATE_HAMBURGER
+        }
+    }
+
+    private fun setSearchIcon() {
         if (searchArrow != null) {
-            searchArrow?.setVerticalMirror(true)
-            searchArrow?.animate(SearchArrowDrawable.STATE_HAMBURGER, animationDuration)
-            isSearchArrowHamburgerState = SearchArrowDrawable.STATE_HAMBURGER
+            searchArrow?.verticalMirror = true
+            searchArrow?.animate(ASearchArrowDrawable.STATE_SEARCH, animationDuration)
+            isSearchArrowSearchState = ASearchArrowDrawable.STATE_SEARCH
         }
     }
 
-    interface OnOpenCloseListener {
-        fun onClose()
-
-        fun onOpen()
-    }
-
-    interface OnMenuClickListener {
-        fun onMenuClick()
-    }
-
-    interface OnVoiceClickListener {
-        fun onVoiceClick()
-    }
-
-    interface OnQueryTextListener {
-        fun onQueryTextChange(newText: String): Boolean
-
-        fun onQueryTextSubmit(query: String): Boolean
-    }
-
-    private val onMenuItemClickListener = Toolbar.OnMenuItemClickListener { item ->
-        when (item?.itemId) {
-            R.id.action_clear -> {
-                if (searchEditText.length() > 0) {
-                    searchEditText.text.clear()
-                }
-                true
-            }
-
-            R.id.action_voice -> {
-                true
-            }
-            else -> {
-                false
-            }
-        }
-
-    }
-
-    private inner class SavedState : View.BaseSavedState {
-
-        internal var query: String? = null
-        internal var isSearchOpen: Boolean = false
-
-        internal constructor(superState: Parcelable) : super(superState) {}
-
-        private constructor(parcel: Parcel) : super(parcel) {
-            this.query = parcel.readString()
-            this.isSearchOpen = parcel.readInt() == 1
-        }
-
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeString(query)
-            out.writeInt(if (isSearchOpen) 1 else 0)
-        }
-
-
-        val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
-
-            override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel)
-
-            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
-        }
-
-    }
+//    private class SavedState : View.BaseSavedState {
+//
+//        internal var query: String? = null
+//        internal var isSearchOpen: Boolean = false
+//
+//        internal constructor(superState: Parcelable) : super(superState)
+//
+//        internal constructor(parcel: Parcel) : super(parcel) {
+//            this.query = parcel.readString()
+//            this.isSearchOpen = parcel.readInt() == 1
+//        }
+//
+//        override fun writeToParcel(out: Parcel, flags: Int) {
+//            super.writeToParcel(out, flags)
+//            out.writeString(query)
+//            out.writeInt(if (isSearchOpen) 1 else 0)
+//        }
+//
+//        companion object {
+//            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+//                override fun createFromParcel(Parcel: Parcel): SavedState = SavedState(Parcel)
+//
+//                override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+//            }
+//        }
+//
+//    }
 }

@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
-import swapp.items.com.swappify.data.user.model.User
+import swapp.items.com.swappify.repo.user.model.User
 import java.lang.Exception
 
 class SetValueOnSubscribe constructor(

@@ -33,5 +33,10 @@ class RecyclerViewConfiguration : BaseObservable() {
         this.recyclerOrientation = recyclerOrientation
         notifyChange()
     }
+
+    fun setRecyclerConfig(recyclerAdapter: RecyclerView.Adapter<*>?) {
+        this.recyclerAdapter = recyclerAdapter
+        notifyChange()
+    }
 }
 

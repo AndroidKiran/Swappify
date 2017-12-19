@@ -26,9 +26,9 @@ import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.country.model.Countries.Companion.COUNTRY_EXTRA
 import swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment
 import swapp.items.com.swappify.controllers.signup.SMSReceiver
-import swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel
+import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel
 import swapp.items.com.swappify.databinding.ActivitySignupBinding
-import swapp.items.com.swappify.utils.AppUtils.Companion.getLocale
+import swapp.items.com.swappify.common.AppUtils.Companion.getLocale
 import javax.inject.Inject
 
 class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewModel>(),

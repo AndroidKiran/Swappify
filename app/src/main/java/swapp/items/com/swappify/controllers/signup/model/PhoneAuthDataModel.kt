@@ -3,7 +3,7 @@ package swapp.items.com.swappify.controllers.signup.model
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import swapp.items.com.swappify.data.user.model.User
+import swapp.items.com.swappify.repo.user.model.User
 
 class PhoneAuthDataModel private constructor(var state: Int,
                                              val firebaseException: FirebaseException?,

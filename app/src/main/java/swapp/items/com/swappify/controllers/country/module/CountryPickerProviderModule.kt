@@ -7,7 +7,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment
 import swapp.items.com.swappify.controllers.country.viewmodel.CountryPickerViewModel
-import swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel
+import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel
 import swapp.items.com.swappify.injection.qualifiers.ViewModelKey
 import swapp.items.com.swappify.injection.scopes.PerFragment
 

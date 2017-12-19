@@ -3,6 +3,7 @@ package swapp.items.com.swappify.components.search
 import android.content.Context
 import android.support.v7.widget.AppCompatEditText
 import android.util.AttributeSet
+import android.view.KeyEvent
 
 class SearchEditText : AppCompatEditText {
 
@@ -17,6 +18,18 @@ class SearchEditText : AppCompatEditText {
 
     fun setSearchView(searchView: SearchView) {
         this.searchView = searchView
+    }
+
+    override fun onKeyPreIme(keyCode: Int, event: KeyEvent): Boolean {
+        if (searchView.getShouldHideOnKeyboardClose()) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                if (searchView.isSearchOpen()) {
+                    searchView.close(true)
+                    return true
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
 }

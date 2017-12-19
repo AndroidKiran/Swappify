@@ -6,7 +6,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.data.user.model.User
+import swapp.items.com.swappify.repo.user.model.User
 import swapp.items.com.swappify.firebase.listeners.FirebaseDatabaseListeners.SetValueOnSubscribe
 import swapp.items.com.swappify.firebase.listeners.authListeners.RxResendVerificationCodeSubscriber
 import swapp.items.com.swappify.firebase.listeners.authListeners.RxStartPhoneVerificationSubscriber

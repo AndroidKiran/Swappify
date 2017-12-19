@@ -1,5 +1,6 @@
 package swapp.items.com.swappify.controllers.base
 
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -18,14 +19,13 @@ abstract class BaseFragment<out B : ViewDataBinding, out V : BaseViewModel> : Fr
     private lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        performDependencyInjection()
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(false)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        baseViewDataBinding = DataBindingUtil.inflate<B>(inflater, getLayoutId(), container, false)
+        baseViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         rootView = baseViewDataBinding.root
         return rootView
     }
@@ -35,6 +35,11 @@ abstract class BaseFragment<out B : ViewDataBinding, out V : BaseViewModel> : Fr
         baseViewModel = getViewModel()
         executePendingVariablesBinding()
         baseViewModel.onViewCreated()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        performDependencyInjection()
     }
 
     override fun onDestroyView() {

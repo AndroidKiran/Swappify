@@ -33,7 +33,7 @@ internal object SearchAnimator {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun revealOpen(view: View, cX: Int, duration: Int, context: Context, editText: SearchEditText, shouldClearOnOpen: Boolean, listener: SearchView.OnOpenCloseListener?) {
+    fun revealOpen(view: View, cX: Int, duration: Int, context: Context, editText: SearchEditText, shouldClearOnOpen: Boolean, listener: ISearchOnClickListener?) {
         var cx = cX
 
         if (cx <= 0) {
@@ -81,7 +81,7 @@ internal object SearchAnimator {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun revealClose(view: View, cX: Int, duration: Int, context: Context, editText: SearchEditText, shouldClearOnClose: Boolean, searchView: SearchView, listener: SearchView.OnOpenCloseListener?) {
+    fun revealClose(view: View, cX: Int, duration: Int, context: Context, editText: SearchEditText, shouldClearOnClose: Boolean, searchView: SearchView, listener: ISearchOnClickListener?) {
         var cx = cX
 
         if (cx <= 0) {
@@ -128,7 +128,7 @@ internal object SearchAnimator {
         }
     }
 
-    fun fadeOpen(view: View, duration: Int, editText: SearchEditText, shouldClearOnOpen: Boolean, listener: SearchView.OnOpenCloseListener?) {
+    fun fadeOpen(view: View, duration: Int, editText: SearchEditText, shouldClearOnOpen: Boolean, listener: ISearchOnClickListener?) {
         val anim = AlphaAnimation(0.0f, 1.0f)
         anim.interpolator = AccelerateDecelerateInterpolator()
         anim.duration = duration.toLong()
@@ -153,7 +153,7 @@ internal object SearchAnimator {
         view.visibility = View.VISIBLE
     }
 
-    fun fadeClose(view: View, duration: Int, editText: SearchEditText, shouldClearOnClose: Boolean, searchView: SearchView, listener: SearchView.OnOpenCloseListener?) {
+    fun fadeClose(view: View, duration: Int, editText: SearchEditText, shouldClearOnClose: Boolean, searchView: SearchView, listener: ISearchOnClickListener?) {
         val anim = AlphaAnimation(1.0f, 0.0f)
         anim.interpolator = AccelerateDecelerateInterpolator()
         anim.duration = duration.toLong()

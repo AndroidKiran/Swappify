@@ -46,9 +46,10 @@ android {
     }
 
     dexOptions {
+        incremental = true
         preDexLibraries = false
         dexInProcess = false
-        javaMaxHeapSize "8g"
+        javaMaxHeapSize "4g"
     }
 
     compileOptions {
@@ -91,6 +92,8 @@ dependencies {
     implementation deps.lifecycle.runtime
     implementation deps.lifecycle.extensions
     implementation deps.lifecycle.java8
+    implementation deps.lifecycle.room_reactive
+    implementation deps.lifecycle.room_runtime
 
     implementation deps.retrofit.runtime
     implementation deps.retrofit.convertor
@@ -104,7 +107,6 @@ dependencies {
     implementation deps.dagger.android_support
 
     implementation deps.kotlin.stdlib
-
     implementation deps.rx.kotlin
     implementation deps.rx.android
 
@@ -133,6 +135,7 @@ dependencies {
     kapt deps.data_binding
     kapt deps.lifecycle.compiler
     kapt deps.glide.compiler
+    kapt deps.lifecycle.room_compiler
 
     testImplementation deps.junit
     androidTestImplementation(deps.espresso_core, {

@@ -15,7 +15,7 @@ import swapp.items.com.swappify.BuildConfig
 import swapp.items.com.swappify.injection.scopes.PerApplication
 import swapp.items.com.swappify.network.AuthenticateInterceptor
 import swapp.items.com.swappify.network.HostSelectionInterceptor
-import swapp.items.com.swappify.utils.Constant
+import swapp.items.com.swappify.common.Constant
 import java.util.concurrent.TimeUnit
 
 

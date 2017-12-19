@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="addGameViewModel"
+            type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel" />
+
+        <variable
+            name="searchOnQueryChangeListener"
+            type="swapp.items.com.swappify.components.search.ISearchOnQueryChangeListener" />
+
+        <variable
+            name="searchOnClickListener"
+            type="swapp.items.com.swappify.components.search.ISearchOnClickListener" />
+
+        <variable
+            name="searchRecyclerViewConfig"
+            type="swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <swapp.items.com.swappify.components.search.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:search_divider="true"
+            app:search_elevation="@dimen/dimen_4"
+            app:search_hint="@string/str_search"
+            app:search_shadow="false"
+            bind:searchQuery="@{addGameViewModel.searchInputText}"
+            bind:searchOnClickListenerBinding="@{searchOnClickListener}"
+            bind:searchOnQueryChangeListenerBinding="@{searchOnQueryChangeListener}"
+            bind:searchRecyclerBinding="@{searchRecyclerViewConfig}" />
+
+
+    </FrameLayout>
+</layout>

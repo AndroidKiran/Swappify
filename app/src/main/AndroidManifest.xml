@@ -62,7 +62,7 @@
         </activity>
 
         <activity
-            android:name=".controllers.additem.ui.AddItemActivity"
+            android:name=".controllers.addgame.ui.AddGameActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="keyboardHidden|screenSize">

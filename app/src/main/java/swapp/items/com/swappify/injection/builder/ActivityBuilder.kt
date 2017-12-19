@@ -5,9 +5,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import swapp.items.com.swappify.controllers.ViewModelFactory
-import swapp.items.com.swappify.controllers.additem.module.AddItemModule
-import swapp.items.com.swappify.controllers.additem.module.AddItemProviderModule
-import swapp.items.com.swappify.controllers.additem.ui.AddItemActivity
+import swapp.items.com.swappify.controllers.addgame.module.AddItemActivityModule
+import swapp.items.com.swappify.controllers.addgame.module.AddItemActivityProviderModule
+import swapp.items.com.swappify.controllers.addgame.ui.AddGameActivity
 import swapp.items.com.swappify.controllers.country.module.CountryPickerModule
 import swapp.items.com.swappify.controllers.country.module.CountryPickerProviderModule
 import swapp.items.com.swappify.controllers.signup.ui.SignUpLoginActivity
@@ -26,7 +26,7 @@ abstract class ActivityBuilder {
     abstract fun provideSignUpLogInActivity(): SignUpLoginActivity
 
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(AddItemModule::class, AddItemProviderModule::class))
-    abstract fun provideAddItemActivity(): AddItemActivity
+    @ContributesAndroidInjector(modules = arrayOf(AddItemActivityModule::class, AddItemActivityProviderModule::class))
+    abstract fun provideAddItemActivity(): AddGameActivity
 
 }

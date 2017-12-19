@@ -2,11 +2,11 @@ package swapp.items.com.swappify.controllers.country.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import swapp.items.com.swappify.common.AppUtils
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.injection.scopes.PerActivity
-import swapp.items.com.swappify.utils.AppUtils
 import javax.inject.Inject
 
 @PerActivity

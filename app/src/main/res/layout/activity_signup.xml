@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="swapp.items.com.swappify.controllers.signup.viewModel.SignUpLogInViewModel" />
+            type="swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel" />
 
         <variable
             name="clickCallBack"

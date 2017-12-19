@@ -10,7 +10,7 @@
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" >
-        <item name="android:windowBackground">@color/pale_grey</item>
+        <item name="android:windowBackground">@color/search_dark_icon</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
     </style>
 

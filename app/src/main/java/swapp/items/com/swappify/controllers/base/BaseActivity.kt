@@ -22,7 +22,7 @@ abstract class BaseActivity<out B : ViewDataBinding, out V : BaseViewModel> : Ap
     }
 
     private fun performDataBinding() {
-        baseViewDataBinding = DataBindingUtil.setContentView<B>(this@BaseActivity, getLayoutId())
+        baseViewDataBinding = DataBindingUtil.setContentView(this@BaseActivity, getLayoutId())
         baseViewModel = getViewModel()
         executePendingVariablesBinding()
         baseViewModel.onViewCreated()

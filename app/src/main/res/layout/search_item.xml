@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -14,33 +14,34 @@
         android:id="@+id/search_view_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_56"
+        android:paddingBottom="@dimen/dimen_8"
+        android:paddingStart="@dimen/dimen_16"
+        android:paddingEnd="@dimen/dimen_16"
+        android:paddingTop="@dimen/dimen_8"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_16">
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView_item_icon_left"
             android:layout_width="@dimen/dimen_24"
             android:layout_height="@dimen/dimen_24"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/dimen_16"
             android:contentDescription="@string/app_name"
-            bind:imageUrl="@{searchItem.iconUrl}"
-            bind:placeHolder="@{searchItem.placeHolder}" />
+            app:srcCompat="@drawable/vc_history_black"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView_item_text"
+            style="@style/AppTheme.Widget.TextView.Primary.Regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:layout_margin="@dimen/dimen_24"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:gravity="start|center_vertical"
             android:maxLines="1"
             android:text="@{searchItem.text}"
-            android:textSize="@dimen/font_14"
-            tools:ignore="SelectableText" />
+            tools:text="Halo 2" />
 
     </LinearLayout>
 </layout>
