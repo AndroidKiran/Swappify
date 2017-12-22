@@ -2,10 +2,20 @@ package swapp.items.com.swappify.controllers.configs
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.databinding.BindingAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
 class RecyclerViewConfiguration : BaseObservable() {
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter("recyclerBinding")
+        fun bindRecyclerViewConfiguration(recyclerView: RecyclerView?, recyclerViewConfig: RecyclerViewConfiguration?) {
+            recyclerView?.layoutManager = recyclerViewConfig?.layoutManager
+            recyclerView?.adapter = recyclerViewConfig?.recyclerAdapter
+        }
+    }
 
     @get:Bindable
     var layoutManager: RecyclerView.LayoutManager? = null

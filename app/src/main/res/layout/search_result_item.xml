@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="gameViewModel"
+            type="swapp.items.com.swappify.controllers.addgame.model.GameModel" />
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        style="@style/AppTheme.Widget.CardView.Full"
+        android:background="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/white">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_game_cover"
+                android:layout_width="@dimen/dimen_64"
+                android:layout_height="@dimen/dimen_64"
+                android:layout_margin="@dimen/dimen_16"
+                android:background="@drawable/vc_photo"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:imageUrl="@{gameViewModel.cover.url}"
+                bind:placeHolder="@{@drawable/vc_photo}" />
+
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_add_game"
+                android:layout_width="@dimen/dimen_32"
+                android:layout_height="@dimen/dimen_32"
+                android:layout_margin="@dimen/dimen_16"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_game_cover"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_game_cover"
+                app:srcCompat="@drawable/vc_library_add_black" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_game_name"
+                style="@style/AppTheme.Widget.TextView.Primary.Regular"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dimen_16"
+                android:ellipsize="marquee"
+                android:maxLines="2"
+                android:text="@{gameViewModel.name}"
+                android:textSize="@dimen/font_18"
+                app:layout_constraintBottom_toTopOf="@+id/tv_game_release_data"
+                app:layout_constraintEnd_toStartOf="@id/iv_add_game"
+                app:layout_constraintHorizontal_bias="0.00"
+                app:layout_constraintStart_toEndOf="@id/iv_game_cover"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Halo dd " />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_game_release_data"
+                style="@style/AppTheme.Widget.TextView.Secondary.Regular"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dimen_16"
+                android:maxLines="1"
+                android:text="@{gameViewModel.releaseDate}"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_add_game"
+                app:layout_constraintHorizontal_bias="0.00"
+                app:layout_constraintStart_toEndOf="@id/iv_game_cover"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_name"
+                tools:text="12 April 2012" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v7.widget.CardView>
+</layout>

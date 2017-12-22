@@ -148,4 +148,8 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         }
     }
 
+    override fun onBackPressed() {
+        addGameViewModel.searchQueryLiveData.value = ""
+        super.onBackPressed()
+    }
 }

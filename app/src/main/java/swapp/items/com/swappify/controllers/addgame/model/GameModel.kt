@@ -1,41 +1,134 @@
 package swapp.items.com.swappify.controllers.addgame.model
 
+import android.databinding.BaseObservable
+import android.databinding.Bindable
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import swapp.items.com.swappify.BR
+import swapp.items.com.swappify.common.AppUtils
 
-class GameModel {
 
-    @SerializedName("id")
-    var id: Int = 0
+data class GameModel constructor(@get:Bindable
+                                 @SerializedName("id")
+                                 @Expose var id: Int?) : BaseObservable() {
 
+    companion object {
+        const val HTTPS = "https:"
+    }
+
+    @get:Bindable
     @SerializedName("name")
-    var name: String = ""
+    @Expose
+    var name: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.name)
+        }
 
-   /* @SerializedName("summary")
-    var summary: String = ""
+
+    @get:Bindable
+    @SerializedName("summary")
+    @Expose
+    var summary: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.summary)
+        }
 
     @SerializedName("rating")
-    var rating: Long = 0
+    @Expose
+    var rating: Double? = null
 
     @SerializedName("genres")
-    var genres = listOf<Int>()
+    @Expose
+    var genres: List<Int>? = null
 
     @SerializedName("first_release_date")
-    var releaseDate: Long = 0
+    @Expose
+    var firstReleaseDate: Long? = null
+        set(value) {
+            if (value != null) {
+                releaseDate = AppUtils.toMMMddyyyy(value)
+            }
+        }
 
+    @get:Bindable
     @SerializedName("cover")
-    var cover = Cover()
-
-    @SerializedName("publishers")
-    var publishers = listOf<Int>()
+    @Expose
+    var cover: Cover? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.cover)
+        }
 
     @SerializedName("developers")
-    var developers = listOf<Int>()
+    @Expose
+    var developers: List<Int>? = null
 
-    inner class Cover {
+    @SerializedName("publishers")
+    @Expose
+    var publishers: List<Int>? = null
+
+    @get:Bindable
+    var releaseDate: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.releaseDate)
+        }
+
+    @get:Bindable
+    var platform: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.platform)
+        }
+
+    @get:Bindable
+    var developer: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.developer)
+        }
+
+    @get:Bindable
+    var genre: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.genre)
+        }
+
+    @get:Bindable
+    var publisher: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.publisher)
+        }
+
+
+    inner class Cover : BaseObservable() {
+
+        @get:Bindable
         @SerializedName("url")
-        var url: String = ""
+        @Expose
+        var url: String? = null
+            set(value) {
+                field = if (!value?.startsWith(HTTPS)!!) {
+                    HTTPS.plus(value)
+                } else {
+                    value
+                }
+                notifyPropertyChanged(BR.url)
+            }
 
         @SerializedName("cloudinary_id")
-        var cloudinaryId: String = ""
-    }*/
+        @Expose
+        var cloudinaryId: String? = null
+    }
+
+    fun update(url: String?, releaseDate: Long?) {
+        this.cover?.url = url
+        this.firstReleaseDate = releaseDate
+        notifyChange()
+    }
+
 }

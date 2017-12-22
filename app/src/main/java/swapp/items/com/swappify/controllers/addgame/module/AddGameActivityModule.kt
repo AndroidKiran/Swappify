@@ -9,7 +9,7 @@ import swapp.items.com.swappify.repo.game.IGameApi
 import swapp.items.com.swappify.room.SearchDao
 
 @Module
-class AddItemActivityModule {
+class AddGameActivityModule {
 
     @PerActivity
     @Provides

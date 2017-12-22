@@ -47,8 +47,7 @@ class BindedMultiStateView<B : ViewDataBinding> : FrameLayout {
     private var errorView: View? = null
 
 
-    constructor(context: Context) : this(context, null) {
-    }
+    constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
@@ -283,17 +282,17 @@ class BindedMultiStateView<B : ViewDataBinding> : FrameLayout {
     fun getViewState(): Int = viewState
 
 
-    fun setEmptyViewConfiguration(emptyViewConfiguration: EmptyViewConfiguration) {
+    fun setEmptyViewConfiguration(emptyViewConfiguration: EmptyViewConfiguration?) {
         emptyViewBinding.setVariable(BR.emptyViewConfig, emptyViewConfiguration)
         emptyViewBinding.executePendingBindings()
     }
 
-    fun setErrorViewConfiguration(errorViewConfiguration: ErrorViewConfiguration) {
+    fun setErrorViewConfiguration(errorViewConfiguration: ErrorViewConfiguration?) {
         errorViewBinding.setVariable(BR.errorViewConfig, errorViewConfiguration)
         errorViewBinding.executePendingBindings()
     }
 
-    fun setContentLoadingViewConfiguration(contentLoadingViewConfiguration: ContentLoadingConfiguration) {
+    fun setContentLoadingViewConfiguration(contentLoadingViewConfiguration: ContentLoadingConfiguration?) {
         loadingViewBinding.setVariable(BR.contentLoadingViewConfig, contentLoadingViewConfiguration)
         loadingViewBinding.executePendingBindings()
     }

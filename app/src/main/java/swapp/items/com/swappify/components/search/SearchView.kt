@@ -344,7 +344,10 @@ class SearchView : FrameLayout, View.OnClickListener {
     //@IntR
     override fun setBackgroundColor(@ColorInt color: Int) = searchCard.setCardBackgroundColor(color)
 
-    fun setTextInput(text: CharSequence?) = searchEditText.setText(text)
+    fun setTextInput(text: CharSequence?) {
+        searchEditText.setText(text)
+        searchEditText.clearFocus()
+    }
 
     private fun setTextInput(@StringRes text: Int) = searchEditText.setText(text)
 
@@ -723,6 +726,16 @@ class SearchView : FrameLayout, View.OnClickListener {
             viewDivider.visibility = View.GONE
             recyclerView.visibility = View.GONE
             SearchAnimator.fadeOut(recyclerView, animationDuration)
+            hideKeyboard()
+        }
+    }
+
+    private fun hideSuggestionsWithFocusClear() {
+        if (recyclerView.visibility == View.VISIBLE) {
+            viewDivider.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            SearchAnimator.fadeOut(recyclerView, animationDuration)
+            searchEditText.clearFocus()
         }
     }
 
@@ -790,7 +803,8 @@ class SearchView : FrameLayout, View.OnClickListener {
         when(view) {
             imageViewArrowBack -> {
                 if (drawerArrow != null && isSearchArrowHamburgerState == DrawerArrowDrawable.STATE_ARROW
-                        || searchArrow != null && isSearchArrowSearchState == ASearchArrowDrawable.STATE_ARROW ) {
+                        || searchArrow != null && isSearchArrowSearchState == ASearchArrowDrawable.STATE_ARROW
+                        && recyclerView.visibility == View.VISIBLE) {
                     close(true)
                 } else {
                     if (onClickListener != null) {

@@ -64,5 +64,8 @@
     <string name="str_clear">Clear</string>
     <string name="str_voice">Voice</string>
     <string name="str_search">Search</string>
+    <string name="str_game_search_empty">Oops, Nothing found</string>
+
+    <string name="str_searching">Searching for %s</string>
 
 </resources>

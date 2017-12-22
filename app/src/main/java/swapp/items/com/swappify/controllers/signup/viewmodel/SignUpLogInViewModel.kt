@@ -9,15 +9,15 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import swapp.items.com.swappify.R
+import swapp.items.com.swappify.common.AppUtils.Companion.isValidPhone
+import swapp.items.com.swappify.common.extension.getObservableAsync
+import swapp.items.com.swappify.common.extension.getSingleAsync
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.controllers.signup.ui.SignUpLoginActivity
 import swapp.items.com.swappify.injection.scopes.PerActivity
-import swapp.items.com.swappify.common.extension.getObservableAsync
-import swapp.items.com.swappify.common.extension.getSingleAsync
-import swapp.items.com.swappify.common.AppUtils.Companion.isValidPhone
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ class SignUpLogInViewModel @Inject constructor(signUpLoginDataManager: SignUpLog
 
     var token: PhoneAuthProvider.ForceResendingToken? = null
 
-    var contentLoadingConfigView: ObservableField<ContentLoadingConfiguration> = ObservableField<ContentLoadingConfiguration>(ContentLoadingConfiguration(false, ""))
+    var contentLoadingConfigView: ObservableField<ContentLoadingConfiguration> = ObservableField<ContentLoadingConfiguration>()
 
     var countDownValue: Int? = SignUpLoginActivity.MAX_TIME_IN_SEC
 
@@ -190,7 +190,7 @@ class SignUpLogInViewModel @Inject constructor(signUpLoginDataManager: SignUpLog
 
     fun updateContentLoading(enable: Boolean?, message: String? = getApplication<SwapApplication>()
             .getString(R.string.msg_validating)) {
-        val contentLoading = ContentLoadingConfiguration(enable, message)
+        val contentLoading = ContentLoadingConfiguration()
         contentLoadingConfigView.set(contentLoading)
     }
 

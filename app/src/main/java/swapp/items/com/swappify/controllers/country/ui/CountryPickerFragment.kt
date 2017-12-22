@@ -65,8 +65,8 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
         errorViewConfiguration = ErrorViewConfiguration()
         recyclerViewConfiguration = RecyclerViewConfiguration()
         toolbarConfiguration = ToolbarConfiguration()
-        contentLoadingConfiguration = ContentLoadingConfiguration(false,
-                getString(R.string.msg_loading))
+        contentLoadingConfiguration = ContentLoadingConfiguration()
+        contentLoadingConfiguration.setConfig(getString(R.string.msg_loading))
         countryAdapter.setBaseNavigator(this)
     }
 

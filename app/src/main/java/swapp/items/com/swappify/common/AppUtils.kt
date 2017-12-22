@@ -8,6 +8,7 @@ import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AppUtils {
@@ -67,5 +68,10 @@ class AppUtils {
         fun isEmpty(string: String?): Boolean = string == null || string.isEmpty()
 
         fun isNotEmpty(string: String?): Boolean = string != null && !TextUtils.isEmpty(string)
+
+        fun toMMMddyyyy(time: Long): String {
+            val format = SimpleDateFormat("MMM dd yyyy", Locale.US)
+            return format.format(Date(time))
+        }
     }
 }

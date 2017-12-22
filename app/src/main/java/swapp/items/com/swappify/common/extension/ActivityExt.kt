@@ -5,7 +5,6 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 
-
 fun AppCompatActivity.replaceFragmentSafely(fragment: Fragment,
                                             @IdRes containerViewId: Int,
                                             tag: String?,
@@ -26,7 +25,7 @@ fun AppCompatActivity.replaceFragmentSafely(fragment: Fragment,
     val ft = supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(enterAnimation, exitAnimation, popEnterAnimation, popExitAnimation)
-            .replace(containerViewId, fragment, tag)
+            .add(containerViewId, fragment, tag)
 
     if (addToBackStack) {
         ft.addToBackStack(tag)

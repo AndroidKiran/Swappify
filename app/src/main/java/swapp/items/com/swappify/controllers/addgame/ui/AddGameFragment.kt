@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPropertyAnimatorListener
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import swapp.items.com.swappify.BR
@@ -15,6 +16,8 @@ import swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controllers.base.BaseFragment
 import swapp.items.com.swappify.databinding.FragmentAddGameBinding
 import javax.inject.Inject
+
+
 
 class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>(),
         AppBarLayout.OnOffsetChangedListener {
@@ -57,6 +60,9 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentAddGameBinding.appbar.addOnOffsetChangedListener(this@AddGameFragment)
+        fragmentAddGameBinding.summaryEt.setOnTouchListener({
+            view, motionEvent -> handleNoteFieldTouch(view, motionEvent)
+        })
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
@@ -134,6 +140,14 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
 
                 })
                 .start()
+    }
+
+    fun handleNoteFieldTouch(v: View, event: MotionEvent): Boolean {
+        v.parent.parent.requestDisallowInterceptTouchEvent(true)
+        when (event.action and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_UP -> v.parent.parent.requestDisallowInterceptTouchEvent(false)
+        }
+        return false
     }
 
 }

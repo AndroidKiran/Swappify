@@ -18,6 +18,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.BuildConfig
 import swapp.items.com.swappify.R
+import swapp.items.com.swappify.common.AppUtils.Companion.getLocale
 import swapp.items.com.swappify.components.TextChangeListener
 import swapp.items.com.swappify.controllers.base.BaseActivity
 import swapp.items.com.swappify.controllers.base.IFragmentCallback
@@ -28,7 +29,6 @@ import swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment
 import swapp.items.com.swappify.controllers.signup.SMSReceiver
 import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel
 import swapp.items.com.swappify.databinding.ActivitySignupBinding
-import swapp.items.com.swappify.common.AppUtils.Companion.getLocale
 import javax.inject.Inject
 
 class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewModel>(),
@@ -221,7 +221,7 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
         val loadingText = savedInstanceState?.getString(STATE_LOADING_STRING, "")
         var loadingState = savedInstanceState?.getBoolean(STATE_LOADING, false)
 
-        var contentLoadingConfiguration = ContentLoadingConfiguration(loadingState, loadingText)
+        var contentLoadingConfiguration = ContentLoadingConfiguration()
         signUpLogInViewModel.contentLoadingConfigView.set(contentLoadingConfiguration)
 
         val countDownValue = savedInstanceState?.getInt(STATE_COUNT_DOWN_VALUE, MAX_TIME_IN_SEC)
@@ -236,12 +236,12 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
         if (loadingState!!) {
             if (loadingText?.contains("Secs")!! &&
                     verificationCode != null && screenState!!) {
-                contentLoadingConfiguration = ContentLoadingConfiguration(loadingState, loadingText)
+                contentLoadingConfiguration = ContentLoadingConfiguration()
                 signUpLogInViewModel.contentLoadingConfigView.set(contentLoadingConfiguration)
                 attachReceiver(countDownValue!!)
             } else {
                 loadingState = false
-                contentLoadingConfiguration = ContentLoadingConfiguration(loadingState, loadingText)
+                contentLoadingConfiguration = ContentLoadingConfiguration()
                 signUpLogInViewModel.contentLoadingConfigView.set(contentLoadingConfiguration)
             }
 
@@ -254,10 +254,10 @@ class SignUpLoginActivity : BaseActivity<ActivitySignupBinding, SignUpLogInViewM
 
         val contentLoadingConfiguration: ContentLoadingConfiguration? =
                 signUpLogInViewModel.contentLoadingConfigView.get()
-        outState?.putBoolean(STATE_LOADING,
-                contentLoadingConfiguration?.isContentLoading?.get()!!)
-        outState?.putString(STATE_LOADING_STRING,
-                contentLoadingConfiguration?.contentLoadingText?.get())
+//        outState?.putBoolean(STATE_LOADING,
+//                contentLoadingConfiguration?.isContentLoading?.get()!!)
+//        outState?.putString(STATE_LOADING_STRING,
+//                contentLoadingConfiguration?.contentLoadingText?.get())
 
         outState?.putInt(STATE_COUNT_DOWN_VALUE, signUpLogInViewModel.countDownValue!!)
         outState?.putString(STATE_CODE, signUpLogInViewModel.verificationCode)

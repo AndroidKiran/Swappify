@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="contentLoadingViewConfig"
             type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
@@ -19,8 +17,7 @@
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="@{contentLoadingViewConfig.isContentLoading ? View.VISIBLE : View.GONE}">
+        android:orientation="vertical">
 
         <android.support.v4.widget.ContentLoadingProgressBar
             android:id="@+id/contentLoadingProgress"

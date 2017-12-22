@@ -12,7 +12,7 @@ import swapp.items.com.swappify.injection.qualifiers.ViewModelKey
 import swapp.items.com.swappify.injection.scopes.PerFragment
 
 @Module
-abstract class AddItemActivityProviderModule {
+abstract class AddGameActivityProviderModule {
 
     @Binds
     @IntoMap
@@ -24,6 +24,6 @@ abstract class AddItemActivityProviderModule {
     abstract fun provideAddGameFragment(): AddGameFragment
 
     @PerFragment
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [(SearchGameFragmentModule::class)])
     abstract fun provideSearchGameFragment(): SearchGameFragment
 }

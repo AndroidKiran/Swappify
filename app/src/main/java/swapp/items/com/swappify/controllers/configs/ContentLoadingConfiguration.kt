@@ -1,10 +1,13 @@
 package swapp.items.com.swappify.controllers.configs
 
+import android.databinding.BaseObservable
+import android.databinding.Bindable
 import android.databinding.BindingAdapter
-import android.databinding.ObservableField
+import swapp.items.com.swappify.BR
+import swapp.items.com.swappify.components.BindedMultiStateView
 import swapp.items.com.swappify.components.MultiStateView
 
-class ContentLoadingConfiguration constructor(isContentLoading: Boolean?, contentLoadingText: String?) {
+class ContentLoadingConfiguration : BaseObservable() {
 
     companion object {
         @JvmStatic
@@ -12,10 +15,25 @@ class ContentLoadingConfiguration constructor(isContentLoading: Boolean?, conten
         fun bindContentLoadingViewConfig(multiStateView: MultiStateView?, contentLoadingConfiguration: ContentLoadingConfiguration?) {
             multiStateView?.setContentLoadingViewConfiguration(contentLoadingConfiguration)
         }
+
+        @JvmStatic
+        @BindingAdapter("contentLoadingBindingConfig")
+        fun bindContentLoadingBindingConfig(multiStateView: BindedMultiStateView<*>?,
+                                            contentLoadingConfiguration: ContentLoadingConfiguration?) {
+            multiStateView?.setContentLoadingViewConfiguration(contentLoadingConfiguration)
+        }
+
     }
 
-    var isContentLoading: ObservableField<Boolean> = ObservableField<Boolean>(isContentLoading)
+    @get:Bindable
+    var contentLoadingText: String? = null
+    private set(value) {
+        field = value
+    }
 
-    var contentLoadingText: ObservableField<String> = ObservableField<String>(contentLoadingText)
+    fun setConfig(contentLoadingText: String?) {
+        this.contentLoadingText = contentLoadingText
+        notifyPropertyChanged(BR.contentLoadingText)
+    }
 
 }
