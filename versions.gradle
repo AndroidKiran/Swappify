@@ -24,6 +24,7 @@ versions.espresso = "3.0.0"
 versions.android_gradle_plugin = "3.0.1"
 versions.google_service = "3.1.1"
 versions.material_spinner = "2.0.0"
+versions.paperparcel = "2.0.4"
 
 def deps = [:]
 
@@ -93,6 +94,12 @@ glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
 glide.compiler = "com.github.bumptech.glide:compiler:$versions.glide"
 glide.annotation = "com.github.bumptech.glide:annotations:$versions.glide"
 deps.glide = glide
+
+def paperparcel = [:]
+paperparcel.runtime = "nz.bradcampbell:paperparcel:$versions.paperparcel"
+paperparcel.kotlin = "nz.bradcampbell:paperparcel-kotlin:$versions.paperparcel"
+paperparcel.compiler = "nz.bradcampbell:paperparcel-compiler:$versions.paperparcel"
+deps.paperparcel = paperparcel
 
 deps.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
 deps.gson = "com.google.code.gson:gson:$versions.gson"

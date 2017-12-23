@@ -66,6 +66,10 @@ android {
         enabled = true
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     applicationVariants.all { variant ->
 
         variant.getAnnotationProcessorConfiguration().resolutionStrategy {
@@ -129,12 +133,16 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     })
 
+    implementation deps.paperparcel.runtime
+    implementation deps.paperparcel.kotlin
+
     kapt deps.dagger.compiler
     kapt deps.dagger.processor
     kapt deps.data_binding
     kapt deps.lifecycle.compiler
     kapt deps.glide.compiler
     kapt deps.lifecycle.room_compiler
+    kapt deps.paperparcel.compiler
 
     testImplementation deps.junit
     androidTestImplementation(deps.espresso_core, {

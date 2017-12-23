@@ -69,9 +69,9 @@ class AppUtils {
 
         fun isNotEmpty(string: String?): Boolean = string != null && !TextUtils.isEmpty(string)
 
-        fun toMMMddyyyy(time: Long): String {
+        fun toMMMddyyyy(time: Long?): String {
             val format = SimpleDateFormat("MMM dd yyyy", Locale.US)
-            return format.format(Date(time))
+            return format.format(Date(time!!))
         }
     }
 }

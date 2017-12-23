@@ -18,6 +18,7 @@ import swapp.items.com.swappify.components.search.ISearchOnClickListener
 import swapp.items.com.swappify.components.search.ISearchOnQueryChangeListener
 import swapp.items.com.swappify.components.search.SearchAdapter
 import swapp.items.com.swappify.components.search.SearchItem
+import swapp.items.com.swappify.controllers.addgame.model.GameModel
 import swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controllers.base.BaseActivity
 import swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration
@@ -26,14 +27,6 @@ import javax.inject.Inject
 
 
 class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>(), HasSupportFragmentInjector, SearchAdapter.SearchViewItemListener {
-
-    companion object {
-        fun startAddItemActivity(activity: Activity) {
-            val intent: Intent = Intent(activity, AddGameActivity::class.java)
-            activity.startActivity(intent)
-            activity.finish()
-        }
-    }
 
     private var recyclerViewConfiguration = RecyclerViewConfiguration()
 
@@ -151,5 +144,32 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
     override fun onBackPressed() {
         addGameViewModel.searchQueryLiveData.value = ""
         super.onBackPressed()
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val searchQuery = savedInstanceState?.getString(SEARCH_QUERY, "")
+        addGameViewModel.searchQueryLiveData.value = searchQuery
+
+        val gameModel = savedInstanceState?.getParcelable<GameModel>(GAME_MODEL)
+        addGameViewModel.gameModel.set(gameModel)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString(SEARCH_QUERY, addGameViewModel.searchInputText.get())
+        outState?.putParcelable(GAME_MODEL, addGameViewModel.gameModel.get())
+        super.onSaveInstanceState(outState)
+    }
+
+    companion object {
+
+        const val SEARCH_QUERY = "search_query"
+        const val GAME_MODEL = "game_model"
+
+        fun startAddItemActivity(activity: Activity) {
+            val intent: Intent = Intent(activity, AddGameActivity::class.java)
+            activity.startActivity(intent)
+            activity.finish()
+        }
     }
 }

@@ -6,5 +6,6 @@ package swapp.items.com.swappify.common
 class Constant {
     companion object {
         const val TIMEOUT_IN_SEC: Long = 15
+        const val HTTPS = "https:"
     }
 }

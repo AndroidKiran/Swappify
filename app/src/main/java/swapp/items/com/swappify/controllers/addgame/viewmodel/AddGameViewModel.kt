@@ -49,7 +49,7 @@ class AddGameViewModel : BaseViewModel {
         }
     }
 
-    fun searchGamesFor(query: String?): LiveData<List<GameModel>> {
+    private fun searchGamesFor(query: String?): LiveData<List<GameModel>> {
 
         if (TextUtils.getTrimmedLength(query) <= 0) {
             return MutableLiveData<List<GameModel>>()
@@ -61,36 +61,28 @@ class AddGameViewModel : BaseViewModel {
                 .toLiveData()
     }
 
-    fun getOptionalData(gameId: Int? = 0, developer: Int? = 0, publisher: Int? = 0)
-            = zip(genresFor(gameId), companiesFor(developer, publisher), asPair())
+    fun getOptionalData(gameId: Int? = 0, developer: Int? = 0, publisher: Int? = 0) =
+            zip(gameRepository.getGenresFor(gameId),
+            gameRepository.getCompaniesFor(ids = "$developer,$publisher"),
+            asPair())
             .getSingleAsync(schedulerProvider)
             .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
-
-    private fun genresFor(gameId: Int?)
-            = gameRepository.getGenresFor(gameId)
-
-
-    private fun companiesFor(developer: Int?, publisher: Int?)
-            = gameRepository.getCompaniesFor(ids = "$developer,$publisher")
-
 
     private fun asPair(): BiFunction<List<OptionsModel>, List<OptionsModel>,
             Pair<List<OptionsModel>, List<OptionsModel>>>
             = BiFunction { genreList, companiesList -> Pair(genreList, companiesList) }
 
     private fun handleOnSuccess(pair: Pair<List<OptionsModel>, List<OptionsModel>>) {
-
         if (pair.first.isNotEmpty()) {
-            gameModel.get().genre = pair.first[0].name
+            gameModel.get().setGameGenre(pair.first[0].name)
         }
 
         if (pair.second.isNotEmpty()) {
-            gameModel.get().developer = pair.second[0].name
+            gameModel.get().setGameDeveloper(pair.second[0].name)
             if (pair.second.size > 1) {
-                gameModel.get().publisher = pair.second[1].name
+                gameModel.get().setGamePlublisher(pair.second[1].name)
             }
         }
-
     }
 
     private fun handleOnError(throwable: Throwable) {

@@ -10,7 +10,7 @@ import swapp.items.com.swappify.injection.scopes.PerFragment
 import javax.inject.Inject
 
 @PerFragment
-class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inject constructor(): RecyclerView.Adapter<BaseViewHolder>() {
+class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inject constructor() : RecyclerView.Adapter<BaseViewHolder>() {
 
     var searchResults = arrayListOf<GameModel>()
     private var clickNavigator: N? = null
@@ -46,7 +46,7 @@ class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inj
     private inner class SearchResultViewHolder : BaseViewHolder {
         val binding: SearchResultItemBinding
 
-        constructor(binding: SearchResultItemBinding): super(binding.root) {
+        constructor(binding: SearchResultItemBinding) : super(binding.root) {
             this.binding = binding
         }
 
