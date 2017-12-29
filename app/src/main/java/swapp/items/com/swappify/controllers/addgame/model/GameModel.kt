@@ -44,6 +44,11 @@ data class GameModel constructor(@SerializedName("id")
                                  @get:Bindable
                                  var publisher: String?) : BaseObservable(), PaperParcelable {
 
+
+    constructor() : this(null, null, null, null, null,
+            null, null, null, null, null, null,
+            null, null, null, null)
+
 //    @get:Bindable
 //    @SerializedName("url")
 //    var url: String? = null
@@ -87,14 +92,14 @@ data class GameModel constructor(@SerializedName("id")
             }
         }*/
 
-  /*  @get:Bindable
-    var releaseDate: String? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                notifyPropertyChanged(BR.releaseDate)
-            }
-        }*/
+    /*  @get:Bindable
+      var releaseDate: String? = null
+          set(value) {
+              if (value != null) {
+                  field = value
+                  notifyPropertyChanged(BR.releaseDate)
+              }
+          }*/
 
     /*@get:Bindable
     var platform: String? = null
@@ -123,14 +128,14 @@ data class GameModel constructor(@SerializedName("id")
             }
         }*/
 
-   /* @get:Bindable
-    var publisher: String? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                notifyPropertyChanged(BR.publisher)
-            }
-        }*/
+    /* @get:Bindable
+     var publisher: String? = null
+         set(value) {
+             if (value != null) {
+                 field = value
+                 notifyPropertyChanged(BR.publisher)
+             }
+         }*/
 
     fun update(url: String?, releaseDate: Long?) {
         setGameUrl(url)
@@ -146,6 +151,13 @@ data class GameModel constructor(@SerializedName("id")
             } else {
                 url
             }
+            notifyPropertyChanged(BR.url)
+        }
+    }
+
+    fun setGameUri(url: String?) {
+        if (!url.isNullOrEmpty()) {
+            this.url = url
             notifyPropertyChanged(BR.url)
         }
     }
@@ -201,6 +213,7 @@ data class GameModel constructor(@SerializedName("id")
     }
 
     companion object {
-        @JvmField val CREATOR = PaperParcelGameModel.CREATOR
+        @JvmField
+        val CREATOR = PaperParcelGameModel.CREATOR
     }
 }

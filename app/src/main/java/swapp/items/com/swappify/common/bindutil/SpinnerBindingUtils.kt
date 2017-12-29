@@ -20,10 +20,9 @@ class SpinnerBindingUtils {
             val spinnerOnItemSelectedListener: SpinnerOnItemSelectedListener<D>? = SpinnerOnItemSelectedListener<D>(initialSelectedPlanet, inverseBindingListener)
             spinner.onItemSelectedListener = spinnerOnItemSelectedListener
 
-            if (itemSetByViewModel!!.equals(spinner.selectedItem)) {
+            if (itemSetByViewModel!! == spinner.selectedItem) {
                 val positionInAdapter: Int = spinnerOnItemSelectedListener!!.getPositionInAdapter(spinner.adapter as BaseAdapter, itemSetByViewModel)
                 spinner.setSelection(positionInAdapter)
-
             }
         }
 

@@ -15,6 +15,9 @@ class AppUtils {
 
     companion object {
 
+        val format = SimpleDateFormat("MMM dd yyyy", Locale.US)
+
+
         fun loadJSONFromAsset(context: Application?, assetPath: String?): String {
 
             try {
@@ -69,9 +72,6 @@ class AppUtils {
 
         fun isNotEmpty(string: String?): Boolean = string != null && !TextUtils.isEmpty(string)
 
-        fun toMMMddyyyy(time: Long?): String {
-            val format = SimpleDateFormat("MMM dd yyyy", Locale.US)
-            return format.format(Date(time!!))
-        }
+        fun toMMMddyyyy(time: Long?): String = format.format(Date(time!!))
     }
 }

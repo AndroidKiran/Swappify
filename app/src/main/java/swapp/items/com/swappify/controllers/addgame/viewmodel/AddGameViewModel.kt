@@ -7,6 +7,7 @@ import android.text.TextUtils
 import io.reactivex.Flowable
 import io.reactivex.Single.zip
 import io.reactivex.functions.BiFunction
+import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.AbsentLiveData
 import swapp.items.com.swappify.common.SingleLiveEvent
 import swapp.items.com.swappify.common.extension.getObservableAsync
@@ -25,11 +26,13 @@ import javax.inject.Inject
 @PerActivity
 class AddGameViewModel : BaseViewModel {
 
+    var platFormsList: Array<String>? = null
+
     var searchInputText = ObservableField<String>()
     var searchQueryLiveData = MutableLiveData<String>()
     var gamesLiveData: LiveData<List<GameModel>>
     var gameModelLiveData = SingleLiveEvent<GameModel>()
-    var gameModel = ObservableField<GameModel>()
+    var gameModel = ObservableField<GameModel>(GameModel())
 
     private var schedulerProvider: SchedulerProvider
     private var addGameDataManager: AddGameDataManager
@@ -47,6 +50,7 @@ class AddGameViewModel : BaseViewModel {
                 else -> searchGamesFor(it)
             }
         }
+        platFormsList = application.resources.getStringArray(R.array.platforms)
     }
 
     private fun searchGamesFor(query: String?): LiveData<List<GameModel>> {

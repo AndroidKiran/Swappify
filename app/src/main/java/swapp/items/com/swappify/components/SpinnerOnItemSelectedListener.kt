@@ -24,7 +24,7 @@ class SpinnerOnItemSelectedListener<T>(private var initialSelectedItem: T?, priv
 
 
     fun <D> getPositionInAdapter(adapter: BaseAdapter?, item: D?): Int {
-        for (i in 0 until adapter!!.getCount()) {
+        for (i in 0 until adapter!!.count) {
             val adapterItem: D? = adapter.getItem(i) as D
             if (adapterItem == item) {
                 return i

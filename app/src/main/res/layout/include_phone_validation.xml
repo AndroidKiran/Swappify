@@ -124,7 +124,7 @@
 
 
                 <Button
-                    android:id="@+id/nextButton"
+                    android:id="@+id/next_button"
                     style="@style/AppTheme.Button.Raised"
                     android:layout_below="@id/phoneNumInputLayout"
                     android:background="@{viewModel.enableNxtBtn ? @drawable/btn_color_accent : @drawable/btn_color_disabled}"

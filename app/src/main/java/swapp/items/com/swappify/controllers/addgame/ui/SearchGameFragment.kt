@@ -32,7 +32,7 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
     lateinit var addGameViewModel: AddGameViewModel
 
     @Inject
-    lateinit var searchResultAdpater: SearchResultAdapter<SearchResultAdapter.SearchResultItemListener>
+    lateinit var searchResultAdapter: SearchResultAdapter<SearchResultAdapter.SearchResultItemListener>
 
     @Inject
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -92,9 +92,9 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
         )
 
         recyclerViewConfiguration = RecyclerViewConfiguration()
-        recyclerViewConfiguration.recyclerViewBinding(linearLayoutManager, searchResultAdpater)
+        recyclerViewConfiguration.recyclerViewBinding(linearLayoutManager, searchResultAdapter)
 
-        searchResultAdpater.navigator = this@SearchGameFragment
+        searchResultAdapter.navigator = this@SearchGameFragment
     }
 
     private fun observeSearchQueryChange() {
@@ -107,9 +107,9 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
     }
 
     private fun observeSearchResultChange() {
-        addGameViewModel.gamesLiveData?.observe(this) {
+        addGameViewModel.gamesLiveData.observe(this) {
             if (it?.isNotEmpty()!!) {
-                searchResultAdpater.setData(it)
+                searchResultAdapter.setData(it)
                 fragmentSearchGameBinding.multiStateViewLayout.multiStateView.setViewState(BindedMultiStateView.VIEW_STATE_CONTENT)
             } else {
                 fragmentSearchGameBinding.multiStateViewLayout.multiStateView.setViewState(BindedMultiStateView.VIEW_STATE_EMPTY)

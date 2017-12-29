@@ -6,11 +6,30 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
+
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false"/>
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+
+
+    <!-- Used for connectivity status -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".controllers.SwapApplication"
@@ -71,6 +90,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".components.imagepicker.OverlapPickerActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|screenSize"
+            android:launchMode="singleTop"/>
 
     </application>
 

@@ -5,15 +5,17 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
+import android.view.View
+import android.widget.FrameLayout
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.common.extension.isFragmentVisible
+import swapp.items.com.swappify.common.extension.addFragmentSafely
 import swapp.items.com.swappify.common.extension.observe
-import swapp.items.com.swappify.common.extension.replaceFragmentSafely
 import swapp.items.com.swappify.components.search.ISearchOnClickListener
 import swapp.items.com.swappify.components.search.ISearchOnQueryChangeListener
 import swapp.items.com.swappify.components.search.SearchAdapter
@@ -44,6 +46,7 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
     private lateinit var activityAddGameBinding: ActivityAddGameBinding
 
+    private var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>? = null
 
     override fun getViewModel(): AddGameViewModel {
         addGameViewModel = ViewModelProviders.of(this@AddGameActivity, viewFactory)
@@ -51,7 +54,7 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         return addGameViewModel
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_add_game;
+    override fun getLayoutId(): Int = R.layout.activity_add_game
 
     override fun executePendingVariablesBinding() {
         activityAddGameBinding = getViewDataBinding()
@@ -66,13 +69,23 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            replaceFragmentSafely(AddGameFragment(), R.id.fragment_container,
-                    AddGameFragment.FRAGMENT_TAG, true, true)
+
+            addFragmentSafely(SearchGameFragment(), R.id.fragment_container_search_game,
+                    SearchGameFragment.FRAGMENT_TAG, false, true)
         }
-        initRecyclerView()
+
         observeSearchQueryChange()
+
+        recyclerViewConfiguration.setRecyclerConfig(searchAdapter)
+        bottomSheetBehavior = BottomSheetBehavior.from<FrameLayout>(activityAddGameBinding.fragmentContainerSearchGame)
+        bottomSheetBehavior?.setBottomSheetCallback(bottomSheetCallBack)
         activityAddGameBinding.searchView.setNavigationIconArrowSearch()
         searchAdapter.navigator = this@AddGameActivity
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityAddGameBinding.mainContainer.requestFocus()
     }
 
 
@@ -80,10 +93,6 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
 
     /*Search Actions*/
-
-    private fun initRecyclerView() {
-        recyclerViewConfiguration.setRecyclerConfig(searchAdapter)
-    }
 
     private val onSearchQueryChangeListeners = object : ISearchOnQueryChangeListener {
 
@@ -93,21 +102,16 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
             val searchItem = SearchItem(query, 0)
             searchAdapter.insertSearchItem(searchItem)
             addGameViewModel.searchQueryLiveData.value = searchItem.text
-            if(!isFragmentVisible(SearchGameFragment.FRAGMENT_TAG)) {
-                addSearchFragment()
-            }
             return false
         }
     }
 
     override fun onItemClick(searchItem: SearchItem?) {
         addGameViewModel.searchQueryLiveData.value = searchItem?.text
-        if(!isFragmentVisible(SearchGameFragment.FRAGMENT_TAG)) {
-            addSearchFragment()
-        }
     }
 
     private val onSearchClickListener = object : ISearchOnClickListener {
+
         override fun onMenuClick() {
         }
 
@@ -123,36 +127,45 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
     }
 
-    private fun addSearchFragment() {
-        replaceFragmentSafely(SearchGameFragment(),
-                R.id.fragment_container,
-                SearchGameFragment.FRAGMENT_TAG,
-                true,
-                true,
-                R.animator.slide_up,
-                R.animator.slide_down,
-                R.animator.slide_up,
-                R.animator.slide_down)
-    }
-
-    fun observeSearchQueryChange() {
+    private fun observeSearchQueryChange() {
         addGameViewModel.searchQueryLiveData.observe(this) {
             addGameViewModel.searchInputText.set(it)
+            if(!it.isNullOrEmpty()) {
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
     }
 
+    private val bottomSheetCallBack = object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+        }
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            if(newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                addGameViewModel.searchQueryLiveData.value = ""
+            }
+        }
+
+    }
+
     override fun onBackPressed() {
-        addGameViewModel.searchQueryLiveData.value = ""
-        super.onBackPressed()
+        if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
+
         val searchQuery = savedInstanceState?.getString(SEARCH_QUERY, "")
         addGameViewModel.searchQueryLiveData.value = searchQuery
 
         val gameModel = savedInstanceState?.getParcelable<GameModel>(GAME_MODEL)
         addGameViewModel.gameModel.set(gameModel)
+
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -164,6 +177,7 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
     companion object {
 
         const val SEARCH_QUERY = "search_query"
+
         const val GAME_MODEL = "game_model"
 
         fun startAddItemActivity(activity: Activity) {

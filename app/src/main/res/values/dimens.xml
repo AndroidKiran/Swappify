@@ -51,6 +51,7 @@
     <dimen name="dimen_160">160dp</dimen>
     <dimen name="dimen_180">180dp</dimen>
     <dimen name="dimen_200">200dp</dimen>
+    <dimen name="dimen_220">220dp</dimen>
     <dimen name="dimen_204">204dp</dimen>
     <dimen name="dimen_232">232dp</dimen>
     <dimen name="dimen_256">256dp</dimen>

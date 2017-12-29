@@ -35,7 +35,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 bind:imageUrl="@{gameViewModel.url}"
-                bind:placeHolder="@{@drawable/vc_photo}" />
+                bind:placeHolder="@{@drawable/vc_crop}" />
 
 
             <android.support.v7.widget.AppCompatImageView
@@ -48,7 +48,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/iv_game_cover"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_game_cover"
-                app:srcCompat="@drawable/vc_library_add_black" />
+                app:srcCompat="@drawable/vc_library_add" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_game_name"

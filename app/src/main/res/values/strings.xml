@@ -67,5 +67,11 @@
     <string name="str_game_search_empty">Oops, Nothing found</string>
 
     <string name="str_searching">Searching for %s</string>
+    <string name="str_platform_hint">Choose platform</string>
+    <string name="str_information">Information</string>
+    <string name="cannot_take_pic">Cannot take a new picture.\nPlease check if storage is mounted.</string>
+    <string name="error_camera_permission">No Camera permission!</string>
+    <string name="error_gallery_permission">No Gallery permission!</string>
+    <string name="picker_header">Choose source</string>
 
 </resources>

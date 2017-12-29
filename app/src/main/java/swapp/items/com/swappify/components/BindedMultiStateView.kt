@@ -72,21 +72,21 @@ class BindedMultiStateView<B : ViewDataBinding> : FrameLayout {
 
         val errorViewResId = a.getResourceId(R.styleable.MultiStateView_msv_errorView, -1)
         if (errorViewResId > -1) {
-            emptyView = DataBindingUtil.inflate<B>(inflater, errorViewResId, this, false).also {
-                emptyViewBinding = it
+            errorView = DataBindingUtil.inflate<B>(inflater, errorViewResId, this, false).also {
+                errorViewBinding = it
             }.root
 
-            addView(emptyView, emptyView?.layoutParams)
+            addView(errorView, errorView?.layoutParams)
         }
 
 
         val emptyViewResId = a.getResourceId(R.styleable.MultiStateView_msv_emptyView, -1)
         if (emptyViewResId > -1) {
-            errorView = DataBindingUtil.inflate<B>(inflater, emptyViewResId, this, false).also {
-                errorViewBinding = it
+            emptyView = DataBindingUtil.inflate<B>(inflater, emptyViewResId, this, false).also {
+                emptyViewBinding = it
             }.root
 
-            addView(errorView, errorView?.layoutParams)
+            addView(emptyView, emptyView?.layoutParams)
         }
 
         val contentState = a.getInt(R.styleable.MultiStateView_msv_viewState, VIEW_STATE_CONTENT)

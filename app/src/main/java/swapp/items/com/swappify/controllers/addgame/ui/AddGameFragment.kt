@@ -1,7 +1,10 @@
 package swapp.items.com.swappify.controllers.addgame.ui
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
@@ -9,27 +12,23 @@ import android.support.v4.view.ViewPropertyAnimatorListener
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import android.widget.AdapterView
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
+import swapp.items.com.swappify.common.AppUtils
 import swapp.items.com.swappify.components.SlideAnimation
+import swapp.items.com.swappify.components.TextChangeListener
+import swapp.items.com.swappify.components.imagepicker.OverlapPickerActivity
+import swapp.items.com.swappify.components.imagepicker.OverlapPickerActivity.Companion.URI
+import swapp.items.com.swappify.components.imagepicker.Sources
 import swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controllers.base.BaseFragment
 import swapp.items.com.swappify.databinding.FragmentAddGameBinding
 import javax.inject.Inject
 
 
-
 class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>(),
         AppBarLayout.OnOffsetChangedListener {
-
-    companion object {
-        const val PERCENTAGE_TO_SHOW_ANCHOR = 60
-        const val SCALE_ANIMATION_DURATION: Long = 400
-        const val TRANSLATE_ANIMATION_DURATION: Long = 600
-        const val MAX_SCALE_VALUE = 1f
-        const val MIN_SCALE_VALUE = 0f
-        val FRAGMENT_TAG = AddGameFragment::class.java.simpleName!!
-    }
 
     private var isAnchorHidden: Boolean = false
     private var isViewHidden: Boolean = false
@@ -54,16 +53,20 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     override fun executePendingVariablesBinding() {
         fragmentAddGameBinding = getViewDataBinding()
         fragmentAddGameBinding.setVariable(BR.addItemViewModel, addGameViewModel)
+        fragmentAddGameBinding.setVariable(BR.textChangeCallBack, textWatcher)
+        fragmentAddGameBinding.setVariable(BR.clickCallBack, onClickListener)
         fragmentAddGameBinding.executePendingBindings()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentAddGameBinding.appbar.addOnOffsetChangedListener(this@AddGameFragment)
-        fragmentAddGameBinding.summaryEt.setOnTouchListener({
-            view, motionEvent -> handleNoteFieldTouch(view, motionEvent)
-        })
+        fragmentAddGameBinding.summaryEditText.setOnTouchListener(onTouchListener)
+        fragmentAddGameBinding.platformSpinner.onItemSelectedListener = onSpinnerItemSelectionListener
+        fragmentAddGameBinding.releaseDateEditText.setManager(childFragmentManager)
+        fragmentAddGameBinding.releaseDateEditText.setDateFormat(format = AppUtils.format)
     }
+
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
         if (maxScrollSize == 0)
@@ -142,12 +145,98 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
                 .start()
     }
 
-    fun handleNoteFieldTouch(v: View, event: MotionEvent): Boolean {
-        v.parent.parent.requestDisallowInterceptTouchEvent(true)
-        when (event.action and MotionEvent.ACTION_MASK) {
-            MotionEvent.ACTION_UP -> v.parent.parent.requestDisallowInterceptTouchEvent(false)
+    private fun handleNoteFieldTouch(view: View?, event: MotionEvent?): Boolean {
+        view?.parent?.parent?.requestDisallowInterceptTouchEvent(true)
+        when (event?.action!! and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_UP -> view?.parent?.parent?.requestDisallowInterceptTouchEvent(false)
         }
         return false
+    }
+
+    private var textWatcher: TextChangeListener = object : TextChangeListener() {
+
+        override fun afterTextChanged(newValue: String?) {
+
+            if (fragmentAddGameBinding.nameEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameName(newValue)
+            }
+
+            if (fragmentAddGameBinding.developerEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameDeveloper(newValue)
+            }
+
+            if (fragmentAddGameBinding.genreEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameGenre(newValue)
+            }
+
+            if (fragmentAddGameBinding.publisherEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGamePlublisher(newValue)
+            }
+
+            if (fragmentAddGameBinding.releaseDateEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameReleaseDate(newValue)
+            }
+
+            if (fragmentAddGameBinding.summaryEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameSummary(newValue)
+            }
+
+        }
+    }
+
+
+    private val onSpinnerItemSelectionListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(adapter: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(adapter: AdapterView<*>?, view: View?, position: Int, l: Long) {
+            if (position == -1) {
+                return
+            }
+
+            val platform = addGameViewModel.platFormsList?.get(position)
+            addGameViewModel.gameModel.get().setGamePlatform(platform)
+
+        }
+    }
+
+    private val onTouchListener = View.OnTouchListener { view, motionEvent -> handleNoteFieldTouch(view, motionEvent) }
+
+    private val onClickListener = object : IAddGameNavigator {
+
+        override fun onCameraClick() {
+            startPickerActivity(OverlapPickerActivity.TAKE_PHOTO, Sources.CAMERA)
+        }
+
+        override fun onGalleryClick() {
+            startPickerActivity(OverlapPickerActivity.SELECT_PHOTO, Sources.GALLERY)
+        }
+    }
+
+    fun startPickerActivity(requestCode: Int, source: Sources) {
+        startActivityForResult(OverlapPickerActivity.start(context, source, false), requestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == RESULT_OK) {
+            val uriString = data?.getStringExtra(URI)
+            if (!uriString.isNullOrEmpty()) {
+                val uri = Uri.parse(uriString)
+                addGameViewModel.gameModel.get().setGameUri("$uri")
+            }
+        }
+    }
+
+    companion object {
+        const val PERCENTAGE_TO_SHOW_ANCHOR = 20
+        const val SCALE_ANIMATION_DURATION: Long = 400
+        const val TRANSLATE_ANIMATION_DURATION: Long = 600
+        const val MAX_SCALE_VALUE = 1f
+        const val MIN_SCALE_VALUE = 0f
+        val FRAGMENT_TAG = AddGameFragment::class.java.simpleName!!
     }
 
 }

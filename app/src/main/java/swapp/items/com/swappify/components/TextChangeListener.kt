@@ -15,8 +15,5 @@ abstract class TextChangeListener: TextWatcher {
         afterTextChanged(editable.toString())
     }
 
-
     abstract fun afterTextChanged(newValue: String?)
-
-
 }
