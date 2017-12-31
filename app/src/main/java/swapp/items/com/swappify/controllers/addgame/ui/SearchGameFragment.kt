@@ -99,8 +99,9 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
 
     private fun observeSearchQueryChange() {
         addGameViewModel.searchQueryLiveData.observe(this) {
+            addGameViewModel.searchInputText.set(it)
             contentLoadingConfiguration.contentLoadingBinding(
-                    getString(R.string.str_searching, addGameViewModel.searchInputText.get())
+                    getString(R.string.str_searching, it)
             )
             fragmentSearchGameBinding.multiStateViewLayout.multiStateView.setViewState(BindedMultiStateView.VIEW_STATE_LOADING)
         }
@@ -119,6 +120,11 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
 
     private fun observeGameModelChange() {
         addGameViewModel.gameModelLiveData.observe(this) {
+
+            if (!it?.url.isNullOrEmpty() && it?.url!!.contains("t_thumb")) {
+                it.url = it.url?.replace("t_thumb", "t_cover_big")
+            }
+
             addGameViewModel.gameModel.set(it)
 
             val genres = it?.genres
@@ -130,6 +136,7 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
             val publisherId = if (publishers != null) publishers[0] else 0
 
             addGameViewModel.getOptionalData(genreId, developerId, publisherId)
+            addGameViewModel.disableErrorField()
         }
     }
 

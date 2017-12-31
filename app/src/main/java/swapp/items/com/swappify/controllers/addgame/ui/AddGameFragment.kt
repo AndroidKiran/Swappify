@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPropertyAnimatorListener
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import android.webkit.URLUtil
 import android.widget.AdapterView
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
@@ -204,6 +205,21 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     private val onTouchListener = View.OnTouchListener { view, motionEvent -> handleNoteFieldTouch(view, motionEvent) }
 
     private val onClickListener = object : IAddGameNavigator {
+        override fun onAddGameClick() {
+
+            if(addGameViewModel.validateGame()) {
+                addGameViewModel.enableLoading.set(true)
+                val url = addGameViewModel.gameModel.get().url
+                if(URLUtil.isHttpsUrl(url) || URLUtil.isHttpUrl(url)) {
+                    addGameViewModel.addGame()
+                } else {
+                    addGameViewModel.addGameWithImage("7204730956")
+                }
+            } else {
+               fragmentAddGameBinding.appbar.setExpanded(true, true)
+            }
+
+        }
 
         override fun onCameraClick() {
             startPickerActivity(OverlapPickerActivity.TAKE_PHOTO, Sources.CAMERA)
@@ -231,7 +247,7 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     }
 
     companion object {
-        const val PERCENTAGE_TO_SHOW_ANCHOR = 20
+        const val PERCENTAGE_TO_SHOW_ANCHOR = 30
         const val SCALE_ANIMATION_DURATION: Long = 400
         const val TRANSLATE_ANIMATION_DURATION: Long = 600
         const val MAX_SCALE_VALUE = 1f

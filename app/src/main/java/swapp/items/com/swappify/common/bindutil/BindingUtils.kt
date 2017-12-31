@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.AppCompatImageView
+import android.widget.Spinner
+import fr.ganfra.materialspinner.MaterialSpinner
 import swapp.items.com.swappify.common.AppUtils
 import swapp.items.com.swappify.components.glide.GlideApp
 import swapp.items.com.swappify.controllers.configs.EditTextConfiguration
@@ -58,6 +60,13 @@ class BindingUtils {
         @BindingAdapter(value = "textInputLayoutErrorBinding")
         fun bindTextInputLayoutError(textInputLayout: TextInputLayout?, error: String?) {
             textInputLayout?.error = error
+        }
+
+
+        @JvmStatic
+        @BindingAdapter(value = "spinnerErrorBinding")
+        fun bindSpinnerError(spinner: MaterialSpinner?, error: String?) {
+            spinner?.error = error
         }
     }
 }

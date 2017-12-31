@@ -33,6 +33,8 @@ data class GameModel constructor(@SerializedName("id")
                                  var summary: String?,
                                  @SerializedName("first_release_date")
                                  var firstReleaseDate: Long?,
+                                 @SerializedName("gameId")
+                                 var gameId: String?,
                                  @get:Bindable
                                  var releaseDate: String?,
                                  @get:Bindable
@@ -47,95 +49,14 @@ data class GameModel constructor(@SerializedName("id")
 
     constructor() : this(null, null, null, null, null,
             null, null, null, null, null, null,
-            null, null, null, null)
+            null, null, null, null, null)
 
-//    @get:Bindable
-//    @SerializedName("url")
-//    var url: String? = null
-//        set(value) {
-//            if (value != null) {
-//                field = if (!value.startsWith(Constant.HTTPS)) {
-//                    Constant.HTTPS.plus(value)
-//                } else {
-//                    value
-//                }
-//                notifyPropertyChanged(BR.url)
-//            }
-//        }
+    constructor(id: Int?, gameName: String?, gameUrl: String?, gamePlatform: String?,
+                gameDeveloper: String?, gameGenre: String?, gamePublisher: String?,
+                gameReleaseDate: String?, gameSummary: String?) : this(id, null, null, null, null,
+            null, gameUrl, gameName, gameSummary, null, null, gameReleaseDate, gamePlatform, gameDeveloper,
+            gameGenre, gamePublisher)
 
-//    @get:Bindable
-//    @SerializedName("name")
-//    var name: String? = null
-//        set(value) {
-//            if (value != null) {
-//                field = value
-//                notifyPropertyChanged(BR.name)
-//            }
-//        }
-
-//    @get:Bindable
-//    @SerializedName("summary")
-//    var summary: String? = null
-//        set(value) {
-//            if (value != null) {
-//                field = value
-//                notifyPropertyChanged(BR.summary)
-//            }
-//        }
-
-    /*@SerializedName("first_release_date")
-    var firstReleaseDate: Long? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                releaseDate = AppUtils.toMMMddyyyy(value)
-            }
-        }*/
-
-    /*  @get:Bindable
-      var releaseDate: String? = null
-          set(value) {
-              if (value != null) {
-                  field = value
-                  notifyPropertyChanged(BR.releaseDate)
-              }
-          }*/
-
-    /*@get:Bindable
-    var platform: String? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                notifyPropertyChanged(BR.platform)
-            }
-        }*/
-
-    /*@get:Bindable
-    var developer: String? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                notifyPropertyChanged(BR.developer)
-            }
-        }*/
-
-    /*@get:Bindable
-    var genre: String? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                notifyPropertyChanged(BR.genre)
-            }
-        }*/
-
-    /* @get:Bindable
-     var publisher: String? = null
-         set(value) {
-             if (value != null) {
-                 field = value
-                 notifyPropertyChanged(BR.publisher)
-             }
-         }*/
 
     fun update(url: String?, releaseDate: Long?) {
         setGameUrl(url)
@@ -211,6 +132,10 @@ data class GameModel constructor(@SerializedName("id")
             notifyPropertyChanged(BR.summary)
         }
     }
+
+
+           /* GameModel(this.id, this.name, this.url, this.platform, this.developer,
+                    this.genre, this.publisher, this.releaseDate, this.summary)*/
 
     companion object {
         @JvmField

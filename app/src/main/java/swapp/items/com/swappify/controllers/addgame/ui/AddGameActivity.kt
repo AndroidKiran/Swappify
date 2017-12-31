@@ -71,10 +71,11 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         if (savedInstanceState == null) {
 
             addFragmentSafely(SearchGameFragment(), R.id.fragment_container_search_game,
-                    SearchGameFragment.FRAGMENT_TAG, false, true)
+                    SearchGameFragment.FRAGMENT_TAG, true, true)
         }
 
         observeSearchQueryChange()
+        observeFinishActivityChange()
 
         recyclerViewConfiguration.setRecyclerConfig(searchAdapter)
         bottomSheetBehavior = BottomSheetBehavior.from<FrameLayout>(activityAddGameBinding.fragmentContainerSearchGame)
@@ -92,7 +93,7 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
 
-    /*Search Actions*/
+    /* Search Actions */
 
     private val onSearchQueryChangeListeners = object : ISearchOnQueryChangeListener {
 
@@ -129,9 +130,17 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
     private fun observeSearchQueryChange() {
         addGameViewModel.searchQueryLiveData.observe(this) {
-            addGameViewModel.searchInputText.set(it)
             if(!it.isNullOrEmpty()) {
+                addGameViewModel.searchInputText.set(it)
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+    }
+
+    private fun observeFinishActivityChange() {
+        addGameViewModel.finishActivityLiveData.observe(this) {
+            if (it!!) {
+                onBackPressed()
             }
         }
     }

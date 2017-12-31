@@ -6,4 +6,6 @@ interface IAddGameNavigator {
 
     fun onGalleryClick()
 
+    fun onAddGameClick()
+
 }

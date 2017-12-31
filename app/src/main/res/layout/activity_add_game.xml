@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="addGameViewModel"
             type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel" />
@@ -65,6 +67,22 @@
             bind:searchOnQueryChangeListenerBinding="@{searchOnQueryChangeListener}"
             bind:searchQuery="@{addGameViewModel.searchInputText}"
             bind:searchRecyclerBinding="@{searchRecyclerViewConfig}" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_trans_gradient"
+            android:visibility="@{addGameViewModel.enableLoading ? View.VISIBLE : View.GONE}">
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="@dimen/dimen_64"
+                android:layout_height="@dimen/dimen_64"
+                android:layout_gravity="center"
+                android:elevation="@dimen/dimen_8" />
+
+        </FrameLayout>
+
 
     </android.support.design.widget.CoordinatorLayout>
 

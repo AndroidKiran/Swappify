@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.firebase.listeners.authListeners
+package swapp.items.com.swappify.firebase.listener.authlistener
 
 import android.app.Activity
 import com.google.firebase.FirebaseException

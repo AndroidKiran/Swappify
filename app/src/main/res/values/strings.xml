@@ -40,10 +40,7 @@
     <string name="msg_otp_resend">Re-sending OTP\u2026</string>
     <string name="msg_loading">Loading\u2026</string>
 
-    <!--Add Item-->
-
-
-
+    <!--Add Game-->
     <string name="lorem">
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 		In mollis est vitae erat laoreet consectetur. Mauris dui mauris,
@@ -51,8 +48,6 @@
 		in elementum arcu ultricies nec.Morbi tincidunt nisl lacinia, placerat nisi eget, luctus tortor.
 		Morbi efficitur dictum leo, sit amet volutpat lorem sodales nec. Quisque et erat et turpis fringilla condimentum.
 	</string>
-
-
 
     <string name="str_name">Name</string>
     <string name="str_genre">Genre</string>
@@ -73,5 +68,9 @@
     <string name="error_camera_permission">No Camera permission!</string>
     <string name="error_gallery_permission">No Gallery permission!</string>
     <string name="picker_header">Choose source</string>
+    <string name="str_add_game">Add Game</string>
+    <string name="err_valid_url">Add valid game cover</string>
+    <string name="err_game_name">Provide valid Game Name</string>
+    <string name="err_game_platform">Choose Platform</string>
 
 </resources>

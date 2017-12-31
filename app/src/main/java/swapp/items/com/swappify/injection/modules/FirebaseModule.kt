@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import swapp.items.com.swappify.controllers.SwapApplication
@@ -30,6 +31,10 @@ class FirebaseModule constructor(val application: SwapApplication) {
     @Provides
     @PerApplication
     internal fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @PerApplication
+    internal fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
 
     @Provides
     @PerApplication

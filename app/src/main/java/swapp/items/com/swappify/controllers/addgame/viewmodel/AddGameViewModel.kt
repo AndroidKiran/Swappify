@@ -3,6 +3,7 @@ package swapp.items.com.swappify.controllers.addgame.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableField
+import android.net.Uri
 import android.text.TextUtils
 import io.reactivex.Flowable
 import io.reactivex.Single.zip
@@ -17,6 +18,7 @@ import swapp.items.com.swappify.common.extension.toLiveData
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.addgame.model.GameModel
 import swapp.items.com.swappify.controllers.addgame.model.OptionsModel
+import swapp.items.com.swappify.controllers.addgame.model.PostGameModel
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.game.GameRepository
@@ -33,6 +35,12 @@ class AddGameViewModel : BaseViewModel {
     var gamesLiveData: LiveData<List<GameModel>>
     var gameModelLiveData = SingleLiveEvent<GameModel>()
     var gameModel = ObservableField<GameModel>(GameModel())
+    var finishActivityLiveData = SingleLiveEvent<Boolean>()
+
+    var errorGameName = ObservableField<Boolean>(false)
+    var errorGamePlatform = ObservableField<Boolean>(false)
+    var errorGameUrl = ObservableField<Boolean>(false)
+    var enableLoading = ObservableField<Boolean>(false)
 
     private var schedulerProvider: SchedulerProvider
     private var addGameDataManager: AddGameDataManager
@@ -67,10 +75,10 @@ class AddGameViewModel : BaseViewModel {
 
     fun getOptionalData(gameId: Int? = 0, developer: Int? = 0, publisher: Int? = 0) =
             zip(gameRepository.getGenresFor(gameId),
-            gameRepository.getCompaniesFor(ids = "$developer,$publisher"),
-            asPair())
-            .getSingleAsync(schedulerProvider)
-            .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+                    gameRepository.getCompaniesFor(ids = "$developer,$publisher"),
+                    asPair())
+                    .getSingleAsync(schedulerProvider)
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
 
     private fun asPair(): BiFunction<List<OptionsModel>, List<OptionsModel>,
             Pair<List<OptionsModel>, List<OptionsModel>>>
@@ -89,8 +97,65 @@ class AddGameViewModel : BaseViewModel {
         }
     }
 
+
+    fun validateGame(): Boolean {
+        var isValid = true
+        if (gameModel.get().url.isNullOrEmpty()) {
+            isValid = false
+            errorGameUrl.set(true)
+
+        } else {
+            errorGameUrl.set(false)
+        }
+
+        if (gameModel.get().name.isNullOrEmpty()) {
+            isValid = false
+            errorGameName.set(true)
+        } else {
+            errorGameName.set(false)
+        }
+
+        if (gameModel.get().platform.isNullOrEmpty()) {
+            isValid = false
+            errorGamePlatform.set(true)
+        } else {
+            errorGamePlatform.set(false)
+        }
+        return isValid
+    }
+
+    fun disableErrorField() {
+        errorGameName.set(gameModel.get().name.isNullOrEmpty())
+        errorGameUrl.set(gameModel.get().url.isNullOrEmpty())
+    }
+
+    fun addGame()
+            = gameRepository.addGame(postGameModel(gameModel.get()))
+            .getSingleAsync(schedulerProvider)
+            .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+
+
+
+    fun addGameWithImage(userId: String) =
+            gameRepository.addGameWithImage(Uri.parse(gameModel.get().url), postGameModel(gameModel.get()), userId)
+                    .getSingleAsync(schedulerProvider)
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+
+    private fun <T> handleOnSuccess(t: T) {
+        if (t is PostGameModel) {
+            enableLoading.set(false)
+            finishActivityLiveData.value = true
+        }
+    }
+
     private fun handleOnError(throwable: Throwable) {
+        enableLoading.set(false)
         throwable.message
     }
+
+    private fun postGameModel(gameModel: GameModel): PostGameModel
+            = PostGameModel(gameModel.id, gameModel.name, gameModel.url, gameModel.platform, gameModel.developer,
+            gameModel.genre, gameModel.publisher, gameModel.releaseDate, gameModel.summary)
+
 }
 

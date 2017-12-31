@@ -17,7 +17,6 @@ android {
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
 
-
         buildConfigField 'String', 'GAME_API_URL', "\"${game_api_url}\""
         buildConfigField 'String', 'GAME_API_KEY', "\"${game_api_key}\""
 
@@ -64,10 +63,6 @@ android {
 
     dataBinding {
         enabled = true
-    }
-
-    androidExtensions {
-        experimental = true
     }
 
     applicationVariants.all { variant ->

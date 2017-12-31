@@ -8,19 +8,19 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Single
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel
-import swapp.items.com.swappify.repo.user.model.User
-import swapp.items.com.swappify.firebase.listeners.FirebaseObservableListeners
+import swapp.items.com.swappify.firebase.listener.FirebaseObservableListener
 import swapp.items.com.swappify.injection.scopes.PerActivity
+import swapp.items.com.swappify.repo.user.model.User
 import javax.inject.Inject
 
 @PerActivity
-class AuthDataSource @Inject constructor(val firebaseAuth: FirebaseAuth, val firebaseObservableListeners: FirebaseObservableListeners) {
+class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth, private val firebaseObservableListener: FirebaseObservableListener) {
 
     fun startPhoneVerificationObservable(phoneNumber: String, activity: Activity): Single<PhoneAuthDataModel> =
-            firebaseObservableListeners.startPhoneVerificationListener(phoneNumber = phoneNumber, activity = activity)
+            firebaseObservableListener.startPhoneVerificationListener(phoneNumber = phoneNumber, activity = activity)
 
     fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken): Single<PhoneAuthDataModel> =
-            firebaseObservableListeners.resendVerificationCodeListener(phoneNumber = phoneNumber, activity = activity, token = token)
+            firebaseObservableListener.resendVerificationCodeListener(phoneNumber = phoneNumber, activity = activity, token = token)
 
     fun loginWithPhoneNumber(credential: PhoneAuthCredential?): Single<PhoneAuthDataModel> =
             Single.create<PhoneAuthDataModel>({ emitter ->

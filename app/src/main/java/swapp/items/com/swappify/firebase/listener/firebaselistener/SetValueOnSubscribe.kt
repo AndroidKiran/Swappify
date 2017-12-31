@@ -1,4 +1,4 @@
-package swapp.items.com.swappify.firebase.listeners.FirebaseDatabaseListeners
+package swapp.items.com.swappify.firebase.listener.firebaselistener
 
 
 import com.google.android.gms.tasks.OnFailureListener

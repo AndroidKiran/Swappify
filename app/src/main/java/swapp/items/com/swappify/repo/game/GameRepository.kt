@@ -1,15 +1,20 @@
 package swapp.items.com.swappify.repo.game
 
+import android.net.Uri
 import android.support.v4.util.ArrayMap
 import io.reactivex.Flowable
 import io.reactivex.Single
 import swapp.items.com.swappify.controllers.addgame.model.GameModel
 import swapp.items.com.swappify.controllers.addgame.model.OptionsModel
+import swapp.items.com.swappify.controllers.addgame.model.PostGameModel
+import swapp.items.com.swappify.firebase.listener.FirebaseAppStorage
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
 
 @PerActivity
-class GameRepository @Inject constructor(private val gameApi: IGameApi) {
+class GameRepository @Inject constructor(private val gameApi: IGameApi,
+                                         private val gameDataSource: GameDataSource,
+                                         private val storage: FirebaseAppStorage) {
 
     companion object {
         private const val KEY_LIMIT = "limit"
@@ -40,4 +45,13 @@ class GameRepository @Inject constructor(private val gameApi: IGameApi) {
         return gameApi.getCompanies(ids = "$ids", options = params)
     }
 
+    fun addGame(gameModel: PostGameModel?): Single<PostGameModel> =
+            gameDataSource.addGame(gameModel)
+
+    fun addGameWithImage(uri: Uri?, gameModel: PostGameModel?, userId: String?): Single<PostGameModel> =
+            storage.uploadListener(uri, gameModel?.name!!, userId)
+                    .flatMap { url: String ->
+                        gameModel.url = url
+                        addGame(gameModel)
+                    }
 }
