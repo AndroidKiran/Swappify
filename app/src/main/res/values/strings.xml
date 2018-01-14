@@ -8,6 +8,14 @@
     <string name="intro_page_two_desc" >Desc 2</string>
     <string name="intro_page_three_desc">Desc 3</string>
 
+    <!--LOG IN-->
+    <string name="str_enter_mob_num">Enter your mobile number</string>
+    <string name="str_verify_mob_num">Verify your mobile number</string>
+    <string name="str_verifying_mob_num">Verifying your mobile number</string>
+    <string name="str_send_otp_msg">We will send a 6-digit verification pin to your mobile number</string>
+    <string name="str_sent_otp_msg">We have sent a 6-digit code to your number</string>
+    <string name="str_enter_otp_msg">Please enter a 6-digit code that we just sent you!</string>
+
     <string name="str_sign_up">Sign up</string>
     <string name="str_next">Next</string>
     <string name="str_already_have_otp">In case already have OTP , click here</string>
@@ -23,6 +31,10 @@
     <string name="err_invalid_phone">Invalid mobile number</string>
     <string name="str_otp_sent_msg">Please enter the verification code sent via sms to %s%s</string>
     <string name="err_invalid_otp">Invalid verification code</string>
+    <string name="str_auto_verify">Please wait while we auto-verify your mobile number</string>
+    <string name="str_remaining_time">Time remaining</string>
+    <string name="str_time_counter">00:%d</string>
+    <string name="str_mobile_number">%1$s%2$s</string>
 
     <!--Country-->
     <string name="str_choose_country">Select country</string>
@@ -72,5 +84,8 @@
     <string name="err_valid_url">Add valid game cover</string>
     <string name="err_game_name">Provide valid Game Name</string>
     <string name="err_game_platform">Choose Platform</string>
+
+    <string name="no_internet_title">No active internet connection</string>
+
 
 </resources>

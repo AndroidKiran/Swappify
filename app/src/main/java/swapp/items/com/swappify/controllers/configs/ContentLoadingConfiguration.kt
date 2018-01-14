@@ -5,17 +5,10 @@ import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.components.BindedMultiStateView
-import swapp.items.com.swappify.components.MultiStateView
 
 class ContentLoadingConfiguration : BaseObservable() {
 
     companion object {
-        @JvmStatic
-        @BindingAdapter("contentLoadingBinding")
-        fun bindContentLoadingViewConfig(multiStateView: MultiStateView?, contentLoadingConfiguration: ContentLoadingConfiguration?) {
-            multiStateView?.setContentLoadingViewConfiguration(contentLoadingConfiguration)
-        }
-
         @JvmStatic
         @BindingAdapter("contentLoadingBindingConfig")
         fun bindContentLoadingBindingConfig(multiStateView: BindedMultiStateView<*>?,

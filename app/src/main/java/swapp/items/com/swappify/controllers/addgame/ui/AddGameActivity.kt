@@ -1,8 +1,8 @@
 package swapp.items.com.swappify.controllers.addgame.ui
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
@@ -189,10 +189,7 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
         const val GAME_MODEL = "game_model"
 
-        fun startAddItemActivity(activity: Activity) {
-            val intent: Intent = Intent(activity, AddGameActivity::class.java)
-            activity.startActivity(intent)
-            activity.finish()
-        }
+        fun start(context: Context)
+                = Intent(context, AddGameActivity::class.java)
     }
 }

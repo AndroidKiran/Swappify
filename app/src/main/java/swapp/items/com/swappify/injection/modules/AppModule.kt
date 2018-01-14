@@ -4,13 +4,14 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import swapp.items.com.swappify.common.ConnectionUtil
+import swapp.items.com.swappify.common.PreferenceUtils
 import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.injection.scopes.PerApplication
 import swapp.items.com.swappify.room.AppDatabase
 import swapp.items.com.swappify.room.SearchDao
-import swapp.items.com.swappify.common.PreferenceUtils
 
-@Module(includes = arrayOf(FirebaseModule::class, NetworkModule::class))
+@Module(includes = [(FirebaseModule::class), (NetworkModule::class)])
 class AppModule constructor(val application: SwapApplication) {
 
     @Provides
@@ -35,4 +36,8 @@ class AppModule constructor(val application: SwapApplication) {
     @Provides
     @PerApplication
     fun provideSearchDao(appDatabase: AppDatabase): SearchDao = appDatabase.searchDao()
+
+    @Provides
+    @PerApplication
+    fun provideConnectionUtil(context: Context?): ConnectionUtil = ConnectionUtil(context)
 }

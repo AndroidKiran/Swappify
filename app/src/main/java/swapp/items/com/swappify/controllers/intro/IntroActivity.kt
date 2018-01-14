@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_intro.*
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.controllers.signup.ui.SignUpLoginActivity
+import swapp.items.com.swappify.controllers.signup.ui.LoginActivity
 
 class IntroActivity : AppCompatActivity() {
 
@@ -24,7 +24,7 @@ class IntroActivity : AppCompatActivity() {
 
     private fun initSignUp() {
         signUpButton.setOnClickListener({
-            startActivity(Intent(this@IntroActivity, SignUpLoginActivity::class.java))
+            startActivity(Intent(this@IntroActivity, LoginActivity::class.java))
         })
     }
 

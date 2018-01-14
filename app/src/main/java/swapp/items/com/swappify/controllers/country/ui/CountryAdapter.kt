@@ -4,27 +4,31 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import swapp.items.com.swappify.controllers.base.BaseViewHolder
-import swapp.items.com.swappify.controllers.country.model.Countries
-import swapp.items.com.swappify.controllers.country.viewmodel.CountryItemViewModel
+import swapp.items.com.swappify.controllers.country.model.Country
 import swapp.items.com.swappify.databinding.CountryItemBinding
 import swapp.items.com.swappify.injection.scopes.PerFragment
 import javax.inject.Inject
 
 @PerFragment
-class CountryAdapter<N : ICountryPickerNavigator> @Inject constructor() : RecyclerView.Adapter<BaseViewHolder>() {
+class CountryAdapter<N : CountryAdapter.CountryItemViewModelListener> @Inject constructor() : RecyclerView.Adapter<BaseViewHolder>() {
 
-    var countriesList = arrayListOf<Countries.Country>()
+    var countriesList = arrayListOf<Country>()
 
-    fun setData(countries: ArrayList<Countries.Country>) {
+    private var itemNavigator: N? = null
+
+
+    fun setData(countries: List<Country>) {
         countriesList.addAll(countries)
         this.notifyDataSetChanged()
     }
 
-    private var baseNavigator: N? = null
-
-    fun setBaseNavigator(navigator: N?) {
-        baseNavigator = navigator
-    }
+    var navigator: N?
+        get() = itemNavigator
+        set(navigator) {
+            if (itemNavigator == null) {
+                itemNavigator = navigator
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
         val itemCountryViewBinding = CountryItemBinding.inflate(LayoutInflater.from(parent?.context),
@@ -39,19 +43,18 @@ class CountryAdapter<N : ICountryPickerNavigator> @Inject constructor() : Recycl
     override fun getItemCount(): Int = countriesList.size
 
     inner class CountryViewHolder constructor(private val binding: CountryItemBinding) :
-            BaseViewHolder(binding.root),
-            CountryItemViewModel.CountryItemViewModelListener {
+            BaseViewHolder(binding.root) {
 
         override fun onBind(position: Int) {
-            val country: Countries.Country? = countriesList[position]
-            binding.itemViewModel = CountryItemViewModel(
-                    country = country, countryItemViewModelListener = this@CountryViewHolder
-            )
+            val country = countriesList[position]
+            binding.itemViewModel = country
             binding.executePendingBindings()
+            binding.root.setOnClickListener({ itemNavigator?.onItemClick(country) })
         }
 
-        override fun onItemClick(country: Countries.Country?) {
-            baseNavigator?.onSelect(country)
-        }
+    }
+
+    interface CountryItemViewModelListener {
+        fun onItemClick(country: Country?)
     }
 }

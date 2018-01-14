@@ -7,6 +7,7 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.reactivestreams.Publisher
+import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.rx.BaseSchedulerProvider
 
 fun <T> Single<T>.getSingleAsync(schedulerProvider: BaseSchedulerProvider): Single<T>
@@ -22,3 +23,31 @@ fun <T> Publisher<T>.toLiveData() = LiveDataReactiveStreams.fromPublisher(this)
 
 fun <T> LiveData<T>.toPublisher(lifecycleOwner: LifecycleOwner)
         = LiveDataReactiveStreams.toPublisher(lifecycleOwner, this)
+
+fun <T> Observable<T>.retrofitResponseToResult(): Observable<Result<T>> {
+    return this.map { it.asResult() }
+            .onErrorReturn {
+                return@onErrorReturn it.asErrorResult<T>()
+            }
+}
+
+fun <T> Single<T>.retrofitResponseToResult(): Single<Result<T>> {
+    return this.map { it.asResult() }
+            .onErrorReturn {
+                return@onErrorReturn it.asErrorResult<T>()
+            }
+}
+
+fun <T> Single<T>.firebaseResponseToResult(): Single<Result<T>> {
+    return this.map { it.asResult() }
+            .onErrorReturn { return@onErrorReturn it.asErrorResult<T>()}
+}
+
+fun <T> Observable<T>.firebaseResponseToResult(): Observable<Result<T>> {
+    return this.map { it.asResult() }
+            .onErrorReturn { return@onErrorReturn it.asErrorResult<T>()}
+}
+
+fun <T> T.asResult(): Result<T> = Result(this, null)
+
+fun <T> Throwable.asErrorResult(): Result<T> = Result(null,this)

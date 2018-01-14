@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel" />
+
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/phone_num"
+            style="@style/AppTheme.Widget.TextView.Primary.Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:background="@color/white"
+            android:gravity="center"
+            android:minHeight="@dimen/dimen_48"
+            android:textSize="@dimen/font_18"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@{@string/str_mobile_number(viewModel.countryCode,viewModel.mobileNumber)}"
+            tools:text="+917204730956" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/circular_progress"
+            android:layout_width="@dimen/dimen_48"
+            android:layout_height="@dimen/dimen_48"
+            android:layout_marginTop="32dp"
+            android:elevation="@dimen/dimen_8"
+            android:shape="ring"
+            app:cardBackgroundColor="@color/primary_dark"
+            app:cardCornerRadius="@dimen/dimen_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_num">
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="@dimen/dimen_32"
+                android:layout_height="@dimen/dimen_32"
+                android:layout_gravity="center" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/auto_verify_text"
+            style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:layout_marginEnd="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:gravity="center"
+            android:text="@string/str_auto_verify"
+            android:textSize="@dimen/font_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/circular_progress"
+            tools:text="@string/str_auto_verify" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/time_remaining"
+            style="@style/AppTheme.Widget.TextView.Secondary.Bold"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:layout_marginEnd="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_32"
+            android:gravity="center"
+            android:text="@string/str_remaining_time"
+            android:textAllCaps="true"
+            android:textSize="@dimen/font_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/auto_verify_text"
+            tools:text="@string/str_remaining_time" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/time_counter"
+            style="@style/AppTheme.Widget.TextView.Primary.Regular"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:layout_marginEnd="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_6"
+            android:gravity="center"
+            android:text="@{@string/str_time_counter(viewModel.remainingTime)}"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/font_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/time_remaining"
+            tools:text="@string/str_time_counter" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

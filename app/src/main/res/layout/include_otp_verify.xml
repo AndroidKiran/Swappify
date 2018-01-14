@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+
+        <variable
+            name="viewModel"
+            type="swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel" />
+
+        <variable
+            name="clickCallBack"
+            type="swapp.items.com.swappify.controllers.signup.ui.ILogInNavigator" />
+
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <swapp.items.com.swappify.components.PinView
+            android:id="@+id/pin_view"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:afterTextChanged="@{(editable) -> clickCallBack.afterOtpChanged(editable)}"
+            android:enabled="@{!viewModel.isLoading}"
+            android:gravity="center"
+            android:inputType=""
+            app:itemCount="6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="917207" />
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/resend_btn"
+            style="@style/AppTheme.Button.Borderless"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/str_resend_otp"
+            android:onClick="@{() -> clickCallBack.onClickResendOtp()}"
+            app:layout_constraintTop_toBottomOf="@id/pin_view" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/circular_progress"
+            android:layout_width="@dimen/dimen_48"
+            android:layout_height="@dimen/dimen_48"
+            android:layout_marginTop="32dp"
+            android:elevation="@dimen/dimen_8"
+            android:shape="ring"
+            android:visibility="@{viewModel.isLoading == true ? View.VISIBLE : View.GONE}"
+            app:cardBackgroundColor="@color/primary_dark"
+            app:cardCornerRadius="@dimen/dimen_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pin_view">
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="@dimen/dimen_32"
+                android:layout_height="@dimen/dimen_32"
+                android:layout_gravity="center" />
+
+        </android.support.v7.widget.CardView>
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

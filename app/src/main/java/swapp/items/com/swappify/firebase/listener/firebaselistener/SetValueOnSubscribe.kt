@@ -1,45 +1,35 @@
 package swapp.items.com.swappify.firebase.listener.firebaselistener
 
-
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import swapp.items.com.swappify.repo.user.model.User
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.SetOptions
+import io.reactivex.SingleEmitter
+import io.reactivex.SingleOnSubscribe
 import java.lang.Exception
 
-class SetValueOnSubscribe constructor(
-        private val task: Task<Void>?,
-        private val returnValue: User?) : ObservableOnSubscribe<User> {
+class SetValueOnSubscribe<U> constructor(private val documentReference: DocumentReference,
+                                         private val value: Any, private val returnValue: U) : SingleOnSubscribe<U> {
 
-
-    override fun subscribe(emitter: ObservableEmitter<User>) {
-        task?.addOnSuccessListener(RxSetValueListener(
-                emitter = emitter,
-                returnValue = returnValue))?.addOnFailureListener(
-                RxSetValueListener(emitter = emitter, returnValue = returnValue))
-
+    override fun subscribe(emitter: SingleEmitter<U>) {
+        val rxSetValueListener = RxSetValueListener(emitter, returnValue)
+        documentReference.set(value, SetOptions.merge())
+                .addOnSuccessListener(rxSetValueListener)
+                .addOnFailureListener(rxSetValueListener)
     }
 
-    inner class RxSetValueListener constructor(
-            private val emitter: ObservableEmitter<User>?,
-            private val returnValue: User?) : OnSuccessListener<Void>, OnFailureListener {
+    private inner class RxSetValueListener<U> constructor(private val emitter: SingleEmitter<U>, private val returnValue: U) : OnSuccessListener<Void>, OnFailureListener {
 
         override fun onSuccess(p0: Void?) {
-            if (emitter!!.isDisposed) {
-                return
+            if (!emitter.isDisposed) {
+                emitter.onSuccess(returnValue)
             }
-            emitter.onNext(returnValue!!)
-            emitter.onComplete()
         }
 
-
         override fun onFailure(exception: Exception) {
-            if (emitter!!.isDisposed) {
-                return
+            if (!emitter.isDisposed) {
+                emitter.onError(exception)
             }
-            emitter.onError(exception)
         }
     }
 }

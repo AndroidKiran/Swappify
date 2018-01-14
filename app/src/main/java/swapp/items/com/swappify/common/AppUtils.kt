@@ -47,7 +47,12 @@ class AppUtils {
             return locale
         }
 
-        fun isValidPhone(mobileNumber: String, countryCode: String): Boolean {
+        fun isValidPhone(mobileNumber: String?, countryCode: String?): Boolean {
+
+            if (mobileNumber == null || countryCode == null) {
+                return false
+            }
+
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
             val phoneNumber: Phonenumber.PhoneNumber
             try {

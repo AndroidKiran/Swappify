@@ -5,17 +5,10 @@ import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import swapp.items.com.swappify.components.BindedMultiStateView
-import swapp.items.com.swappify.components.MultiStateView
 
 class EmptyViewConfiguration : BaseObservable() {
 
     companion object {
-        @JvmStatic
-        @BindingAdapter("emptyViewBinding")
-        fun bindEmptyViewConfiguration(multiStateView: MultiStateView?, emptyViewConfiguration: EmptyViewConfiguration?) {
-            multiStateView?.setEmptyViewConfiguration(emptyViewConfiguration)
-        }
-
         @JvmStatic
         @BindingAdapter("emptyViewBindingConfig")
         fun bindEmptyViewBindingConfig(multiStateView: BindedMultiStateView<*>?, emptyViewConfiguration: EmptyViewConfiguration?) {

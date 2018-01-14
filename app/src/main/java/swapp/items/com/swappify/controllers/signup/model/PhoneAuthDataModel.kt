@@ -3,9 +3,10 @@ package swapp.items.com.swappify.controllers.signup.model
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel
 import swapp.items.com.swappify.repo.user.model.User
 
-class PhoneAuthDataModel private constructor(var state: Int,
+class PhoneAuthDataModel private constructor(var state: LogInViewModel.State,
                                              val firebaseException: FirebaseException?,
                                              val phoneAuthCredential: PhoneAuthCredential?,
                                              val verificationId: String?,
@@ -19,7 +20,7 @@ class PhoneAuthDataModel private constructor(var state: Int,
         fun create(init: Builder.() -> Unit) = Builder(init).build()
     }
 
-    class Builder private constructor(var state: Int) {
+    class Builder private constructor(var state: LogInViewModel.State) {
 
         var firebaseException: FirebaseException? = null
         var phoneAuthCredential: PhoneAuthCredential? = null
@@ -27,11 +28,11 @@ class PhoneAuthDataModel private constructor(var state: Int,
         var token: PhoneAuthProvider.ForceResendingToken? = null
         var user: User? = null
 
-        constructor(init: Builder.() -> Unit) : this(0) {
+        constructor(init: Builder.() -> Unit) : this(LogInViewModel.State.STATE_INITIALIZED) {
             init()
         }
 
-        fun state(init: Builder.() -> Int) = apply { state = init() }
+        fun state(init: Builder.() -> LogInViewModel.State) = apply { state = init() }
 
         fun firebaseException(init: Builder.() -> FirebaseException) = apply { firebaseException = init() }
 

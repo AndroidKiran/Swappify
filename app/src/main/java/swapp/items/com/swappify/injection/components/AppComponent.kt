@@ -11,7 +11,7 @@ import swapp.items.com.swappify.injection.modules.FirebaseModule
 import swapp.items.com.swappify.injection.scopes.PerApplication
 
 @PerApplication
-@Component(modules = arrayOf(AndroidSupportInjectionModule::class, AppModule::class, ActivityBuilder::class))
+@Component(modules = [(AndroidSupportInjectionModule::class), (AppModule::class), (ActivityBuilder::class)])
 interface AppComponent {
 
     @Component.Builder

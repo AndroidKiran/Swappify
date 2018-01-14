@@ -9,15 +9,7 @@ import android.telephony.SmsMessage
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class SMSReceiver constructor(private val smsReceivedListener: SMSReceivedListener?) : BroadcastReceiver() {
-    companion object {
-        const val VERIFICATION_CODE: String = "verfication_code"
-    }
-
-    private val PDUS: String = "pdus"
-    private val SMS_STRING_PATTERN = "is your verification code."
-    private val FORMAT = "format"
-    private val REGEX = "\\d+"
+class SMSReceiver constructor(private val smsReceivedListener: SMSReceivedListener?): BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         try {
@@ -44,7 +36,6 @@ class SMSReceiver constructor(private val smsReceivedListener: SMSReceivedListen
         } catch (e: Exception) {
 
         }
-
     }
 
     private fun getIncomingMessage(aObject: Any?, bundle: Bundle?): SmsMessage? {
@@ -60,5 +51,13 @@ class SMSReceiver constructor(private val smsReceivedListener: SMSReceivedListen
 
     interface SMSReceivedListener {
         fun onSMSReceived(bundle: Bundle?)
+    }
+
+    companion object {
+        const val VERIFICATION_CODE: String = "verification_code"
+        const val PDUS = "pdus"
+        const val SMS_STRING_PATTERN = "is your verification code."
+        const val FORMAT = "format"
+        const val REGEX = "\\d+"
     }
 }

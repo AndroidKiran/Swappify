@@ -1,30 +1,23 @@
 package swapp.items.com.swappify.repo.user.dataSource
 
-import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import io.reactivex.Observable
-import io.reactivex.functions.Function
+import io.reactivex.Single
+import swapp.items.com.swappify.common.extension.firebaseResponseToResult
 import swapp.items.com.swappify.firebase.listener.FirebaseObservableListener
-import swapp.items.com.swappify.firebase.utils.DatabaseResult
+import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.user.model.User
 import javax.inject.Inject
 
 @PerActivity
-class UserDataBase @Inject constructor(private val firebaseFirestore: FirebaseFirestore,
+class UserDataBase @Inject constructor(firestore: FirebaseFirestore,
                                        private val firebaseObservableListener: FirebaseObservableListener) {
 
-    fun writeUser(user: User?): Observable<DatabaseResult<User>> {
-        val task: Task<Void>? = firebaseFirestore.collection("users")
-                .document(user?.phoneNumber!!).set(user)
-        return firebaseObservableListener.setValue(task, user)
-                .map(toUserDatabaseResults())
-                .onErrorReturn { throwable: Throwable -> errorAsDatabaseResult(throwable) }
-    }
+    private val collectionReference: CollectionReference = firestore.collection("users")
 
-    private fun toUserDatabaseResults(): Function<User, DatabaseResult<User>> =
-            Function { DatabaseResult(it) }
+    fun write(user: User?): Single<Result<User>>
+        = firebaseObservableListener.setValue(collectionReference.document(user?.phoneNumber!!), user, user)
+                .firebaseResponseToResult()
 
-    private fun errorAsDatabaseResult(throwable: Throwable?): DatabaseResult<User> =
-            DatabaseResult(throwable ?: Throwable("Database error is missing"))
 }

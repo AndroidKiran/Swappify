@@ -17,7 +17,7 @@ class GameDataSource @Inject constructor(val firestore: FirebaseFirestore,
     private val collectionReference: CollectionReference = firestore.collection("games")
 
     fun addGame(gameModel: PostGameModel?): Single<PostGameModel> =
-            firebaseObservableListener.addValueOnSubscribe(collectionReference.add(gameModel!!), asGameModel(gameModel))
+            firebaseObservableListener.addValue(collectionReference.add(gameModel!!), asGameModel(gameModel))
 
     private fun asGameModel(gameModel: PostGameModel?): Function<DocumentReference, PostGameModel> {
         return Function {

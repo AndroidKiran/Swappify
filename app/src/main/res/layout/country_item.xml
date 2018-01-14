@@ -7,47 +7,48 @@
 
         <variable
             name="itemViewModel"
-            type="swapp.items.com.swappify.controllers.country.viewmodel.CountryItemViewModel" />
+            type="swapp.items.com.swappify.controllers.country.model.Country" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> itemViewModel.onItemClick()}"
         android:paddingEnd="@dimen/dimen_16"
         android:paddingLeft="@dimen/dimen_16"
         android:paddingRight="@dimen/dimen_16"
         android:paddingStart="@dimen/dimen_16">
 
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView2"
+            style="@style/AppTheme.Widget.TextView.Primary.Bold"
             android:layout_width="@dimen/dimen_56"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="@dimen/dimen_16"
-            android:layout_marginRight="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
             android:gravity="start"
             android:text="@{itemViewModel.isoCode}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="+91" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/AppTheme.Widget.TextView.Primary.Regular"
+            android:layout_width="0dp"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginTop="@dimen/dimen_8"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{itemViewModel.countryName}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/textView2"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{itemViewModel.name}"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2"
             tools:text="India" />
 
 

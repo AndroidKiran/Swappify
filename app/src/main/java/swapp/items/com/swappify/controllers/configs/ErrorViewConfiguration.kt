@@ -7,17 +7,10 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.components.BindedMultiStateView
-import swapp.items.com.swappify.components.MultiStateView
 
 class ErrorViewConfiguration : BaseObservable() {
 
     companion object {
-        @JvmStatic
-        @BindingAdapter("errorViewBinding")
-        fun bindErrorViewConfiguration(multiStateView: MultiStateView?, errorViewConfiguration: ErrorViewConfiguration?) {
-            multiStateView?.setErrorViewConfiguration(errorViewConfiguration)
-        }
-
         @JvmStatic
         @BindingAdapter("errorViewBindingConfig")
         fun bindErrorViewBindingConfig(multiStateView: BindedMultiStateView<*>?, errorViewConfiguration: ErrorViewConfiguration?) {

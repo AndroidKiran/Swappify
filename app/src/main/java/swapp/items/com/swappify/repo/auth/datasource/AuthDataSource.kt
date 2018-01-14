@@ -1,13 +1,15 @@
 package swapp.items.com.swappify.repo.auth.datasource
 
 import android.app.Activity
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Single
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.viewmodel.SignUpLogInViewModel
+import swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel
 import swapp.items.com.swappify.firebase.listener.FirebaseObservableListener
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.user.model.User
@@ -22,23 +24,28 @@ class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth,
     fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken): Single<PhoneAuthDataModel> =
             firebaseObservableListener.resendVerificationCodeListener(phoneNumber = phoneNumber, activity = activity, token = token)
 
-    fun loginWithPhoneNumber(credential: PhoneAuthCredential?): Single<PhoneAuthDataModel> =
+    fun signInWith(credential: PhoneAuthCredential?) =
             Single.create<PhoneAuthDataModel>({ emitter ->
                 firebaseAuth.signInWithCredential(credential!!)
                         .addOnCompleteListener({ task ->
-                            val phoneAuthDataModel: PhoneAuthDataModel?
-                            if (task.isSuccessful) {
+                            val phoneAuthDataModel = if (task.isSuccessful) {
                                 val currentUser: FirebaseUser? = task.result.user
-                                phoneAuthDataModel = PhoneAuthDataModel.create {
-                                    state { SignUpLogInViewModel.STATE_SIGNIN_SUCCESS }
+                                PhoneAuthDataModel.create {
+                                    state { LogInViewModel.State.STATE_SIGNIN_SUCCESS }
                                     currentUser { User(currentUser?.uid, currentUser?.phoneNumber) }
                                 }
                             } else {
-                                phoneAuthDataModel = PhoneAuthDataModel.create {
-                                    state { SignUpLogInViewModel.STATE_SIGNIN_FAILED }
+                                PhoneAuthDataModel.create {
+                                    firebaseException { FirebaseException(task.exception.toString()) }
+                                    state { LogInViewModel.State.STATE_SIGNIN_FAILED }
                                 }
                             }
-                            emitter.onSuccess(phoneAuthDataModel)
+
+                            if (!task.isSuccessful && task.exception is FirebaseNetworkException) {
+                                emitter.onError(task.exception!!)
+                            } else {
+                                emitter.onSuccess(phoneAuthDataModel)
+                            }
                         })
             })
 
