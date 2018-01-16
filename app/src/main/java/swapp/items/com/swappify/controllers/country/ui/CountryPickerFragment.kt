@@ -3,14 +3,13 @@ package swapp.items.com.swappify.controllers.country.ui
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.common.extension.observe
+import swapp.items.com.swappify.common.extension.*
 import swapp.items.com.swappify.components.BindedMultiStateView
 import swapp.items.com.swappify.controllers.base.BaseDialogFragment
 import swapp.items.com.swappify.controllers.base.IFragmentCallback
@@ -33,15 +32,15 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
 
     @Inject lateinit var countryPickerViewModel: CountryPickerViewModel
 
-    private lateinit var toolbarConfiguration: ToolbarConfiguration
+    private val recyclerViewConfiguration = RecyclerViewConfiguration()
 
-    private lateinit var recyclerViewConfiguration: RecyclerViewConfiguration
+    private val toolbarConfiguration = ToolbarConfiguration()
 
-    private lateinit var emptyViewConfiguration: EmptyViewConfiguration
+    private val emptyViewConfiguration = EmptyViewConfiguration()
 
-    private lateinit var errorViewConfiguration: ErrorViewConfiguration
+    private val errorViewConfiguration = ErrorViewConfiguration()
 
-    private lateinit var contentLoadingConfiguration: ContentLoadingConfiguration
+    private val contentLoadingConfiguration = ContentLoadingConfiguration()
 
     private var fragmentCountryPickerBinding: FragmentCountryBinding? = null
 
@@ -61,27 +60,29 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        emptyViewConfiguration = EmptyViewConfiguration()
-        errorViewConfiguration = ErrorViewConfiguration()
-        recyclerViewConfiguration = RecyclerViewConfiguration()
-        toolbarConfiguration = ToolbarConfiguration()
-        contentLoadingConfiguration = ContentLoadingConfiguration()
-        contentLoadingConfiguration.setConfig(getString(R.string.msg_loading))
         countryAdapter.navigator = this
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUi()
+    }
 
-        initToolbar()
-        initRecyclerView()
-        initEmptyView(ContextCompat.getDrawable(context, R.mipmap.ic_launcher),
-                getString(R.string.str_no_countries))
+    private fun initUi() {
 
-        initErrorView(getString(R.string.str_no_countries),
+        toolbarConfiguration.toolbarBinding(getString(R.string.str_choose_country),
+                ContextCompat.getColor(context, R.color.white), 0, toolbarClickListener,
+                ContextCompat.getDrawable(context, R.drawable.vc_cross_white), null)
+
+        emptyViewConfiguration.emptyViewBinding(getString(R.string.str_no_countries),
                 ContextCompat.getDrawable(context, R.mipmap.ic_launcher))
 
-        setRetryListener()
+        errorViewConfiguration.errorViewBinding(getString(R.string.str_no_countries),
+                ContextCompat.getDrawable(context, R.mipmap.ic_launcher), onRetryClickListener)
+
+        contentLoadingConfiguration.contentLoadingBinding(getString(R.string.msg_loading))
+
+        recyclerViewConfiguration.recyclerViewBinding(countryAdapter, layoutManager)
     }
 
 
@@ -93,26 +94,6 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
     override fun onDetach() {
         mListener = null
         super.onDetach()
-    }
-
-    private fun initToolbar() {
-        val title: String = getString(R.string.str_choose_country)
-        val titleColor: Int = ContextCompat.getColor(context, R.color.white)
-        val navigationIcon: Drawable = ContextCompat.getDrawable(context, R.drawable.vc_cross_white)
-        toolbarConfiguration.setToolbarConfig(title, titleColor, toolbarClickListener, navigationIcon)
-    }
-
-
-    private fun initRecyclerView() {
-        recyclerViewConfiguration.setRecyclerConfig(layoutManager, countryAdapter)
-    }
-
-    private fun initEmptyView(emptyDrawable: Drawable, emptyMsg: String) {
-        emptyViewConfiguration.setEmptyViewConfig(emptyDrawable, emptyMsg)
-    }
-
-    private fun initErrorView(errorMsg: String, errorDrawable: Drawable) {
-        errorViewConfiguration.setErrorViewConfig(errorDrawable, errorMsg)
     }
 
     override fun getViewModel(): CountryPickerViewModel {
@@ -149,11 +130,7 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
         }
     }
 
-    private fun setRetryListener() {
-        errorViewConfiguration.setErrorRetryListener(View.OnClickListener { onRetryClickListener() })
-    }
-
-    private fun onRetryClickListener() {
+    private val onRetryClickListener = View.OnClickListener {
         countryPickerViewModel.reload.value = true
         fragmentCountryPickerBinding?.multiStateViewLayout?.multiStateView?.setViewState(BindedMultiStateView.VIEW_STATE_LOADING)
     }

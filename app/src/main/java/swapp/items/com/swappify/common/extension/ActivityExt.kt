@@ -53,3 +53,7 @@ fun AppCompatActivity.start(appCompatDialogFragment: AppCompatDialogFragment, ta
 fun AppCompatActivity.startAddGameActivity() {
     startActivity(Intent(this, AddGameActivity::class.java))
 }
+
+
+
+

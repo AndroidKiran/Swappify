@@ -9,11 +9,11 @@ import io.reactivex.SingleOnSubscribe
 import java.lang.Exception
 
 class SetValueOnSubscribe<U> constructor(private val documentReference: DocumentReference,
-                                         private val value: Any, private val returnValue: U) : SingleOnSubscribe<U> {
+                                         private val value: Any?, private val returnValue: U?) : SingleOnSubscribe<U> {
 
     override fun subscribe(emitter: SingleEmitter<U>) {
-        val rxSetValueListener = RxSetValueListener(emitter, returnValue)
-        documentReference.set(value, SetOptions.merge())
+        val rxSetValueListener = RxSetValueListener(emitter, returnValue!!)
+        documentReference.set(value!!, SetOptions.merge())
                 .addOnSuccessListener(rxSetValueListener)
                 .addOnFailureListener(rxSetValueListener)
     }

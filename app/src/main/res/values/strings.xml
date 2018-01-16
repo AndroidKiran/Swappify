@@ -85,7 +85,11 @@
     <string name="err_game_name">Provide valid Game Name</string>
     <string name="err_game_platform">Choose Platform</string>
 
-    <string name="no_internet_title">No active internet connection</string>
+    <string name="str_no_internet_title">No active internet connection</string>
+    <string name="str_dismiss">Dismiss</string>
+    <string name="str_something_wrong_msg">Something went wrong\u2026 Please try again</string>
+    <string name="str_internet_title">Hurray, internet connection is back</string>
+
 
 
 </resources>

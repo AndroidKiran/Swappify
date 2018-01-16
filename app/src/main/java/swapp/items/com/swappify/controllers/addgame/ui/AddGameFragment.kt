@@ -146,7 +146,7 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
                 .start()
     }
 
-    private fun handleNoteFieldTouch(view: View?, event: MotionEvent?): Boolean {
+    private fun handleOnTouch(view: View?, event: MotionEvent?): Boolean {
         view?.parent?.parent?.requestDisallowInterceptTouchEvent(true)
         when (event?.action!! and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_UP -> view?.parent?.parent?.requestDisallowInterceptTouchEvent(false)
@@ -181,7 +181,6 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
             if (fragmentAddGameBinding.summaryEditText.isFocused) {
                 addGameViewModel.gameModel.get().setGameSummary(newValue)
             }
-
         }
     }
 
@@ -202,13 +201,12 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         }
     }
 
-    private val onTouchListener = View.OnTouchListener { view, motionEvent -> handleNoteFieldTouch(view, motionEvent) }
+    private val onTouchListener = View.OnTouchListener { view, motionEvent -> handleOnTouch(view, motionEvent) }
 
     private val onClickListener = object : IAddGameNavigator {
-        override fun onAddGameClick() {
 
+        override fun onAddGameClick() {
             if(addGameViewModel.validateGame()) {
-                addGameViewModel.enableLoading.set(true)
                 val url = addGameViewModel.gameModel.get().url
                 if(URLUtil.isHttpsUrl(url) || URLUtil.isHttpUrl(url)) {
                     addGameViewModel.addGame()
@@ -218,7 +216,6 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
             } else {
                fragmentAddGameBinding.appbar.setExpanded(true, true)
             }
-
         }
 
         override fun onCameraClick() {
@@ -252,7 +249,6 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         const val TRANSLATE_ANIMATION_DURATION: Long = 600
         const val MAX_SCALE_VALUE = 1f
         const val MIN_SCALE_VALUE = 0f
-        val FRAGMENT_TAG = AddGameFragment::class.java.simpleName!!
     }
 
 }

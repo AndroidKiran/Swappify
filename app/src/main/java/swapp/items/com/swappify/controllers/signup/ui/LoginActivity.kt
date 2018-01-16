@@ -3,14 +3,17 @@ package swapp.items.com.swappify.controllers.signup.ui
 import android.Manifest
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.text.Editable
+import android.view.View
 import com.google.firebase.auth.PhoneAuthProvider
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasBroadcastReceiverInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.include_otp_verify.*
 import kotlinx.android.synthetic.main.include_phone_verification.*
@@ -18,11 +21,11 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.common.extension.observe
-import swapp.items.com.swappify.common.extension.start
-import swapp.items.com.swappify.common.extension.startAddGameActivity
+import swapp.items.com.swappify.common.extension.*
+import swapp.items.com.swappify.components.networkconnection.NetworkConnectionLifeCycleObserver
 import swapp.items.com.swappify.controllers.base.BaseActivity
 import swapp.items.com.swappify.controllers.base.IFragmentCallback
+import swapp.items.com.swappify.controllers.configs.SnackbarConfiguration
 import swapp.items.com.swappify.controllers.country.model.Countries.Companion.COUNTRY_EXTRA
 import swapp.items.com.swappify.controllers.country.model.Country
 import swapp.items.com.swappify.controllers.country.ui.CountryPickerFragment
@@ -32,8 +35,10 @@ import swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel
 import swapp.items.com.swappify.databinding.ActivityLogInBinding
 import javax.inject.Inject
 
-class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSupportFragmentInjector,
-        IFragmentCallback, SMSReceiver.SMSReceivedListener, EasyPermissions.PermissionCallbacks {
+
+class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSupportFragmentInjector,
+        IFragmentCallback, SMSReceiver.SMSReceivedListener, EasyPermissions.PermissionCallbacks, HasBroadcastReceiverInjector {
+
 
     @Inject
     lateinit var viewFactory: ViewModelProvider.Factory
@@ -41,11 +46,16 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
+    @Inject
+    lateinit var broadcastReceiverDispatchingAndroidInjector: DispatchingAndroidInjector<BroadcastReceiver>
+
     private lateinit var logInViewModel: LogInViewModel
 
     private lateinit var activityLogInBinding: ActivityLogInBinding
 
     private var smsReceiver: SMSReceiver? = null
+
+    private val snackBarConfiguration = SnackbarConfiguration()
 
     override fun getViewModel(): LogInViewModel {
         logInViewModel = ViewModelProviders.of(this@LoginActivity,
@@ -60,12 +70,17 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
         activityLogInBinding = getViewDataBinding()
         activityLogInBinding.setVariable(BR.viewModel, logInViewModel)
         activityLogInBinding.setVariable(BR.clickCallBack, clickCallBack)
+        activityLogInBinding.setVariable(BR.snackBarConfig, snackBarConfiguration)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         observeAuthModelChange()
+        observerNetworkChange()
+        observerApiCallErrorChange()
         initPinView()
+        NetworkConnectionLifeCycleObserver(lifecycle, logInViewModel.isNetConnected, this@LoginActivity)
     }
 
     private fun initPinView() {
@@ -97,35 +112,32 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
                         ResourcesCompat.getColor(resources, R.color.accent_light, theme))
             }
 
-            if(pin_view.isFocused && editable.length == 6) {
+            if (pin_view.isFocused && editable.length == 6) {
                 hideKeyboard()
-                logInViewModel.isLoading.set(true)
                 val credential = PhoneAuthProvider.getCredential(logInViewModel.verificationId!!, editable.toString())
                 logInViewModel.signInWith(credential)
             }
         }
 
         override fun afterMobileNumChanged(editable: Editable) {
-            if(phone_num_edit_text.isFocused) {
+            if (phone_num_edit_text.isFocused) {
                 logInViewModel.mobileNumber.set(editable.toString())
                 logInViewModel.validateMobileNum()
             }
         }
 
         override fun onClickCountryCode()
-          = start(CountryPickerFragment.newInstance(null), CountryPickerFragment.TAG)
+                = start(CountryPickerFragment.newInstance(null), CountryPickerFragment.TAG)
 
 
         override fun onClickNext() {
             hideKeyboard()
-            logInViewModel.isLoading.set(true)
             val phoneNumber = logInViewModel.countryCode.get().plus(logInViewModel.mobileNumber.get())
             logInViewModel.startPhoneNumberVerification(this@LoginActivity, phoneNumber)
         }
 
         override fun onClickResendOtp() {
             hideKeyboard()
-            logInViewModel.isLoading.set(true)
             val phoneNumber = logInViewModel.countryCode.get().plus(logInViewModel.mobileNumber.get())
             logInViewModel.resendOtp(this@LoginActivity, phoneNumber, logInViewModel.token!!)
         }
@@ -133,9 +145,29 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
     }
 
     private fun observeAuthModelChange()
-        = logInViewModel.phoneAuthModelLiveData.observe(this@LoginActivity) {
-            onPhoneAuthModelChange(it)
+            = logInViewModel.phoneAuthModelLiveData.observe(this@LoginActivity) {
+        onPhoneAuthModelChange(it)
+    }
+
+    private fun observerNetworkChange() = logInViewModel.isNetConnected.observe(this@LoginActivity) {
+        if (it == false) {
+            logInViewModel.isSnackBarAlive = true
+            hideKeyboard()
+            snackBarConfiguration.showNoNetworkSnackBar(getString(R.string.str_no_internet_title),
+                    getString(R.string.str_dismiss), View.OnClickListener { })
+        } else {
+            if (logInViewModel.isSnackBarAlive) {
+                snackBarConfiguration.showSnackBar(getString(R.string.str_internet_title), SnackbarConfiguration.Type.VALID)
+            }
         }
+    }
+
+    private fun observerApiCallErrorChange() = logInViewModel.apiError.observe(this@LoginActivity) {
+        if (it == true) {
+            hideKeyboard()
+            snackBarConfiguration.showSnackBar(getString(R.string.str_something_wrong_msg), SnackbarConfiguration.Type.NEUTRAL)
+        }
+    }
 
 
     private fun onPhoneAuthModelChange(phoneAuthDataModel: PhoneAuthDataModel?) {
@@ -156,19 +188,13 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
                 }
             }
 
-            LogInViewModel.State.STATE_VERIFY_FAILED -> {
-                logInViewModel.phoneError.set(false)
-            }
-
-
-            LogInViewModel.State.STATE_VERIFY_SUCCESS ->
+            LogInViewModel.State.STATE_VERIFY_SUCCESS -> {
                 logInViewModel.signInWith(phoneAuthDataModel.phoneAuthCredential!!)
-
+            }
 
             LogInViewModel.State.STATE_SIGNIN_FAILED ->
                 activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
                         ResourcesCompat.getColor(resources, R.color.faded_red, theme))
-
 
             LogInViewModel.State.STATE_SIGNIN_SUCCESS -> {
                 activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
@@ -181,14 +207,9 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
                 finish()
             }
 
-            LogInViewModel.State.STATE_USER_WRITE_FAILED -> {
-
-            }
-
             else -> {
 
             }
-
         }
     }
 
@@ -210,8 +231,11 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
+    override fun broadcastReceiverInjector(): AndroidInjector<BroadcastReceiver> = broadcastReceiverDispatchingAndroidInjector
+
+
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?)
-       = logInViewModel.isSmsReadPermissionGranted.set(false)
+            = logInViewModel.isSmsReadPermissionGranted.set(false)
 
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {
@@ -219,7 +243,7 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
-      = EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this@LoginActivity)
+            = EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this@LoginActivity)
 
 
     @AfterPermissionGranted(RC_SMS_PERM)
@@ -256,4 +280,5 @@ class LoginActivity: BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSu
     companion object {
         const val RC_SMS_PERM: Int = 123
     }
+
 }

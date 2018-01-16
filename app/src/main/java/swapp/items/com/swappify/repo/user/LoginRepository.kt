@@ -24,35 +24,29 @@ class LoginRepository @Inject constructor(private val authDataSource: AuthDataSo
 
     private val schedulerProvider = appUtilManager.schedulerProvider
 
-    fun startPhoneVerification(phoneNumber: String, activity: Activity) =
-                authDataSource.startPhoneVerificationObservable(phoneNumber = phoneNumber, activity = activity)
-                        .firebaseResponseToResult()
-                        .getSingleAsync(schedulerProvider)
-
-
-
-    fun resendVerificationCode(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken) =
-                authDataSource.resendVerificationCodeObservable(phoneNumber = phoneNumber, activity = activity, token = token)
-                        .firebaseResponseToResult()
-                        .getSingleAsync(schedulerProvider)
-
-
-    fun signInWith(credential: PhoneAuthCredential?): Single<Result<PhoneAuthDataModel>> =
-                authDataSource.signInWith(credential)
-                        .firebaseResponseToResult()
-                        .getSingleAsync(schedulerProvider)
-
-
-    fun saveUser(user: User)
-        = userDataBase.write(user)
+    fun startPhoneVerification(phoneNumber: String, activity: Activity)
+            = authDataSource.startPhoneVerificationObservable(phoneNumber, activity)
+            .firebaseResponseToResult()
             .getSingleAsync(schedulerProvider)
 
+    fun resendVerificationCode(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken)
+            = authDataSource.resendVerificationCodeObservable(phoneNumber, activity, token)
+            .firebaseResponseToResult()
+            .getSingleAsync(schedulerProvider)
+
+    fun signInWith(credential: PhoneAuthCredential?): Single<Result<PhoneAuthDataModel>>
+            = authDataSource.signInWith(credential)
+            .firebaseResponseToResult()
+            .getSingleAsync(schedulerProvider)
+
+    fun saveUser(user: User)
+            = userDataBase.write(user)
+            .getSingleAsync(schedulerProvider)
 
     fun initAutoVerify(time: Int)
             = Observable.interval(1, TimeUnit.SECONDS)
             .getObservableAsync(schedulerProvider)
             .map({ time - it.toInt() })
             .take(time + 1.toLong())
-
 }
 

@@ -15,11 +15,9 @@ import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.firebase.utils.Result
-import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.user.model.User
 import javax.inject.Inject
 
-@PerActivity
 class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swapApplication: SwapApplication) : BaseViewModel(swapApplication) {
 
     var state = ObservableField<State>(State.STATE_INITIALIZED)
@@ -67,80 +65,68 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
         return countryCode
     }
 
-    fun validateMobileNum() =
-            phoneError.set(isValidPhone(mobileNumber.get(), countryCode.get()))
+    fun validateMobileNum()
+            = phoneError.set(isValidPhone(mobileNumber.get(), countryCode.get()))
 
 
     fun startPhoneNumberVerification(activity: Activity, phoneNumber: String)
-        = getCompositeDisposable().add(
-                loginRepository.startPhoneVerification(phoneNumber, activity)
-                        .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
-        )
+            = getCompositeDisposable().add(
+            loginRepository.startPhoneVerification(phoneNumber, activity)
+                    .doOnSubscribe { isLoading.set(true) }
+                    .doAfterTerminate { isLoading.set(false) }
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) }))
 
     fun resendOtp(activity: Activity, phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken)
             = getCompositeDisposable().add(
             loginRepository.resendVerificationCode(phoneNumber, activity, token)
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
-    )
+                    .doOnSubscribe { isLoading.set(true) }
+                    .doAfterTerminate { isLoading.set(false) }
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) }))
 
-    private fun handleOnSuccess(result: Result<PhoneAuthDataModel>?) {
-        isLoading.set(false)
-        if (result!!.isSuccess()) {
-            phoneAuthModelLiveData.value = result.value
-        } else {
-            handleOnError(result.error!!)
-        }
+    private fun handleOnSuccess(result: Result<PhoneAuthDataModel>?)
+            = if (result!!.isSuccess()) phoneAuthModelLiveData.value = result.value else handleOnError(result.error!!)
+
+
+    private fun handleOnError(error: Throwable) = when (error) {
+        is FirebaseNetworkException ->
+            isNetConnected.value = false
+        else ->
+            this.apiError.value = true
     }
 
-    private fun handleOnError(error: Throwable) {
-        when(error) {
-            is FirebaseNetworkException -> {
-
-            }
-
-            else -> {
-
-            }
-
-        }
-        isLoading.set(false)
-    }
-
-    fun autoVerification() =
-            getCompositeDisposable().add(
-                    loginRepository.initAutoVerify(60)
-                            .subscribe({
-                                remainingTime.set(it)
-                                if (remainingTime.get() == 0) {
-                                    state.set(State.STATE_OTP_VERIFICATION)
-                                }
-                            })
-            )
+    fun autoVerification()
+            = getCompositeDisposable().add(
+            loginRepository.initAutoVerify(60)
+                    .subscribe({
+                        remainingTime.set(it)
+                        if (remainingTime.get() == 0) {
+                            state.set(State.STATE_OTP_VERIFICATION)
+                        }
+                    }))
 
     fun signInWith(credential: PhoneAuthCredential)
             = getCompositeDisposable().add(
             loginRepository.signInWith(credential)
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
-    )
+                    .doOnSubscribe { isLoading.set(true) }
+                    .doAfterTerminate { isLoading.set(false) }
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) }))
 
     fun saveUser(user: User)
             = getCompositeDisposable().add(
             loginRepository.saveUser(user)
+                    .doOnSubscribe { isLoading.set(true) }
+                    .doAfterTerminate { isLoading.set(false) }
                     .subscribe({
-                        val phoneAuthDataModel =
-                                if (it.isSuccess()) {
-                                    PhoneAuthDataModel.create {
-                                        state { State.STATE_USER_WRITE_SUCCESS }
-                                    }
-                                } else {
-                                    PhoneAuthDataModel.create {
-                                        state { State.STATE_USER_WRITE_FAILED }
-                                    }
-                                }
-                        handleOnSuccess(Result(phoneAuthDataModel, null))
+                        if (it.isSuccess()) {
+                            val phoneAuthDataModel = PhoneAuthDataModel.create {
+                                state { State.STATE_USER_WRITE_SUCCESS }
+                            }
+                            handleOnSuccess(Result(phoneAuthDataModel, null))
+                        } else {
+                            handleOnError(it.error!!)
+                        }
                     }, {
                         handleOnError(it)
-                    })
-    )
+                    }))
 
 }

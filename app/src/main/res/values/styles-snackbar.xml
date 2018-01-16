@@ -14,6 +14,6 @@
   </style>
 
   <style name="Snackbar.Neutral">
-    <item name="android:background">@android:color/holo_blue_light</item>
+    <item name="android:background">@color/primary_text</item>
   </style>
 </resources>

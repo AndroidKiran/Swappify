@@ -19,6 +19,10 @@
             name="clickCallBack"
             type="swapp.items.com.swappify.controllers.signup.ui.ILogInNavigator" />
 
+        <variable
+            name="snackBarConfig"
+            type="swapp.items.com.swappify.controllers.configs.SnackbarConfiguration"/>
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -26,7 +30,8 @@
         android:layout_height="match_parent"
         android:background="?attr/colorPrimary"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        bind:snackBarBinding="@{snackBarConfig}">
 
 
         <android.support.v7.widget.AppCompatImageView
@@ -98,9 +103,6 @@
                 android:visibility="@{viewModel.state == State.STATE_OTP_VERIFICATION ? View.VISIBLE : View.GONE}"
                 bind:clickCallBack="@{clickCallBack}"
                 bind:viewModel="@{viewModel}" />
-
-
-
 
         </FrameLayout>
 

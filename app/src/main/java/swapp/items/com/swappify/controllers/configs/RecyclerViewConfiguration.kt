@@ -3,7 +3,6 @@ package swapp.items.com.swappify.controllers.configs
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
 class RecyclerViewConfiguration : BaseObservable() {
@@ -29,24 +28,28 @@ class RecyclerViewConfiguration : BaseObservable() {
             field = value
         }
 
-    @get:Bindable
-    var recyclerOrientation: Int = LinearLayoutManager.VERTICAL
-        private set(value) {
-            field = value
+    fun newState(recyclerAdapter: RecyclerView.Adapter<*>?): Builder = Builder(recyclerAdapter)
+
+    inner class Builder constructor(private val recyclerAdapter: RecyclerView.Adapter<*>?) {
+
+        private var layoutManager: RecyclerView.LayoutManager? = null
+
+        fun setLayoutManger(layoutManager: RecyclerView.LayoutManager?): Builder {
+            this.layoutManager = layoutManager
+            return this@Builder
         }
 
-    fun setRecyclerConfig(layoutManager: RecyclerView.LayoutManager?,
-                          recyclerAdapter: RecyclerView.Adapter<*>?,
-                          recyclerOrientation: Int = LinearLayoutManager.VERTICAL) {
+        fun commit() {
+            this@RecyclerViewConfiguration.setRecyclerConfig(recyclerAdapter, layoutManager)
+        }
+
+    }
+
+    fun setRecyclerConfig(recyclerAdapter: RecyclerView.Adapter<*>?, layoutManager: RecyclerView.LayoutManager?) {
         this.layoutManager = layoutManager
         this.recyclerAdapter = recyclerAdapter
-        this.recyclerOrientation = recyclerOrientation
         notifyChange()
     }
 
-    fun setRecyclerConfig(recyclerAdapter: RecyclerView.Adapter<*>?) {
-        this.recyclerAdapter = recyclerAdapter
-        notifyChange()
-    }
 }
 

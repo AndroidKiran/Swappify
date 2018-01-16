@@ -54,4 +54,5 @@ abstract class BaseActivity<out B : ViewDataBinding, out V : BaseViewModel> : Ap
     }
 
     fun getViewDataBinding(): B = baseViewDataBinding
+
 }

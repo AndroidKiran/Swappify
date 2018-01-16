@@ -592,7 +592,7 @@ class SearchView : FrameLayout, View.OnClickListener {
     fun hideKeyboard() {
         if (!isInEditMode) {
             val imm = searchEditText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0)
+            imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
         }
     }
 
@@ -631,13 +631,6 @@ class SearchView : FrameLayout, View.OnClickListener {
     fun setAdapter(adapter: RecyclerView.Adapter<*>) {
         this.adapter = adapter
         recyclerView.adapter = adapter
-
-//        if (adapter is SearchAdapter)
-//            (adapter as SearchAdapter).addOnItemClickListener(object : SearchAdapter.OnItemClickListener() {
-//                fun onItemClick(view: View, position: Int) {
-//                    dispatchFilters()
-//                }
-//            }, 0)
     }
 
     private fun open(animate: Boolean) {

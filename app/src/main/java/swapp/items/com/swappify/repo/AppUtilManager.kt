@@ -1,7 +1,6 @@
 package swapp.items.com.swappify.repo
 
 import com.google.gson.Gson
-import swapp.items.com.swappify.common.ConnectionUtil
 import swapp.items.com.swappify.common.PreferenceUtils
 import swapp.items.com.swappify.firebase.analytics.AppAnalytics
 import swapp.items.com.swappify.firebase.crashlytics.AppCrashlytics
@@ -14,5 +13,4 @@ data class AppUtilManager @Inject constructor(val preferencesUtils: PreferenceUt
                                               val crashReport: AppCrashlytics,
                                               val analytics: AppAnalytics,
                                               val gson: Gson,
-                                              val schedulerProvider: SchedulerProvider,
-                                              val connectionUtil: ConnectionUtil)
+                                              val schedulerProvider: SchedulerProvider)

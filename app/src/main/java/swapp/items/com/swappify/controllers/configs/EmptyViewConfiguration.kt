@@ -23,14 +23,31 @@ class EmptyViewConfiguration : BaseObservable() {
         }
 
     @get:Bindable
-    var emptyScreenText: String? = null
+    var emptyScreenText: CharSequence? = null
         private set (value) {
             field = value
         }
 
-    fun setEmptyViewConfig(emptyScreenDrawable: Drawable?, emptyScreenText: String?) {
-        this.emptyScreenDrawable = emptyScreenDrawable
+    fun newState(msg: CharSequence?): Builder = Builder(msg)
+
+    inner class Builder constructor(private val msg: CharSequence?) {
+
+        private var emptyScreenDrawable: Drawable? = null
+
+        fun setDrawable(emptyScreenDrawable: Drawable?): Builder {
+            this.emptyScreenDrawable = emptyScreenDrawable
+            return this@Builder
+        }
+
+        fun commit() {
+            this@EmptyViewConfiguration.setEmptyViewConfig(msg, emptyScreenDrawable)
+        }
+    }
+
+
+    fun setEmptyViewConfig(emptyScreenText: CharSequence?, emptyScreenDrawable: Drawable?) {
         this.emptyScreenText = emptyScreenText
+        this.emptyScreenDrawable = emptyScreenDrawable
         notifyChange()
     }
 }

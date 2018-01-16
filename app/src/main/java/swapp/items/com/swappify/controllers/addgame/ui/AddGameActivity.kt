@@ -2,6 +2,7 @@ package swapp.items.com.swappify.controllers.addgame.ui
 
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +12,12 @@ import android.view.View
 import android.widget.FrameLayout
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasBroadcastReceiverInjector
 import dagger.android.support.HasSupportFragmentInjector
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.common.extension.addFragmentSafely
-import swapp.items.com.swappify.common.extension.observe
+import swapp.items.com.swappify.common.extension.*
+import swapp.items.com.swappify.components.networkconnection.NetworkConnectionLifeCycleObserver
 import swapp.items.com.swappify.components.search.ISearchOnClickListener
 import swapp.items.com.swappify.components.search.ISearchOnQueryChangeListener
 import swapp.items.com.swappify.components.search.SearchAdapter
@@ -24,13 +26,13 @@ import swapp.items.com.swappify.controllers.addgame.model.GameModel
 import swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controllers.base.BaseActivity
 import swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration
+import swapp.items.com.swappify.controllers.configs.SnackbarConfiguration
 import swapp.items.com.swappify.databinding.ActivityAddGameBinding
 import javax.inject.Inject
 
 
-class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>(), HasSupportFragmentInjector, SearchAdapter.SearchViewItemListener {
-
-    private var recyclerViewConfiguration = RecyclerViewConfiguration()
+class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>(), HasSupportFragmentInjector,
+        SearchAdapter.SearchViewItemListener, HasBroadcastReceiverInjector {
 
     @Inject
     lateinit var searchAdapter: SearchAdapter<SearchAdapter.SearchViewItemListener>
@@ -43,6 +45,13 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
     @Inject
     lateinit var addGameViewModel: AddGameViewModel
+
+    @Inject
+    lateinit var broadcastReceiverDispatchingAndroidInjector: DispatchingAndroidInjector<BroadcastReceiver>
+
+    private var recyclerViewConfiguration = RecyclerViewConfiguration()
+
+    private val snackBarConfiguration = SnackbarConfiguration()
 
     private lateinit var activityAddGameBinding: ActivityAddGameBinding
 
@@ -62,7 +71,7 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         activityAddGameBinding.setVariable(BR.searchOnClickListener, onSearchClickListener)
         activityAddGameBinding.setVariable(BR.searchOnQueryChangeListener, onSearchQueryChangeListeners)
         activityAddGameBinding.setVariable(BR.searchRecyclerViewConfig, recyclerViewConfiguration)
-        activityAddGameBinding.executePendingBindings()
+        activityAddGameBinding.setVariable(BR.snackBarConfig, snackBarConfiguration)
     }
 
 
@@ -74,10 +83,14 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
                     SearchGameFragment.FRAGMENT_TAG, true, true)
         }
 
+        NetworkConnectionLifeCycleObserver(lifecycle, addGameViewModel.isNetConnected, this@AddGameActivity)
+
         observeSearchQueryChange()
         observeFinishActivityChange()
+        observerNetworkChange()
+        observerApiCallErrorChange()
 
-        recyclerViewConfiguration.setRecyclerConfig(searchAdapter)
+        recyclerViewConfiguration.recyclerViewBinding(searchAdapter, null)
         bottomSheetBehavior = BottomSheetBehavior.from<FrameLayout>(activityAddGameBinding.fragmentContainerSearchGame)
         bottomSheetBehavior?.setBottomSheetCallback(bottomSheetCallBack)
         activityAddGameBinding.searchView.setNavigationIconArrowSearch()
@@ -128,20 +141,37 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
     }
 
-    private fun observeSearchQueryChange() {
-        addGameViewModel.searchQueryLiveData.observe(this) {
-            if(!it.isNullOrEmpty()) {
-                addGameViewModel.searchInputText.set(it)
-                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    private fun observeSearchQueryChange() = addGameViewModel.searchQueryLiveData.observe(this) {
+        if (!it.isNullOrEmpty()) {
+            addGameViewModel.searchInputText.set(it)
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+    }
+
+
+    private fun observeFinishActivityChange() = addGameViewModel.finishActivityLiveData.observe(this) {
+        if (it!!) {
+            onBackPressed()
+        }
+    }
+
+    private fun observerNetworkChange() = addGameViewModel.isNetConnected.observe(this@AddGameActivity) {
+        if (it == false) {
+            addGameViewModel.isSnackBarAlive = true
+            hideKeyboard()
+            snackBarConfiguration.showNoNetworkSnackBar(getString(R.string.str_no_internet_title),
+                    getString(R.string.str_dismiss), View.OnClickListener { })
+        } else {
+            if (addGameViewModel.isSnackBarAlive) {
+                snackBarConfiguration.showSnackBar(getString(R.string.str_internet_title), SnackbarConfiguration.Type.VALID)
             }
         }
     }
 
-    private fun observeFinishActivityChange() {
-        addGameViewModel.finishActivityLiveData.observe(this) {
-            if (it!!) {
-                onBackPressed()
-            }
+    private fun observerApiCallErrorChange() = addGameViewModel.apiError.observe(this@AddGameActivity) {
+        if (it == true) {
+            hideKeyboard()
+            snackBarConfiguration.showSnackBar(getString(R.string.str_something_wrong_msg), SnackbarConfiguration.Type.NEUTRAL)
         }
     }
 
@@ -151,18 +181,17 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            if(newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+            if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
                 addGameViewModel.searchQueryLiveData.value = ""
             }
         }
-
     }
 
     override fun onBackPressed() {
         if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
         } else {
-            super.onBackPressed()
+            finish()
         }
     }
 
@@ -177,11 +206,14 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
     }
 
+    override fun broadcastReceiverInjector(): AndroidInjector<BroadcastReceiver> = broadcastReceiverDispatchingAndroidInjector
+
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(SEARCH_QUERY, addGameViewModel.searchInputText.get())
         outState?.putParcelable(GAME_MODEL, addGameViewModel.gameModel.get())
         super.onSaveInstanceState(outState)
     }
+
 
     companion object {
 

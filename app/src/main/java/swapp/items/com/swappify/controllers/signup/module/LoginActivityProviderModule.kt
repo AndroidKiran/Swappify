@@ -13,7 +13,7 @@ import swapp.items.com.swappify.injection.qualifiers.ViewModelKey
 import swapp.items.com.swappify.injection.scopes.PerFragment
 
 @Module
-abstract class LogInActivityProviderModule {
+abstract class LoginActivityProviderModule {
 
     @Binds
     @IntoMap

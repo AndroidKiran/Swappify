@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.extension.*
@@ -21,10 +22,6 @@ import javax.inject.Inject
 
 class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewModel>(), SearchResultAdapter.SearchResultItemListener {
 
-    companion object {
-        val FRAGMENT_TAG = SearchGameFragment::class.java.simpleName!!
-    }
-
     @Inject
     lateinit var viewFactory: ViewModelProvider.Factory
 
@@ -39,13 +36,13 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
 
     private lateinit var fragmentSearchGameBinding: FragmentSearchGameBinding
 
-    private lateinit var emptyViewConfiguration: EmptyViewConfiguration
+    private val contentLoadingConfiguration = ContentLoadingConfiguration()
 
-    private lateinit var errorViewConfiguration: ErrorViewConfiguration
+    private val emptyViewConfiguration = EmptyViewConfiguration()
 
-    private lateinit var recyclerViewConfiguration: RecyclerViewConfiguration
+    private val errorViewConfiguration = ErrorViewConfiguration()
 
-    private lateinit var contentLoadingConfiguration: ContentLoadingConfiguration
+    private val recyclerViewConfiguration = RecyclerViewConfiguration()
 
     override fun getLayoutId(): Int = R.layout.fragment_search_game
 
@@ -67,34 +64,29 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initUI()
         observeSearchQueryChange()
         observeSearchResultChange()
         observeGameModelChange()
+        searchResultAdapter.navigator = this@SearchGameFragment
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUI()
     }
 
     private fun initUI() {
-        emptyViewConfiguration = EmptyViewConfiguration()
-        emptyViewConfiguration.emptyViewBinding(
-                ContextCompat.getDrawable(context, R.drawable.vc_replay_black),
-                getString(R.string.str_game_search_empty)
-        )
+        emptyViewConfiguration.emptyViewBinding(getString(R.string.str_game_search_empty),
+                ContextCompat.getDrawable(context, R.drawable.vc_replay_black))
 
-        errorViewConfiguration = ErrorViewConfiguration()
-        errorViewConfiguration.errorViewBinding(
-                ContextCompat.getDrawable(context, R.drawable.vc_replay_black),
-                getString(R.string.str_game_search_empty)
-        )
+        errorViewConfiguration.errorViewBinding(getString(R.string.str_game_search_empty),
+                ContextCompat.getDrawable(context, R.drawable.vc_replay_black), null)
 
-        contentLoadingConfiguration = ContentLoadingConfiguration()
-        contentLoadingConfiguration.contentLoadingBinding(
-                getString(R.string.str_searching, addGameViewModel.searchInputText.get())
-        )
+        contentLoadingConfiguration.contentLoadingBinding(getString(R.string.str_searching,
+                addGameViewModel.searchInputText.get()))
 
-        recyclerViewConfiguration = RecyclerViewConfiguration()
-        recyclerViewConfiguration.recyclerViewBinding(linearLayoutManager, searchResultAdapter)
+        recyclerViewConfiguration.recyclerViewBinding(searchResultAdapter, linearLayoutManager)
 
-        searchResultAdapter.navigator = this@SearchGameFragment
     }
 
     private fun observeSearchQueryChange() {
@@ -143,6 +135,10 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
     override fun onItemClick(gameModel: GameModel?) {
         addGameViewModel.gameModelLiveData.value = gameModel
         activity.onBackPressed()
+    }
+
+    companion object {
+        val FRAGMENT_TAG = SearchGameFragment::class.java.simpleName!!
     }
 
 }
