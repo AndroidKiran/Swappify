@@ -18,7 +18,7 @@ class BindingUtils {
     companion object {
 
         @JvmStatic
-        @BindingAdapter(value = *arrayOf("imageUrl", "placeHolder"), requireAll = true)
+        @BindingAdapter(value = ["imageUrl", "placeHolder"], requireAll = true)
         fun bindLoadImage(imageView: AppCompatImageView?, url: String?, placeHolder: Drawable?) {
             if (AppUtils.isEmpty(url) || placeHolder == null) return
             val context = imageView?.context

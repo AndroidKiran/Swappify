@@ -17,6 +17,6 @@ class SearchGameFragmentModule {
 
     @PerFragment
     @Provides
-    fun provideLinearLayoutManager(searchGameFragment: SearchGameFragment): LinearLayoutManager =
-            LinearLayoutManager(searchGameFragment.context)
+    fun provideLinearLayoutManager(searchGameFragment: SearchGameFragment): LinearLayoutManager
+            = LinearLayoutManager(searchGameFragment.context)
 }

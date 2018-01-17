@@ -13,11 +13,7 @@
             type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel" />
 
         <variable
-            name="textChangeCallBack"
-            type="swapp.items.com.swappify.components.TextChangeListener" />
-
-        <variable
-            name="clickCallBack"
+            name="viewCallBack"
             type="swapp.items.com.swappify.controllers.addgame.ui.IAddGameNavigator" />
 
     </data>
@@ -121,7 +117,7 @@
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().developer}"
-                                app:addTextChangedListener="@{textChangeCallBack}"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="Black studio" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -148,7 +144,7 @@
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().genre}"
-                                app:addTextChangedListener="@{textChangeCallBack}"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="Shooter" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -175,7 +171,7 @@
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().publisher}"
-                                app:addTextChangedListener="@{textChangeCallBack}"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="Activision slhjsdhjshdjhsdjhsdsdjsdhjsdjhsdjh" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -202,7 +198,7 @@
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().releaseDate}"
-                                app:addTextChangedListener="@{textChangeCallBack}"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="12 APril 2018" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -232,7 +228,7 @@
                                 android:scrollbarStyle="insideInset"
                                 android:scrollbars="vertical"
                                 android:text="@{addItemViewModel.gameModel.get().summary}"
-                                app:addTextChangedListener="@{textChangeCallBack}"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="@string/lorem" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -242,7 +238,7 @@
                             android:id="@+id/next_button"
                             style="@style/AppTheme.Button.Raised"
                             android:layout_marginTop="@dimen/dimen_16"
-                            android:onClick="@{() -> clickCallBack.onAddGameClick()}"
+                            android:onClick="@{() -> viewCallBack.onAddGameClick()}"
                             android:text="@string/str_add_game"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -300,7 +296,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginEnd="@dimen/dimen_0.5"
                         android:background="?attr/colorPrimary"
-                        android:onClick="@{() -> clickCallBack.onCameraClick()}"
+                        android:onClick="@{() -> viewCallBack.onCameraClick()}"
                         app:srcCompat="@drawable/vc_add_a_photo" />
 
                     <android.support.v7.widget.AppCompatImageButton
@@ -311,7 +307,7 @@
                         android:layout_marginStart="@dimen/dimen_0.5"
                         android:layout_toEndOf="@id/camera_button"
                         android:background="?attr/colorPrimary"
-                        android:onClick="@{() -> clickCallBack.onGalleryClick()}"
+                        android:onClick="@{() -> viewCallBack.onGalleryClick()}"
                         app:srcCompat="@drawable/vc_photo" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -357,7 +353,7 @@
                     android:maxLines="2"
                     android:minEms="7"
                     android:text="@{addItemViewModel.gameModel.get().name}"
-                    app:addTextChangedListener="@{textChangeCallBack}"
+                    android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                     tools:text="Halo lsdshdjhsdjsdhjhdsdjjdsh" />
 
             </android.support.design.widget.TextInputLayout>

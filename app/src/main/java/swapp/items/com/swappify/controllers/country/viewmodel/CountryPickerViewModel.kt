@@ -12,10 +12,8 @@ import swapp.items.com.swappify.controllers.SwapApplication
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.controllers.country.model.Countries
 import swapp.items.com.swappify.controllers.country.model.Country
-import swapp.items.com.swappify.injection.scopes.PerActivity
 import javax.inject.Inject
 
-@PerActivity
 class CountryPickerViewModel @Inject constructor(countryPickerDataManager: CountryPickerDataManager, application: SwapApplication) : BaseViewModel(application) {
 
     private val jsonPath: String = "json/countries.json"

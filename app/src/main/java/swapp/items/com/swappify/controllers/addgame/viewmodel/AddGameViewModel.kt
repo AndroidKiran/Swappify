@@ -1,14 +1,11 @@
 package swapp.items.com.swappify.controllers.addgame.viewmodel
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.net.Uri
-import android.text.TextUtils
 import com.google.firebase.FirebaseNetworkException
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.common.AbsentLiveData
 import swapp.items.com.swappify.common.SingleLiveEvent
 import swapp.items.com.swappify.common.extension.switchMap
 import swapp.items.com.swappify.controllers.SwapApplication
@@ -17,17 +14,19 @@ import swapp.items.com.swappify.controllers.addgame.model.OptionsModel
 import swapp.items.com.swappify.controllers.addgame.model.PostGameModel
 import swapp.items.com.swappify.controllers.base.BaseViewModel
 import swapp.items.com.swappify.firebase.utils.Result
-import swapp.items.com.swappify.repo.game.GameRepository
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import java.io.IOException
 import javax.inject.Inject
 
-class AddGameViewModel : BaseViewModel {
+@PerActivity
+class AddGameViewModel @Inject
+constructor(addGameDataManager: AddGameDataManager, application: SwapApplication) : BaseViewModel(application) {
 
-    var platFormsList: Array<String>? = null
+    var platFormsList = application.resources.getStringArray(R.array.platforms)
 
     var searchInputText = ObservableField<String>()
     var searchQueryLiveData = MutableLiveData<String>()
-    var gamesLiveData: LiveData<List<GameModel>>
+
     var gameModelLiveData = SingleLiveEvent<GameModel>()
     var gameModel = ObservableField<GameModel>(GameModel())
     var finishActivityLiveData = SingleLiveEvent<Boolean>()
@@ -37,29 +36,15 @@ class AddGameViewModel : BaseViewModel {
     var errorGameUrl = ObservableBoolean(false)
     var isLoading = ObservableBoolean(false)
 
-    private var gameRepository: GameRepository
-
-    @Inject
-    constructor(addGameDataManager: AddGameDataManager, application: SwapApplication) : super(application) {
-        this.gameRepository = addGameDataManager.gameRepository
-
-        gamesLiveData = searchQueryLiveData.switchMap {
-            when (it) {
-                null -> AbsentLiveData.create()
-                else -> searchGamesFor(it)
-            }
+    var gamesLiveData = searchQueryLiveData.switchMap {
+        if(it.isNullOrEmpty()) {
+            MutableLiveData<List<GameModel>>()
+        } else {
+            gameRepository.getGamesSearchFor(it)
         }
-        platFormsList = application.resources.getStringArray(R.array.platforms)
     }
 
-    private fun searchGamesFor(query: String?): LiveData<List<GameModel>> {
-
-        if (TextUtils.getTrimmedLength(query) <= 0) {
-            return MutableLiveData<List<GameModel>>()
-        }
-
-        return gameRepository.getGamesSearchFor(query)
-    }
+    private val gameRepository = addGameDataManager.gameRepository
 
     fun getOptionalData(gameId: Int? = 0, developer: Int? = 0, publisher: Int? = 0)
             = gameRepository.getOptionalData(gameId, developer, publisher)

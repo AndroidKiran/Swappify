@@ -8,7 +8,6 @@ import swapp.items.com.swappify.controllers.ViewModelFactory
 import swapp.items.com.swappify.controllers.addgame.module.AddGameActivityModule
 import swapp.items.com.swappify.controllers.addgame.module.AddGameActivityProviderModule
 import swapp.items.com.swappify.controllers.addgame.ui.AddGameActivity
-import swapp.items.com.swappify.controllers.signup.module.LoginActivityModule
 import swapp.items.com.swappify.controllers.signup.module.LoginActivityProviderModule
 import swapp.items.com.swappify.controllers.signup.ui.LoginActivity
 import swapp.items.com.swappify.injection.scopes.PerActivity
@@ -21,7 +20,7 @@ abstract class ActivityBuilder {
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @PerActivity
-    @ContributesAndroidInjector(modules = [(LoginActivityModule::class),(LoginActivityProviderModule::class)])
+    @ContributesAndroidInjector(modules = [(LoginActivityProviderModule::class)])
     abstract fun provideLogInActivity(): LoginActivity
 
     @PerActivity

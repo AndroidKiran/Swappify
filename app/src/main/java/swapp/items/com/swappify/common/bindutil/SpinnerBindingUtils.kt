@@ -13,7 +13,7 @@ class SpinnerBindingUtils {
     companion object {
 
         @JvmStatic
-        @BindingAdapter(value = *arrayOf("bind:selectedItem", "bind:selectedItemAttrChanged"), requireAll = false)
+        @BindingAdapter(value = ["bind:selectedItem", "bind:selectedItemAttrChanged"], requireAll = false)
         fun <D> bindItemSelected(spinner: AppCompatSpinner, itemSetByViewModel: D?, inverseBindingListener: InverseBindingListener) {
 
             val initialSelectedPlanet: D? = itemSetByViewModel

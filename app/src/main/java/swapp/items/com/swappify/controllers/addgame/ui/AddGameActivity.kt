@@ -142,8 +142,10 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
     }
 
     private fun observeSearchQueryChange() = addGameViewModel.searchQueryLiveData.observe(this) {
-        if (!it.isNullOrEmpty()) {
-            addGameViewModel.searchInputText.set(it)
+        addGameViewModel.searchInputText.set(it)
+
+        val isBottomSheetHidden = bottomSheetBehavior?.state == BottomSheetBehavior.STATE_COLLAPSED
+        if (!it.isNullOrEmpty() && isBottomSheetHidden) {
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }

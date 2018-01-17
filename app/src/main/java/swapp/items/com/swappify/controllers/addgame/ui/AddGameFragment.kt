@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPropertyAnimatorListener
+import android.text.Editable
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -18,7 +19,6 @@ import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.AppUtils
 import swapp.items.com.swappify.components.SlideAnimation
-import swapp.items.com.swappify.components.TextChangeListener
 import swapp.items.com.swappify.components.imagepicker.OverlapPickerActivity
 import swapp.items.com.swappify.components.imagepicker.OverlapPickerActivity.Companion.URI
 import swapp.items.com.swappify.components.imagepicker.Sources
@@ -28,11 +28,10 @@ import swapp.items.com.swappify.databinding.FragmentAddGameBinding
 import javax.inject.Inject
 
 
-class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>(),
-        AppBarLayout.OnOffsetChangedListener {
+class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>(), AppBarLayout.OnOffsetChangedListener {
 
-    private var isAnchorHidden: Boolean = false
-    private var isViewHidden: Boolean = false
+    private var isAnchorHidden = false
+    private var isViewHidden = false
     private var maxScrollSize = 0
 
     @Inject
@@ -54,8 +53,7 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     override fun executePendingVariablesBinding() {
         fragmentAddGameBinding = getViewDataBinding()
         fragmentAddGameBinding.setVariable(BR.addItemViewModel, addGameViewModel)
-        fragmentAddGameBinding.setVariable(BR.textChangeCallBack, textWatcher)
-        fragmentAddGameBinding.setVariable(BR.clickCallBack, onClickListener)
+        fragmentAddGameBinding.setVariable(BR.viewCallBack, listener)
         fragmentAddGameBinding.executePendingBindings()
     }
 
@@ -154,37 +152,6 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         return false
     }
 
-    private var textWatcher: TextChangeListener = object : TextChangeListener() {
-
-        override fun afterTextChanged(newValue: String?) {
-
-            if (fragmentAddGameBinding.nameEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameName(newValue)
-            }
-
-            if (fragmentAddGameBinding.developerEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameDeveloper(newValue)
-            }
-
-            if (fragmentAddGameBinding.genreEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameGenre(newValue)
-            }
-
-            if (fragmentAddGameBinding.publisherEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGamePlublisher(newValue)
-            }
-
-            if (fragmentAddGameBinding.releaseDateEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameReleaseDate(newValue)
-            }
-
-            if (fragmentAddGameBinding.summaryEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameSummary(newValue)
-            }
-        }
-    }
-
-
     private val onSpinnerItemSelectionListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(adapter: AdapterView<*>?) {
 
@@ -203,7 +170,34 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
 
     private val onTouchListener = View.OnTouchListener { view, motionEvent -> handleOnTouch(view, motionEvent) }
 
-    private val onClickListener = object : IAddGameNavigator {
+    private val listener = object : IAddGameNavigator {
+
+        override fun afterTextChanged(editable: Editable) {
+
+            if (fragmentAddGameBinding.nameEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameName(editable.toString())
+            }
+
+            if (fragmentAddGameBinding.developerEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameDeveloper(editable.toString())
+            }
+
+            if (fragmentAddGameBinding.genreEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameGenre(editable.toString())
+            }
+
+            if (fragmentAddGameBinding.publisherEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGamePlublisher(editable.toString())
+            }
+
+            if (fragmentAddGameBinding.releaseDateEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameReleaseDate(editable.toString())
+            }
+
+            if (fragmentAddGameBinding.summaryEditText.isFocused) {
+                addGameViewModel.gameModel.get().setGameSummary(editable.toString())
+            }
+        }
 
         override fun onAddGameClick() {
             if(addGameViewModel.validateGame()) {

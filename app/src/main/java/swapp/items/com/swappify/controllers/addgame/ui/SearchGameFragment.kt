@@ -89,15 +89,11 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
 
     }
 
-    private fun observeSearchQueryChange() {
-        addGameViewModel.searchQueryLiveData.observe(this) {
-            addGameViewModel.searchInputText.set(it)
-            contentLoadingConfiguration.contentLoadingBinding(
-                    getString(R.string.str_searching, it)
-            )
+    private fun observeSearchQueryChange() = addGameViewModel.searchQueryLiveData.observe(this) {
+            contentLoadingConfiguration.contentLoadingBinding(getString(R.string.str_searching, it))
             fragmentSearchGameBinding.multiStateViewLayout.multiStateView.setViewState(BindedMultiStateView.VIEW_STATE_LOADING)
         }
-    }
+
 
     private fun observeSearchResultChange() {
         addGameViewModel.gamesLiveData.observe(this) {
