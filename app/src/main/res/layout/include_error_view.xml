@@ -7,7 +7,7 @@
 
         <variable
             name="errorViewConfig"
-            type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.ErrorViewConfiguration" />
     </data>
 
 

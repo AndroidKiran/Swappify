@@ -8,7 +8,7 @@ import io.reactivex.Single
 import swapp.items.com.swappify.common.extension.firebaseResponseToResult
 import swapp.items.com.swappify.common.extension.getObservableAsync
 import swapp.items.com.swappify.common.extension.getSingleAsync
-import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
+import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.AppUtilManager

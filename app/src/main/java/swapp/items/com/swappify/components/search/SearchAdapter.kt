@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import swapp.items.com.swappify.common.AppUtils
-import swapp.items.com.swappify.controllers.base.BaseViewHolder
+import swapp.items.com.swappify.controller.base.BaseViewHolder
 import swapp.items.com.swappify.databinding.SearchItemBinding
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.room.SearchDao
@@ -110,7 +109,7 @@ class SearchAdapter<N : SearchAdapter.SearchViewItemListener> constructor() :
             val filterResults = Filter.FilterResults()
             var key = charSequence.toString()
             val searchResultList: List<SearchItem>?
-            if (AppUtils.isNotEmpty(key)) {
+            if (!key.isNullOrEmpty()) {
                 key = key.toLowerCase(Locale.getDefault())
                 searchResultList = searchDao?.getSearchResults(key)
             } else {

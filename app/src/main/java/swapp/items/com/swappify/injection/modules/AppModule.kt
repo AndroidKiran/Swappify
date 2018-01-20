@@ -5,8 +5,8 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import swapp.items.com.swappify.common.ConnectionUtil
-import swapp.items.com.swappify.common.PreferenceUtils
-import swapp.items.com.swappify.controllers.SwapApplication
+import swapp.items.com.swappify.common.PreferenceHelper
+import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.injection.scopes.PerApplication
 import swapp.items.com.swappify.room.AppDatabase
 import swapp.items.com.swappify.room.SearchDao
@@ -24,7 +24,7 @@ class AppModule constructor(val application: SwapApplication) {
 
     @Provides
     @PerApplication
-    fun provideSharedPreference(context: Context): PreferenceUtils = PreferenceUtils(context = context)
+    fun provideSharedPreference(context: Context): PreferenceHelper = PreferenceHelper(context = context)
 
     @Provides
     @PerApplication

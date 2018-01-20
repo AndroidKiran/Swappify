@@ -10,11 +10,11 @@
 
         <variable
             name="addItemViewModel"
-            type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel" />
+            type="swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel" />
 
         <variable
             name="viewCallBack"
-            type="swapp.items.com.swappify.controllers.addgame.ui.IAddGameNavigator" />
+            type="swapp.items.com.swappify.controller.addgame.ui.IAddGameNavigator" />
 
     </data>
 

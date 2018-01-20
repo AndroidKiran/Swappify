@@ -6,7 +6,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.storage.UploadTask
 import io.reactivex.Single
 import io.reactivex.functions.Function
-import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
+import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.firebase.listener.authlistener.RxResendVerificationCodeSubscriber
 import swapp.items.com.swappify.firebase.listener.authlistener.RxStartPhoneVerificationSubscriber
 import swapp.items.com.swappify.firebase.listener.firebaselistener.SetValueOnSubscribe

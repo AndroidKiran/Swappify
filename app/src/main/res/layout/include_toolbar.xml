@@ -6,7 +6,7 @@
     <data>
         <variable
             name="toolbarConfig"
-            type="swapp.items.com.swappify.controllers.configs.ToolbarConfiguration"/>
+            type="swapp.items.com.swappify.controller.configs.ToolbarConfiguration"/>
     </data>
 
     <android.support.v7.widget.Toolbar

@@ -7,7 +7,7 @@
 
         <variable
             name="itemViewModel"
-            type="swapp.items.com.swappify.controllers.country.model.Country" />
+            type="swapp.items.com.swappify.controller.country.model.Country" />
     </data>
 
     <android.support.constraint.ConstraintLayout

@@ -7,7 +7,7 @@
 
         <variable
             name="emptyViewConfig"
-            type="swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.EmptyViewConfiguration" />
     </data>
 
     <LinearLayout

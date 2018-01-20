@@ -8,23 +8,23 @@
 
         <variable
             name="addItemViewModel"
-            type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel" />
+            type="swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel" />
 
         <variable
             name="recyclerViewConfig"
-            type="swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.RecyclerViewConfiguration" />
 
         <variable
             name="contentLoadingBindingConfig"
-            type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.ContentLoadingConfiguration" />
 
         <variable
             name="emptyViewBindingConfig"
-            type="swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.EmptyViewConfiguration" />
 
         <variable
             name="errorViewBindingConfig"
-            type="swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.ErrorViewConfiguration" />
     </data>
 
     <FrameLayout

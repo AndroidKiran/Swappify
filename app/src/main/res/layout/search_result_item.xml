@@ -10,7 +10,7 @@
 
         <variable
             name="gameViewModel"
-            type="swapp.items.com.swappify.controllers.addgame.model.GameModel" />
+            type="swapp.items.com.swappify.controller.addgame.model.GameModel" />
 
     </data>
 

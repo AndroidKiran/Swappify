@@ -10,11 +10,11 @@
 
         <variable
             name="viewModel"
-            type="swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel" />
+            type="swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel" />
 
         <variable
             name="clickCallBack"
-            type="swapp.items.com.swappify.controllers.signup.ui.ILogInNavigator" />
+            type="swapp.items.com.swappify.controller.signup.ui.ILogInNavigator" />
 
     </data>
 

@@ -2,7 +2,7 @@ package swapp.items.com.swappify.components.search
 
 import android.databinding.BindingAdapter
 import android.databinding.ObservableField
-import swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration
+import swapp.items.com.swappify.controller.configs.RecyclerViewConfiguration
 
 object SearchDatabindingUtils {
 

@@ -3,7 +3,6 @@ package swapp.items.com.swappify.common
 import android.app.Application
 import android.content.Context
 import android.os.Build
-import android.text.TextUtils
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
@@ -73,10 +72,13 @@ class AppUtils {
                     .matches("[789]\\d{9}".toRegex())
         }
 
-        fun isEmpty(string: String?): Boolean = string == null || string.isEmpty()
-
-        fun isNotEmpty(string: String?): Boolean = string != null && !TextUtils.isEmpty(string)
-
         fun toMMMddyyyy(time: Long?): String = format.format(Date(time!!))
+
+        fun isLoggedIn(preferenceHelper: PreferenceHelper?)
+                = !preferenceHelper?.getStringPreference(Constant.USER_PHONE_NUM, "").isNullOrEmpty()
+
+        fun isIntroDone(preferenceHelper: PreferenceHelper)
+                = preferenceHelper?.getBooleanPreference(Constant.INTRO_COMPLETED, false)
+
     }
 }

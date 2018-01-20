@@ -9,7 +9,7 @@
         <item name="pinViewStyle">@style/PinWidget.PinView</item>
     </style>
 
-    <style name="AppTheme" parent="Base.AppTheme" >
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar" >
         <item name="android:windowBackground">@color/search_dark_icon</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
     </style>
@@ -83,5 +83,7 @@
         <item name="android:layout_width">@dimen/dimen_48</item>
         <item name="android:layout_height">@dimen/dimen_48</item>
     </style>
+
+    <style name="TestTheme" parent="Theme.AppCompat.NoActionBar" />
 
 </resources>

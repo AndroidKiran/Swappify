@@ -8,8 +8,8 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.SingleEmitter
 import io.reactivex.SingleOnSubscribe
-import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel
+import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
+import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
 import java.util.concurrent.TimeUnit
 
 class RxResendVerificationCodeSubscriber(private val phoneNumber: String,

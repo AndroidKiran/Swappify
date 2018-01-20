@@ -9,7 +9,7 @@
 
         <variable
             name="recyclerViewConfig"
-            type="swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.RecyclerViewConfiguration" />
 
     </data>
 

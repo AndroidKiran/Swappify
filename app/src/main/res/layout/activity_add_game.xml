@@ -9,7 +9,7 @@
 
         <variable
             name="addGameViewModel"
-            type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel" />
+            type="swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel" />
 
         <variable
             name="searchOnQueryChangeListener"
@@ -21,11 +21,11 @@
 
         <variable
             name="searchRecyclerViewConfig"
-            type="swapp.items.com.swappify.controllers.configs.RecyclerViewConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.RecyclerViewConfiguration" />
 
         <variable
             name="snackBarConfig"
-            type="swapp.items.com.swappify.controllers.configs.SnackbarConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.SnackbarConfiguration" />
 
     </data>
 
@@ -42,7 +42,7 @@
 
         <fragment
             android:id="@+id/fragment_container_add_game"
-            android:name="swapp.items.com.swappify.controllers.addgame.ui.AddGameFragment"
+            android:name="swapp.items.com.swappify.controller.addgame.ui.AddGameFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dimen_72"

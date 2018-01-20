@@ -8,7 +8,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
-import swapp.items.com.swappify.controllers.SwapApplication
+import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.firebase.analytics.AppAnalytics
 import swapp.items.com.swappify.firebase.config.AppRemoteConfig
 import swapp.items.com.swappify.firebase.crashlytics.AppCrashlytics

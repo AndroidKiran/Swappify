@@ -4,7 +4,7 @@
     <data>
         <variable
             name="addItemViewModel"
-            type="swapp.items.com.swappify.controllers.addgame.viewmodel.AddGameViewModel"/>
+            type="swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

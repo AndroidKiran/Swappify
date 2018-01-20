@@ -13,9 +13,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration
-import swapp.items.com.swappify.controllers.configs.EmptyViewConfiguration
-import swapp.items.com.swappify.controllers.configs.ErrorViewConfiguration
+import swapp.items.com.swappify.controller.configs.ContentLoadingConfiguration
+import swapp.items.com.swappify.controller.configs.EmptyViewConfiguration
+import swapp.items.com.swappify.controller.configs.ErrorViewConfiguration
 
 class BindedMultiStateView<B : ViewDataBinding> : FrameLayout {
 

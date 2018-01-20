@@ -6,7 +6,7 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDialogFragment
-import swapp.items.com.swappify.controllers.addgame.ui.AddGameActivity
+import swapp.items.com.swappify.controller.addgame.ui.AddGameActivity
 
 fun AppCompatActivity.addFragmentSafely(fragment: Fragment,
                                         @IdRes containerViewId: Int,

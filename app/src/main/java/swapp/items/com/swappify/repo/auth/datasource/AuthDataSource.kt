@@ -8,8 +8,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Single
-import swapp.items.com.swappify.controllers.signup.model.PhoneAuthDataModel
-import swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel
+import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
+import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
 import swapp.items.com.swappify.firebase.listener.FirebaseObservableListener
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.user.model.User

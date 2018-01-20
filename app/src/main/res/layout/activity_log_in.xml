@@ -7,21 +7,21 @@
 
     <data>
 
-        <import type="swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel.State" />
+        <import type="swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel.State" />
 
         <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel" />
+            type="swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel" />
 
         <variable
             name="clickCallBack"
-            type="swapp.items.com.swappify.controllers.signup.ui.ILogInNavigator" />
+            type="swapp.items.com.swappify.controller.signup.ui.ILogInNavigator" />
 
         <variable
             name="snackBarConfig"
-            type="swapp.items.com.swappify.controllers.configs.SnackbarConfiguration"/>
+            type="swapp.items.com.swappify.controller.configs.SnackbarConfiguration"/>
 
     </data>
 

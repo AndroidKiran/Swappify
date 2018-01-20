@@ -6,8 +6,8 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
-import swapp.items.com.swappify.controllers.addgame.model.GameModel
-import swapp.items.com.swappify.controllers.addgame.model.OptionsModel
+import swapp.items.com.swappify.controller.addgame.model.GameModel
+import swapp.items.com.swappify.controller.addgame.model.OptionsModel
 
 
 interface IGameApi {

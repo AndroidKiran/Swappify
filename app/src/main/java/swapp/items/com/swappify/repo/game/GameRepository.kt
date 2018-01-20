@@ -10,9 +10,9 @@ import swapp.items.com.swappify.common.extension.getObservableAsync
 import swapp.items.com.swappify.common.extension.getSingleAsync
 import swapp.items.com.swappify.common.extension.retrofitResponseToResult
 import swapp.items.com.swappify.common.extension.toLiveData
-import swapp.items.com.swappify.controllers.addgame.model.GameModel
-import swapp.items.com.swappify.controllers.addgame.model.OptionsModel
-import swapp.items.com.swappify.controllers.addgame.model.PostGameModel
+import swapp.items.com.swappify.controller.addgame.model.GameModel
+import swapp.items.com.swappify.controller.addgame.model.OptionsModel
+import swapp.items.com.swappify.controller.addgame.model.PostGameModel
 import swapp.items.com.swappify.firebase.listener.FirebaseAppStorage
 import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.injection.scopes.PerActivity

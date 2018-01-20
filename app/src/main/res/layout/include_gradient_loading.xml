@@ -9,7 +9,7 @@
 
         <variable
             name="gradientLoadingConfigView"
-            type="swapp.items.com.swappify.controllers.configs.ContentLoadingConfiguration" />
+            type="swapp.items.com.swappify.controller.configs.ContentLoadingConfiguration" />
 
     </data>
 

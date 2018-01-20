@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.controllers.configs.*
+import swapp.items.com.swappify.controller.configs.*
 
 
 fun EmptyViewConfiguration.emptyViewBinding(emptyMsg: CharSequence?, emptyDrawable: Drawable?) =

@@ -3,15 +3,12 @@ package swapp.items.com.swappify.common.bindutil
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.support.design.widget.TextInputLayout
-import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.AppCompatTextView
 import fr.ganfra.materialspinner.MaterialSpinner
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.common.AppUtils
 import swapp.items.com.swappify.components.glide.GlideApp
-import swapp.items.com.swappify.controllers.configs.EditTextConfiguration
-import swapp.items.com.swappify.controllers.signup.viewmodel.LogInViewModel
+import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
 
 class BindingUtils {
 
@@ -20,7 +17,7 @@ class BindingUtils {
         @JvmStatic
         @BindingAdapter(value = ["imageUrl", "placeHolder"], requireAll = true)
         fun bindLoadImage(imageView: AppCompatImageView?, url: String?, placeHolder: Drawable?) {
-            if (AppUtils.isEmpty(url) || placeHolder == null) return
+            if (url.isNullOrEmpty() || placeHolder == null) return
             val context = imageView?.context
             GlideApp.with(context)
                     .load(url)
@@ -31,7 +28,7 @@ class BindingUtils {
         @JvmStatic
         @BindingAdapter(value = "imageUrl")
         fun bindLoadImage(imageView: AppCompatImageView?, url: String?) {
-            if (AppUtils.isEmpty(url)) return
+            if (url.isNullOrEmpty()) return
             val context = imageView?.context
             GlideApp.with(context)
                     .load(url)
@@ -50,12 +47,6 @@ class BindingUtils {
         fun bindImageResource(imageView: AppCompatImageView?, imageResource: Int) {
             if (imageView == null || imageResource == 0) return
             imageView.setImageResource(imageResource)
-        }
-
-        @JvmStatic
-        @BindingAdapter(value = "editTextConfig")
-        fun bindEditTextConfiguration(appCompatEditText: AppCompatEditText?, editTextConfiguration: EditTextConfiguration?) {
-            appCompatEditText?.addTextChangedListener(editTextConfiguration?.textWatcher)
         }
 
         @JvmStatic

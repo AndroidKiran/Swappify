@@ -4,7 +4,7 @@ import android.support.multidex.MultiDexApplication
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
-import swapp.items.com.swappify.controllers.SwapApplication
+import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.injection.builder.ActivityBuilder
 import swapp.items.com.swappify.injection.modules.AppModule
 import swapp.items.com.swappify.injection.modules.FirebaseModule
