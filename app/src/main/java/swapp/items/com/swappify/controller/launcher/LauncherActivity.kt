@@ -6,7 +6,7 @@ import android.os.Bundle
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.AppUtils
-import swapp.items.com.swappify.controller.home.HomeActivity
+import swapp.items.com.swappify.controller.addgame.ui.AddGameActivity
 import swapp.items.com.swappify.controller.base.BaseActivity
 import swapp.items.com.swappify.controller.intro.ui.IntroActivity
 import swapp.items.com.swappify.controller.launcher.viewmodel.LauncherViewModel
@@ -19,7 +19,8 @@ class LauncherActivity : BaseActivity<ActivityLauncherBinding, LauncherViewModel
     @Inject
     lateinit var viewFactory: ViewModelProvider.Factory
 
-    private lateinit var launcherViewModel: LauncherViewModel
+    @Inject
+    lateinit var launcherViewModel: LauncherViewModel
 
     private lateinit var activityLauncherBinding: ActivityLauncherBinding
 
@@ -42,7 +43,7 @@ class LauncherActivity : BaseActivity<ActivityLauncherBinding, LauncherViewModel
         if (!AppUtils.isIntroDone(launcherViewModel.preferenceHelper)!!) {
             startActivity(IntroActivity.start(this@LauncherActivity))
         } else if(AppUtils.isLoggedIn(launcherViewModel.preferenceHelper)) {
-            startActivity(HomeActivity.start(this@LauncherActivity))
+            startActivity(AddGameActivity.start(this@LauncherActivity))
         } else {
             startActivity(LoginActivity.start(this@LauncherActivity))
         }

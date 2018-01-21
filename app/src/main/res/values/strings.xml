@@ -75,7 +75,7 @@
 
     <string name="str_searching">Searching for %s</string>
     <string name="str_platform_hint">Choose platform</string>
-    <string name="str_information">Information</string>
+    <string name="str_information">Game Info</string>
     <string name="cannot_take_pic">Cannot take a new picture.\nPlease check if storage is mounted.</string>
     <string name="error_camera_permission">No Camera permission!</string>
     <string name="error_gallery_permission">No Gallery permission!</string>
@@ -90,6 +90,10 @@
     <string name="str_something_wrong_msg">Something went wrong\u2026 Please try again</string>
     <string name="str_internet_title">Hurray, internet connection is back</string>
 
-
+    <!--Profile -->
+    <string name="str_country">Country</string>
+    <string name="str_city">City</string>
+    <string name="str_save_profile">Save profile</string>
+    <string name="str_personal_info">Personal Info</string>
 
 </resources>

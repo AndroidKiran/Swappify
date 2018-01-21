@@ -17,7 +17,8 @@ class IntroFragment : BaseFragment<FragmentIntroBinding, IntroViewModel>() {
     @Inject
     lateinit var viewFactory: ViewModelProvider.Factory
 
-    private lateinit var introViewModel: IntroViewModel
+    @Inject
+    lateinit var introViewModel: IntroViewModel
 
     private lateinit var fragmentIntroBinding: FragmentIntroBinding
 

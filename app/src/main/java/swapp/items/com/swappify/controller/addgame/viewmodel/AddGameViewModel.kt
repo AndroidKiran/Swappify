@@ -6,7 +6,6 @@ import android.databinding.ObservableField
 import android.net.Uri
 import com.google.firebase.FirebaseNetworkException
 import swapp.items.com.swappify.R
-import swapp.items.com.swappify.mvvm.SingleLiveEvent
 import swapp.items.com.swappify.common.extension.switchMap
 import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.addgame.model.GameModel
@@ -15,12 +14,12 @@ import swapp.items.com.swappify.controller.addgame.model.PostGameModel
 import swapp.items.com.swappify.controller.base.BaseViewModel
 import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.injection.scopes.PerActivity
+import swapp.items.com.swappify.mvvm.SingleLiveEvent
 import java.io.IOException
 import javax.inject.Inject
 
 @PerActivity
-class AddGameViewModel @Inject
-constructor(addGameDataManager: AddGameDataManager, application: SwapApplication) : BaseViewModel(application) {
+class AddGameViewModel @Inject constructor(addGameDataManager: AddGameDataManager, application: SwapApplication) : BaseViewModel(application) {
 
     var platFormsList = application.resources.getStringArray(R.array.platforms)
 

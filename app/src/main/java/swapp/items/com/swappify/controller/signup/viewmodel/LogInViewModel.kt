@@ -15,10 +15,12 @@ import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.base.BaseViewModel
 import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.firebase.utils.Result
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.mvvm.SingleLiveEvent
 import swapp.items.com.swappify.repo.user.model.User
 import javax.inject.Inject
 
+@PerActivity
 class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swapApplication: SwapApplication) : BaseViewModel(swapApplication) {
 
     var state = ObservableField<State>(State.STATE_INITIALIZED)

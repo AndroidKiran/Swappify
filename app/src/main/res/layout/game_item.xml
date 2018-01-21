@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        style="@style/AppTheme.Widget.CardView.Compat"
+        android:layout_width="@dimen/dimen_160"
+        android:layout_height="@dimen/dimen_220"
+        app:cardBackgroundColor="@color/disabled_color"
+        app:cardCornerRadius="@dimen/dimen_8">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_game_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/material_flat" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/AppTheme.Widget.TextView.Primary.Regular"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:padding="@dimen/dimen_4"
+                android:singleLine="true"
+                android:textSize="@dimen/font_10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Prince of persis" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_city"
+                style="@style/AppTheme.Widget.TextView.Primary.Regular"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:ellipsize="marquee"
+                android:gravity="center_horizontal|bottom"
+                android:padding="@dimen/dimen_4"
+                android:singleLine="true"
+                android:textSize="@dimen/font_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Ravikiran , Bangalore" />
+
+            <android.support.v7.widget.CardView
+                style="@style/AppTheme.Widget.CardView.Full"
+                android:layout_width="@dimen/dimen_54"
+                android:layout_height="@dimen/dimen_54"
+                android:layout_marginBottom="16dp"
+                android:shape="ring"
+                app:cardCornerRadius="@dimen/dimen_27"
+                app:cardElevation="@dimen/dimen_4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/vc_history_black" />
+
+
+            </android.support.v7.widget.CardView>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</layout>

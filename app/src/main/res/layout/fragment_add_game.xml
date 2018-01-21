@@ -21,8 +21,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/window_background">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -102,6 +101,7 @@
                             android:layout_marginEnd="@dimen/dimen_8"
                             android:layout_marginStart="@dimen/dimen_16"
                             android:animateLayoutChanges="true"
+                            android:hint="@string/str_developer"
                             android:padding="@dimen/dimen_4"
                             app:layout_constraintEnd_toStartOf="@+id/genre_text_input_layout"
                             app:layout_constraintHorizontal_bias="0.5"
@@ -112,12 +112,11 @@
                             <android.support.design.widget.TextInputEditText
                                 android:id="@+id/developer_edit_text"
                                 style="@style/AppTheme.EditText.Item.Tiny"
-                                android:hint="@string/str_developer"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 android:inputType="textCapSentences"
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().developer}"
-                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="Black studio" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -129,6 +128,7 @@
                             android:layout_width="0dp"
                             android:layout_marginEnd="@dimen/dimen_8"
                             android:layout_marginStart="@dimen/dimen_16"
+                            android:hint="@string/str_genre"
                             android:padding="@dimen/dimen_4"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
@@ -139,12 +139,11 @@
                             <android.support.design.widget.TextInputEditText
                                 android:id="@+id/genre_edit_text"
                                 style="@style/AppTheme.EditText.Item.Tiny"
-                                android:hint="@string/str_genre"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 android:inputType="textCapSentences"
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().genre}"
-                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="Shooter" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -156,6 +155,7 @@
                             android:layout_width="0dp"
                             android:layout_marginEnd="@dimen/dimen_8"
                             android:layout_marginStart="@dimen/dimen_16"
+                            android:hint="@string/str_publisher"
                             android:padding="@dimen/dimen_4"
                             app:layout_constraintEnd_toStartOf="@+id/release_date_text_input_layout"
                             app:layout_constraintHorizontal_bias="0.5"
@@ -166,12 +166,11 @@
                             <android.support.design.widget.TextInputEditText
                                 android:id="@+id/publisher_edit_text"
                                 style="@style/AppTheme.EditText.Item.Tiny"
-                                android:hint="@string/str_publisher"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().publisher}"
-                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="Activision slhjsdhjshdjhsdjhsdsdjsdhjsdjhsdjh" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -183,6 +182,7 @@
                             android:layout_width="0dp"
                             android:layout_marginEnd="@dimen/dimen_8"
                             android:layout_marginStart="@dimen/dimen_16"
+                            android:hint="@string/str_release_date"
                             android:padding="@dimen/dimen_4"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
@@ -193,12 +193,11 @@
                             <swapp.items.com.swappify.components.datetimepicker.DatePickerInputEditText
                                 android:id="@+id/release_date_edit_text"
                                 style="@style/AppTheme.EditText.Item.Tiny"
-                                android:hint="@string/str_release_date"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:minEms="12"
                                 android:text="@{addItemViewModel.gameModel.get().releaseDate}"
-                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="12 APril 2018" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -210,6 +209,7 @@
                             android:layout_marginEnd="@dimen/dimen_8"
                             android:layout_marginStart="@dimen/dimen_16"
                             android:layout_marginTop="@dimen/dimen_16"
+                            android:hint="@string/str_summary"
                             android:padding="@dimen/dimen_4"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -219,8 +219,8 @@
                                 android:id="@+id/summary_edit_text"
                                 style="@style/AppTheme.EditText.Item.Tiny"
                                 android:layout_width="match_parent"
+                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 android:gravity="top|start"
-                                android:hint="@string/str_summary"
                                 android:inputType="textMultiLine|textCapSentences"
                                 android:isScrollContainer="true"
                                 android:lines="6"
@@ -228,13 +228,12 @@
                                 android:scrollbarStyle="insideInset"
                                 android:scrollbars="vertical"
                                 android:text="@{addItemViewModel.gameModel.get().summary}"
-                                android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                                 tools:text="@string/lorem" />
 
                         </android.support.design.widget.TextInputLayout>
 
 
-                        <Button
+                        <android.support.v7.widget.AppCompatButton
                             android:id="@+id/next_button"
                             style="@style/AppTheme.Button.Raised"
                             android:layout_marginTop="@dimen/dimen_16"
@@ -285,7 +284,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/vc_photo"
+                        android:background="@drawable/vc_crop"
                         android:scaleType="centerCrop"
                         bind:imageUrl="@{addItemViewModel.gameModel.get().url}" />
 
@@ -332,6 +331,7 @@
                 style="@style/AppTheme.TextInputLayout.NoWidth.White"
                 android:layout_marginEnd="@dimen/dimen_8"
                 android:layout_marginStart="@dimen/dimen_16"
+                android:hint="@string/str_name"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/platform_spinner"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -345,15 +345,14 @@
                     style="@style/AppTheme.EditText.Item.White"
                     android:layout_width="match_parent"
                     android:layout_marginEnd="@dimen/dimen_20"
+                    android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="@string/str_name"
                     android:inputType="textCapSentences"
                     android:lines="2"
                     android:maxLines="2"
                     android:minEms="7"
                     android:text="@{addItemViewModel.gameModel.get().name}"
-                    android:afterTextChanged="@{(editable) -> viewCallBack.afterTextChanged(editable)}"
                     tools:text="Halo lsdshdjhsdjsdhjhdsdjjdsh" />
 
             </android.support.design.widget.TextInputLayout>

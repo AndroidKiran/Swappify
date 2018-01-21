@@ -32,7 +32,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(), HasS
 
     private lateinit var activityIntroViewBinding: ActivityIntroBinding
 
-    private lateinit var introViewModel: IntroViewModel
+    @Inject
+    lateinit var introViewModel: IntroViewModel
 
     override fun getViewModel(): IntroViewModel {
         introViewModel = ViewModelProviders.of(this@IntroActivity,
@@ -86,8 +87,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(), HasS
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
     companion object {
-        fun start(context: Context)
-                = Intent(context, IntroActivity::class.java)
+        fun start(context: Context) = Intent(context, IntroActivity::class.java)
     }
 
 }

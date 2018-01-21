@@ -51,7 +51,8 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     @Inject
     lateinit var broadcastReceiverDispatchingAndroidInjector: DispatchingAndroidInjector<BroadcastReceiver>
 
-    private lateinit var logInViewModel: LogInViewModel
+    @Inject
+    lateinit var logInViewModel: LogInViewModel
 
     private lateinit var activityLogInBinding: ActivityLogInBinding
 
@@ -60,8 +61,8 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     private val snackBarConfiguration = SnackbarConfiguration()
 
     override fun getViewModel(): LogInViewModel {
-        logInViewModel = ViewModelProviders.of(this@LoginActivity,
-                viewFactory).get(LogInViewModel::class.java)
+        logInViewModel = ViewModelProviders.of(this@LoginActivity, viewFactory)
+                .get(LogInViewModel::class.java)
         return logInViewModel
     }
 

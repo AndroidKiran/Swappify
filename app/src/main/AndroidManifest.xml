@@ -43,8 +43,7 @@
 
         <activity
             android:name=".controller.launcher.LauncherActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/TestTheme">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +52,7 @@
         </activity>
 
         <activity
-            android:name=".controller.home.HomeActivity"
+            android:name=".controller.home.ui.HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="swapp.items.com.swappify.action.MAIN_ACTION" />
@@ -75,6 +74,19 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="keyboardHidden|screenSize">
+            <intent-filter>
+                <action android:name="swapp.items.com.swappify.action.SIGNUP" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".controller.profile.ui.EditProfileActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="keyboardHidden|screenSize">
+
             <intent-filter>
                 <action android:name="swapp.items.com.swappify.action.SIGNUP" />
                 <category android:name="android.intent.category.DEFAULT" />

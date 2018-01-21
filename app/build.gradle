@@ -116,7 +116,9 @@ dependencies {
     implementation deps.firebase.core
     implementation deps.firebase.crash
 
-    implementation deps.glide.runtime
+    implementation (deps.glide.runtime, {
+        exclude group: "com.android.support"
+    })
     implementation deps.glide.annotation
     implementation deps.constraint_layout
     implementation deps.gson

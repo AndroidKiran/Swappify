@@ -2,28 +2,14 @@
 
     <!-- Base application theme. -->
 
-    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent_light</item>
+    <style name="AppTheme" parent="Base.AppTheme" >
+        <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="pinViewStyle">@style/PinWidget.PinView</item>
     </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar" >
-        <item name="android:windowBackground">@color/search_dark_icon</item>
-        <item name="android:textColorPrimary">@color/primary_text</item>
-    </style>
-
-
-    <style name="AppTheme.PrimaryBackGround" parent="AppTheme">
-        <item name="android:windowBackground">@color/pale_grey</item>
-    </style>
-
 
     <style name="AppTheme.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:background">@color/pale_grey</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar.Overflow</item>
     </style>
 
@@ -83,7 +69,5 @@
         <item name="android:layout_width">@dimen/dimen_48</item>
         <item name="android:layout_height">@dimen/dimen_48</item>
     </style>
-
-    <style name="TestTheme" parent="Theme.AppCompat.NoActionBar" />
 
 </resources>

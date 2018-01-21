@@ -24,13 +24,17 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
         CountryAdapter.CountryItemViewModelListener {
 
 
-    @Inject lateinit var countryAdapter: CountryAdapter<CountryAdapter.CountryItemViewModelListener>
+    @Inject
+    lateinit var countryAdapter: CountryAdapter<CountryAdapter.CountryItemViewModelListener>
 
-    @Inject lateinit var layoutManager: LinearLayoutManager
+    @Inject
+    lateinit var layoutManager: LinearLayoutManager
 
-    @Inject lateinit var viewFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewFactory: ViewModelProvider.Factory
 
-    @Inject lateinit var countryPickerViewModel: CountryPickerViewModel
+    @Inject
+    lateinit var countryPickerViewModel: CountryPickerViewModel
 
     private val recyclerViewConfiguration = RecyclerViewConfiguration()
 

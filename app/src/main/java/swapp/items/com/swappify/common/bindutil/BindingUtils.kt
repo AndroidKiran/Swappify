@@ -5,33 +5,41 @@ import android.graphics.drawable.Drawable
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.AppCompatTextView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import fr.ganfra.materialspinner.MaterialSpinner
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.components.glide.GlideApp
+import swapp.items.com.swappify.components.glide.GlideOptions.bitmapTransform
+import swapp.items.com.swappify.components.glide.transformation.CropCircleTransformation
 import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
+
+
 
 class BindingUtils {
 
     companion object {
 
         @JvmStatic
-        @BindingAdapter(value = ["imageUrl", "placeHolder"], requireAll = true)
-        fun bindLoadImage(imageView: AppCompatImageView?, url: String?, placeHolder: Drawable?) {
-            if (url.isNullOrEmpty() || placeHolder == null) return
-            val context = imageView?.context
-            GlideApp.with(context)
-                    .load(url)
-                    .placeholder(placeHolder)
-                    .into(imageView)
-        }
-
-        @JvmStatic
         @BindingAdapter(value = "imageUrl")
         fun bindLoadImage(imageView: AppCompatImageView?, url: String?) {
             if (url.isNullOrEmpty()) return
             val context = imageView?.context
-            GlideApp.with(context)
+            GlideApp.with(context!!)
                     .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView)
+        }
+
+
+        @JvmStatic
+        @BindingAdapter(value = "imageUrlWithCircularTrans")
+        fun bindLoadImageWithCircularTrans(imageView: AppCompatImageView?, url: String?) {
+            if (url.isNullOrEmpty()) return
+            val context = imageView?.context
+            GlideApp.with(context!!)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .apply(bitmapTransform(CropCircleTransformation()))
                     .into(imageView)
         }
 

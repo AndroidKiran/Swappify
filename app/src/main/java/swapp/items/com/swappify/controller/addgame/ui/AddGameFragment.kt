@@ -7,18 +7,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
-import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewPropertyAnimatorListener
 import android.text.Editable
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AccelerateInterpolator
 import android.webkit.URLUtil
 import android.widget.AdapterView
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.AppUtils
-import swapp.items.com.swappify.components.SlideAnimation
+import swapp.items.com.swappify.common.extension.scaleAnimation
+import swapp.items.com.swappify.common.extension.translateAnimation
 import swapp.items.com.swappify.components.imagepicker.OverlapPickerActivity
 import swapp.items.com.swappify.components.imagepicker.OverlapPickerActivity.Companion.URI
 import swapp.items.com.swappify.components.imagepicker.Sources
@@ -82,14 +80,14 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         if (scrollPercent >= PERCENTAGE_TO_SHOW_ANCHOR) {
             if (!isAnchorHidden) {
                 isAnchorHidden = true
-                scaleAnimation(view = view, scaleFactor = MIN_SCALE_VALUE)
+                view?.scaleAnimation(scaleFactor = MIN_SCALE_VALUE)
             }
         }
 
         if (scrollPercent < PERCENTAGE_TO_SHOW_ANCHOR) {
             if (isAnchorHidden) {
                 isAnchorHidden = false
-                scaleAnimation(view = view, scaleFactor = MAX_SCALE_VALUE)
+                view?.scaleAnimation(scaleFactor = MAX_SCALE_VALUE)
             }
         }
     }
@@ -99,49 +97,16 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         if (scrollPercent >= PERCENTAGE_TO_SHOW_ANCHOR) {
             if (!isViewHidden) {
                 isViewHidden = true
-                translateAnimation(view, resources.getDimension(R.dimen.dimen_16).toInt())
+                view?.translateAnimation(resources.getDimension(R.dimen.dimen_16).toInt())
             }
         }
 
         if (scrollPercent < PERCENTAGE_TO_SHOW_ANCHOR) {
             if (isViewHidden) {
                 isViewHidden = false
-                translateAnimation(view, resources.getDimension(R.dimen.dimen_110).toInt())
+                view?.translateAnimation(resources.getDimension(R.dimen.dimen_110).toInt())
             }
         }
-    }
-
-    private fun translateAnimation(view: View?, targetMargin: Int) {
-        val animation = SlideAnimation(view, targetMargin)
-        animation.duration = TRANSLATE_ANIMATION_DURATION
-        view?.startAnimation(animation)
-    }
-
-    private fun scaleAnimation(scaleFactor: Float, view: View?) {
-        ViewCompat.animate(view)
-                .scaleY(scaleFactor)
-                .alpha(scaleFactor)
-                .setInterpolator(AccelerateInterpolator())
-                .setDuration(SCALE_ANIMATION_DURATION)
-                .setListener(object : ViewPropertyAnimatorListener {
-                    override fun onAnimationEnd(view: View?) {
-                        if (scaleFactor == MIN_SCALE_VALUE) {
-                            view?.visibility = View.GONE
-                        }
-                    }
-
-                    override fun onAnimationCancel(view: View?) {
-                        // DO nothing
-                    }
-
-                    override fun onAnimationStart(view: View?) {
-                        if (scaleFactor == MAX_SCALE_VALUE) {
-                            view?.visibility = View.VISIBLE
-                        }
-                    }
-
-                })
-                .start()
     }
 
     private fun handleOnTouch(view: View?, event: MotionEvent?): Boolean {
