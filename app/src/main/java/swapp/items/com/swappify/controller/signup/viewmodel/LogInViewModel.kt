@@ -68,26 +68,24 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
         return countryCode
     }
 
-    fun validateMobileNum()
-            = phoneError.set(isValidPhone(mobileNumber.get(), countryCode.get()))
+    fun validateMobileNum() = phoneError.set(isValidPhone(mobileNumber.get(), countryCode.get()))
 
 
-    fun startPhoneNumberVerification(activity: Activity, phoneNumber: String)
-            = getCompositeDisposable().add(
+    fun startPhoneNumberVerification(activity: Activity, phoneNumber: String) = getCompositeDisposable().add(
             loginRepository.startPhoneVerification(phoneNumber, activity)
                     .doOnSubscribe { isLoading.set(true) }
                     .doAfterTerminate { isLoading.set(false) }
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) }))
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+    )
 
-    fun resendOtp(activity: Activity, phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken)
-            = getCompositeDisposable().add(
+    fun resendOtp(activity: Activity, phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken) = getCompositeDisposable().add(
             loginRepository.resendVerificationCode(phoneNumber, activity, token)
                     .doOnSubscribe { isLoading.set(true) }
                     .doAfterTerminate { isLoading.set(false) }
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) }))
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+    )
 
-    private fun handleOnSuccess(result: Result<PhoneAuthDataModel>?)
-            = if (result!!.isSuccess()) phoneAuthModelLiveData.value = result.value else handleOnError(result.error!!)
+    private fun handleOnSuccess(result: Result<PhoneAuthDataModel>?) = if (result!!.isSuccess()) phoneAuthModelLiveData.value = result.value else handleOnError(result.error!!)
 
 
     private fun handleOnError(error: Throwable) = when (error) {
@@ -97,26 +95,25 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
             this.apiError.value = true
     }
 
-    fun autoVerification()
-            = getCompositeDisposable().add(
+    fun autoVerification() = getCompositeDisposable().add(
             loginRepository.initAutoVerify(60)
                     .subscribe({
                         remainingTime.set(it)
                         if (remainingTime.get() == 0) {
                             state.set(State.STATE_OTP_VERIFICATION)
                         }
-                    }))
+                    })
+    )
 
-    fun signInWith(credential: PhoneAuthCredential)
-            = getCompositeDisposable().add(
+    fun signInWith(credential: PhoneAuthCredential) = getCompositeDisposable().add(
             loginRepository.signInWith(credential)
                     .doOnSubscribe { isLoading.set(true) }
                     .doAfterTerminate { isLoading.set(false) }
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) }))
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+    )
 
-    fun saveUser(user: User)
-            = getCompositeDisposable().add(
-            loginRepository.saveUser(user)
+    fun saveUser(user: User) = getCompositeDisposable().add(
+            loginRepository.runUserTransaction(user)
                     .doOnSubscribe { isLoading.set(true) }
                     .doAfterTerminate { isLoading.set(false) }
                     .subscribe({
@@ -125,13 +122,14 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
                                 state { State.STATE_USER_WRITE_SUCCESS }
                             }
                             val preferenceUtils = loginRepository.appUtilManager.preferencesHelper
-                            preferenceUtils.set(USER_PHONE_NUM, user.phoneNumber)
+                            preferenceUtils.set(USER_PHONE_NUM, user.userNumber)
                             handleOnSuccess(Result(phoneAuthDataModel, null))
                         } else {
                             handleOnError(it.error!!)
                         }
                     }, {
                         handleOnError(it)
-                    }))
+                    })
+    )
 
 }

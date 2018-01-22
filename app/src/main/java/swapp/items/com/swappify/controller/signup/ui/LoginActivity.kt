@@ -17,7 +17,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasBroadcastReceiverInjector
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.include_otp_verify.*
 import kotlinx.android.synthetic.main.include_phone_verification.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -84,6 +83,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
         observerApiCallErrorChange()
         initPinView()
         NetworkConnectionLifeCycleObserver(lifecycle, logInViewModel.isNetConnected, this@LoginActivity)
+
     }
 
     private fun initPinView() {
@@ -110,12 +110,13 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     private val clickCallBack = object : ILogInNavigator {
         override fun afterOtpChanged(editable: Editable) {
 
-            if (pin_view.isFocused && editable.isEmpty()) {
+            if (activityLogInBinding.otpVerifyScreen.pinView.isFocused && editable.length == 5) {
                 activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
-                        ResourcesCompat.getColor(resources, R.color.accent_light, theme))
+                        ResourcesCompat.getColor(resources, R.color.accent_light, theme)
+                )
             }
 
-            if (pin_view.isFocused && editable.length == 6) {
+            if (activityLogInBinding.otpVerifyScreen.pinView.isFocused && editable.length == 6) {
                 hideKeyboard()
                 val credential = PhoneAuthProvider.getCredential(logInViewModel.verificationId!!, editable.toString())
                 logInViewModel.signInWith(credential)
@@ -129,8 +130,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
             }
         }
 
-        override fun onClickCountryCode()
-                = start(CountryPickerFragment.newInstance(null), CountryPickerFragment.TAG)
+        override fun onClickCountryCode() = start(CountryPickerFragment.newInstance(null), CountryPickerFragment.TAG)
 
 
         override fun onClickNext() {
@@ -147,8 +147,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
 
     }
 
-    private fun observeAuthModelChange()
-            = logInViewModel.phoneAuthModelLiveData.observe(this@LoginActivity) {
+    private fun observeAuthModelChange() = logInViewModel.phoneAuthModelLiveData.observe(this@LoginActivity) {
         onPhoneAuthModelChange(it)
     }
 
@@ -185,8 +184,6 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
                     logInViewModel.state.set(LogInViewModel.State.STATE_AUTO_VERIFICATION)
                     logInViewModel.autoVerification()
                 } else {
-                    activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
-                            ResourcesCompat.getColor(resources, R.color.accent_light, theme))
                     logInViewModel.state.set(LogInViewModel.State.STATE_OTP_VERIFICATION)
                 }
             }
@@ -195,9 +192,10 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
                 logInViewModel.signInWith(phoneAuthDataModel.phoneAuthCredential!!)
             }
 
-            LogInViewModel.State.STATE_SIGNIN_FAILED ->
+            LogInViewModel.State.STATE_SIGNIN_FAILED -> {
                 activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
                         ResourcesCompat.getColor(resources, R.color.faded_red, theme))
+            }
 
             LogInViewModel.State.STATE_SIGNIN_SUCCESS -> {
                 activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
@@ -227,8 +225,8 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     override fun onSMSReceived(bundle: Bundle?) {
         val code = bundle?.getString(SMSReceiver.VERIFICATION_CODE, "")
         activityLogInBinding.otpVerifyScreen.pinView.setText(code)
-        activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
-                ResourcesCompat.getColor(resources, R.color.accent_light, theme))
+        /* activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
+                 ResourcesCompat.getColor(resources, R.color.accent_light, theme))*/
         logInViewModel.state.set(LogInViewModel.State.STATE_OTP_VERIFICATION)
     }
 
@@ -237,16 +235,14 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     override fun broadcastReceiverInjector(): AndroidInjector<BroadcastReceiver> = broadcastReceiverDispatchingAndroidInjector
 
 
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?)
-            = logInViewModel.isSmsReadPermissionGranted.set(false)
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>?) = logInViewModel.isSmsReadPermissionGranted.set(false)
 
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>?) {
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
-            = EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this@LoginActivity)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) = EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this@LoginActivity)
 
 
     @AfterPermissionGranted(RC_SMS_PERM)
@@ -283,8 +279,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     companion object {
         const val RC_SMS_PERM: Int = 123
 
-        fun start(context: Context)
-                = Intent(context, LoginActivity::class.java)
+        fun start(context: Context) = Intent(context, LoginActivity::class.java)
     }
 
 }

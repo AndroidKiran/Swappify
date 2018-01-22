@@ -24,27 +24,25 @@ class LoginRepository @Inject constructor(private val authDataSource: AuthDataSo
 
     private val schedulerProvider = appUtilManager.schedulerProvider
 
-    fun startPhoneVerification(phoneNumber: String, activity: Activity)
-            = authDataSource.startPhoneVerificationObservable(phoneNumber, activity)
+    fun startPhoneVerification(phoneNumber: String, activity: Activity) = authDataSource.startPhoneVerificationObservable(phoneNumber, activity)
             .firebaseResponseToResult()
             .getSingleAsync(schedulerProvider)
 
-    fun resendVerificationCode(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken)
-            = authDataSource.resendVerificationCodeObservable(phoneNumber, activity, token)
+    fun resendVerificationCode(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken) = authDataSource.resendVerificationCodeObservable(phoneNumber, activity, token)
             .firebaseResponseToResult()
             .getSingleAsync(schedulerProvider)
 
-    fun signInWith(credential: PhoneAuthCredential?): Single<Result<PhoneAuthDataModel>>
-            = authDataSource.signInWith(credential)
+    fun signInWith(credential: PhoneAuthCredential?): Single<Result<PhoneAuthDataModel>> = authDataSource.signInWith(credential)
             .firebaseResponseToResult()
             .getSingleAsync(schedulerProvider)
 
-    fun saveUser(user: User)
-            = userDataBase.write(user)
-            .getSingleAsync(schedulerProvider)
+    fun getUser(mobile: String) = userDataBase.fetch(mobile).getSingleAsync(schedulerProvider)
 
-    fun initAutoVerify(time: Int)
-            = Observable.interval(1, TimeUnit.SECONDS)
+    fun saveUser(user: User) = userDataBase.write(user).getSingleAsync(schedulerProvider)
+
+    fun runUserTransaction(user: User) = userDataBase.runUserTransaction(user).getSingleAsync(schedulerProvider)
+
+    fun initAutoVerify(time: Int) = Observable.interval(1, TimeUnit.SECONDS)
             .getObservableAsync(schedulerProvider)
             .map({ time - it.toInt() })
             .take(time + 1.toLong())

@@ -21,14 +21,13 @@
 
         <variable
             name="snackBarConfig"
-            type="swapp.items.com.swappify.controller.configs.SnackbarConfiguration"/>
+            type="swapp.items.com.swappify.controller.configs.SnackbarConfiguration" />
 
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
         android:clickable="true"
         android:focusable="true"
         bind:snackBarBinding="@{snackBarConfig}">

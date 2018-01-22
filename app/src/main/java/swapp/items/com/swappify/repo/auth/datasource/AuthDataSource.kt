@@ -32,7 +32,7 @@ class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth,
                                 val currentUser: FirebaseUser? = task.result.user
                                 PhoneAuthDataModel.create {
                                     state { LogInViewModel.State.STATE_SIGNIN_SUCCESS }
-                                    currentUser { User(currentUser?.uid, currentUser?.phoneNumber) }
+                                    currentUser { User(currentUser?.uid, currentUser?.phoneNumber, null, null) }
                                 }
                             } else {
                                 PhoneAuthDataModel.create {

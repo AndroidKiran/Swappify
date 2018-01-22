@@ -26,7 +26,6 @@ import android.view.inputmethod.EditorInfo;
 
 import swapp.items.com.swappify.R;
 
-
 public class PinView extends AppCompatEditText {
 
     private static final String TAG = "PinView";

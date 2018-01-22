@@ -33,7 +33,6 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -45,7 +44,7 @@
             android:name="swapp.items.com.swappify.controller.addgame.ui.AddGameFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dimen_72"
+            android:layout_marginTop="@dimen/dimen_68"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
@@ -68,6 +67,7 @@
             app:search_elevation="@dimen/dimen_4"
             app:search_hint="@string/str_search"
             app:search_shadow="false"
+            android:background="?attr/colorPrimary"
             bind:searchOnClickListenerBinding="@{searchOnClickListener}"
             bind:searchOnQueryChangeListenerBinding="@{searchOnQueryChangeListener}"
             bind:searchQuery="@{addGameViewModel.searchInputText}"

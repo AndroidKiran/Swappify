@@ -6,11 +6,12 @@ import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.AppCompatTextView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import fr.ganfra.materialspinner.MaterialSpinner
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.components.glide.GlideApp
 import swapp.items.com.swappify.components.glide.GlideOptions.bitmapTransform
-import swapp.items.com.swappify.components.glide.transformation.CropCircleTransformation
 import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
 
 
@@ -28,6 +29,7 @@ class BindingUtils {
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView)
+
         }
 
 
@@ -39,7 +41,19 @@ class BindingUtils {
             GlideApp.with(context!!)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .apply(bitmapTransform(CropCircleTransformation()))
+                    .apply(bitmapTransform(CircleCrop()))
+                    .into(imageView)
+        }
+
+        @JvmStatic
+        @BindingAdapter(value = "imageUrlWithRoundCornerTrans")
+        fun bindLoadImageWithRoundCornerTrans(imageView: AppCompatImageView?, url: String?) {
+            if (url.isNullOrEmpty()) return
+            val context = imageView?.context
+            GlideApp.with(context!!)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .apply(bitmapTransform(RoundedCorners(4)))
                     .into(imageView)
         }
 

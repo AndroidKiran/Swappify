@@ -4,7 +4,6 @@
 
     <style name="AppTheme" parent="Base.AppTheme" >
         <item name="android:textColorPrimary">@color/primary_text</item>
-        <item name="pinViewStyle">@style/PinWidget.PinView</item>
     </style>
 
     <style name="AppTheme.Toolbar">

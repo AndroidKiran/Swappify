@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <import type="android.view.View" />
-
 
         <variable
             name="viewModel"
@@ -21,36 +19,35 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
 
         <swapp.items.com.swappify.components.PinView
             android:id="@+id/pin_view"
-            style="@style/PinWidget.PinView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginTop="@dimen/dimen_8"
             android:afterTextChanged="@{(editable) -> clickCallBack.afterOtpChanged(editable)}"
             android:enabled="@{!viewModel.isLoading}"
-            android:gravity="center"
-            android:inputType=""
+            android:inputType="number"
             app:itemCount="6"
+            android:textColor="@color/text_colors"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="917207" />
-
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/resend_btn"
             style="@style/AppTheme.Button.Borderless"
             android:layout_marginTop="32dp"
+            android:onClick="@{() -> clickCallBack.onClickResendOtp()}"
+            android:text="@string/str_resend_otp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/str_resend_otp"
-            android:onClick="@{() -> clickCallBack.onClickResendOtp()}"
             app:layout_constraintTop_toBottomOf="@id/pin_view" />
 
         <android.support.v7.widget.CardView

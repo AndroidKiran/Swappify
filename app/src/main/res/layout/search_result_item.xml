@@ -35,7 +35,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/vc_crop"
-                bind:imageUrl="@{gameViewModel.url}" />
+                bind:imageUrlWithRoundCornerTrans="@{gameViewModel.url}" />
 
 
             <android.support.v7.widget.AppCompatImageView
