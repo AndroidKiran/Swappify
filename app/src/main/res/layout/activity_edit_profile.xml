@@ -233,5 +233,9 @@
         </FrameLayout>
 
 
+        <include layout="@layout/include_loader_full_screen"
+            bind:isLoading="@{viewModel.isLoading}"/>
+
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>

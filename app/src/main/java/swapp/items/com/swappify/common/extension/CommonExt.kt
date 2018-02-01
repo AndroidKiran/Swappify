@@ -64,6 +64,7 @@ fun SnackbarConfiguration.showNoNetworkSnackBar(msg: String, actionName: String?
                 .setActionListener(actionListener)
                 .commit()
 
+
 fun View.scaleAnimation(scaleFactor: Float) = ViewCompat.animate(this)
         .scaleY(scaleFactor)
         .alpha(scaleFactor)

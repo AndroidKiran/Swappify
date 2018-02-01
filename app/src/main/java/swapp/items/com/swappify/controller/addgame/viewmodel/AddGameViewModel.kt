@@ -41,7 +41,7 @@ class AddGameViewModel @Inject constructor(addGameDataManager: AddGameDataManage
         } else {
             gameRepository.getGamesSearchFor(it)
         }
-    }
+    }!!
 
     private val gameRepository = addGameDataManager.gameRepository
 
@@ -108,8 +108,8 @@ class AddGameViewModel @Inject constructor(addGameDataManager: AddGameDataManage
             .doAfterTerminate { isLoading.set(false) }
             .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
 
-    private fun handleOnSuccess(result: Result<PostGameModel>) {
-        if (result.isSuccess()) {
+    private fun handleOnSuccess(result: Result<PostGameModel>?) {
+        if (result!!.isSuccess()) {
             finishActivityLiveData.value = true
         } else {
             handleOnError(result.error)

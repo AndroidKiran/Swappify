@@ -6,11 +6,12 @@ import android.os.Bundle
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.AppUtils
-import swapp.items.com.swappify.controller.addgame.ui.AddGameActivity
+import swapp.items.com.swappify.common.extension.startEditProfileActivity
+import swapp.items.com.swappify.common.extension.startHomeActivity
+import swapp.items.com.swappify.common.extension.startIntroActivity
+import swapp.items.com.swappify.common.extension.startLoginActivity
 import swapp.items.com.swappify.controller.base.BaseActivity
-import swapp.items.com.swappify.controller.intro.ui.IntroActivity
 import swapp.items.com.swappify.controller.launcher.viewmodel.LauncherViewModel
-import swapp.items.com.swappify.controller.signup.ui.LoginActivity
 import swapp.items.com.swappify.databinding.ActivityLauncherBinding
 import javax.inject.Inject
 
@@ -34,18 +35,22 @@ class LauncherActivity : BaseActivity<ActivityLauncherBinding, LauncherViewModel
 
     override fun executePendingVariablesBinding() {
         activityLauncherBinding = getViewDataBinding()
-        activityLauncherBinding.setVariable(BR.viewModel,launcherViewModel)
+        activityLauncherBinding.setVariable(BR.viewModel, launcherViewModel)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (!AppUtils.isIntroDone(launcherViewModel.preferenceHelper)!!) {
-            startActivity(IntroActivity.start(this@LauncherActivity))
-        } else if(AppUtils.isLoggedIn(launcherViewModel.preferenceHelper)) {
-            startActivity(AddGameActivity.start(this@LauncherActivity))
+            startIntroActivity()
+        } else if (!AppUtils.isLoggedIn(launcherViewModel.preferenceHelper)) {
+            startLoginActivity()
         } else {
-            startActivity(LoginActivity.start(this@LauncherActivity))
+            if (!AppUtils.isProfileComplete(launcherViewModel.preferenceHelper)!!) {
+                startEditProfileActivity()
+            } else {
+                startHomeActivity()
+            }
         }
     }
 }

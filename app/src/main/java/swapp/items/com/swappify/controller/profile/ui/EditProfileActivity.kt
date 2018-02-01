@@ -20,6 +20,7 @@ import swapp.items.com.swappify.controller.addgame.ui.AddGameFragment
 import swapp.items.com.swappify.controller.base.BaseActivity
 import swapp.items.com.swappify.controller.profile.viewmodel.EditProfileViewModel
 import swapp.items.com.swappify.databinding.ActivityEditProfileBinding
+import swapp.items.com.swappify.mvvm.NetworkConnectionLifeCycleObserver
 import javax.inject.Inject
 
 class EditProfileActivity : BaseActivity<ActivityEditProfileBinding, EditProfileViewModel>(), AppBarLayout.OnOffsetChangedListener {
@@ -57,7 +58,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding, EditProfile
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityEditProfileBinding.appbar.addOnOffsetChangedListener(this@EditProfileActivity)
-
+        NetworkConnectionLifeCycleObserver(lifecycle, editProfileViewModel.isNetConnected, this@EditProfileActivity)
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
@@ -68,40 +69,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding, EditProfile
 
         scaleViewOnScroll(activityEditProfileBinding.anchorLayout, currentScrollPercentage)
         handleVisibilityOnScroll(activityEditProfileBinding.sliderView, currentScrollPercentage)
-    }
-
-    private fun scaleViewOnScroll(view: View?, scrollPercent: Int) {
-
-        if (scrollPercent >= AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
-            if (!isAnchorHidden) {
-                isAnchorHidden = true
-                view?.scaleAnimation(scaleFactor = AddGameFragment.MIN_SCALE_VALUE)
-            }
-        }
-
-        if (scrollPercent < AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
-            if (isAnchorHidden) {
-                isAnchorHidden = false
-                view?.scaleAnimation(scaleFactor = AddGameFragment.MAX_SCALE_VALUE)
-            }
-        }
-    }
-
-    private fun handleVisibilityOnScroll(view: View?, scrollPercent: Int) {
-
-        if (scrollPercent >= AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
-            if (!isViewHidden) {
-                isViewHidden = true
-                view?.translateAnimation(resources.getDimension(R.dimen.dimen_16).toInt())
-            }
-        }
-
-        if (scrollPercent < AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
-            if (isViewHidden) {
-                isViewHidden = false
-                view?.translateAnimation(resources.getDimension(R.dimen.dimen_90).toInt())
-            }
-        }
     }
 
     private val callBack = object : IEditProfileNavigator {
@@ -115,6 +82,12 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding, EditProfile
         }
 
         override fun onSaveProfileClick() {
+            val user = editProfileViewModel.getUser()
+            if(editProfileViewModel.picUri.get().isNullOrEmpty()) {
+                editProfileViewModel.updateUser(user)
+            } else {
+                editProfileViewModel.updateUser(user, Uri.parse(editProfileViewModel.picUri.get()))
+            }
         }
 
         override fun afterTextChanged(editable: Editable) {
@@ -151,5 +124,39 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding, EditProfile
     companion object {
 
         fun start(context: Context) = Intent(context, EditProfileActivity::class.java)
+    }
+
+    private fun scaleViewOnScroll(view: View?, scrollPercent: Int) {
+
+        if (scrollPercent >= AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (!isAnchorHidden) {
+                isAnchorHidden = true
+                view?.scaleAnimation(AddGameFragment.MIN_SCALE_VALUE)
+            }
+        }
+
+        if (scrollPercent < AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (isAnchorHidden) {
+                isAnchorHidden = false
+                view?.scaleAnimation(AddGameFragment.MAX_SCALE_VALUE)
+            }
+        }
+    }
+
+    private fun handleVisibilityOnScroll(view: View?, scrollPercent: Int) {
+
+        if (scrollPercent >= AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (!isViewHidden) {
+                isViewHidden = true
+                view?.translateAnimation(resources.getDimension(R.dimen.dimen_16).toInt())
+            }
+        }
+
+        if (scrollPercent < AddGameFragment.PERCENTAGE_TO_SHOW_ANCHOR) {
+            if (isViewHidden) {
+                isViewHidden = false
+                view?.translateAnimation(resources.getDimension(R.dimen.dimen_90).toInt())
+            }
+        }
     }
 }

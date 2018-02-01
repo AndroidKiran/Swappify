@@ -1,12 +1,15 @@
 package swapp.items.com.swappify.common.extension
 
-import android.content.Intent
 import android.support.annotation.AnimatorRes
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDialogFragment
 import swapp.items.com.swappify.controller.addgame.ui.AddGameActivity
+import swapp.items.com.swappify.controller.home.ui.HomeActivity
+import swapp.items.com.swappify.controller.intro.ui.IntroActivity
+import swapp.items.com.swappify.controller.profile.ui.EditProfileActivity
+import swapp.items.com.swappify.controller.signup.ui.LoginActivity
 
 fun AppCompatActivity.addFragmentSafely(fragment: Fragment,
                                         @IdRes containerViewId: Int,
@@ -51,7 +54,23 @@ fun AppCompatActivity.start(appCompatDialogFragment: AppCompatDialogFragment, ta
 }
 
 fun AppCompatActivity.startAddGameActivity() {
-    startActivity(Intent(this, AddGameActivity::class.java))
+    startActivity(AddGameActivity.start(this))
+}
+
+fun AppCompatActivity.startHomeActivity() {
+    startActivity(HomeActivity.start(this))
+}
+
+fun AppCompatActivity.startEditProfileActivity() {
+    startActivity(EditProfileActivity.start(this))
+}
+
+fun AppCompatActivity.startIntroActivity() {
+    startActivity(IntroActivity.start(this))
+}
+
+fun AppCompatActivity.startLoginActivity() {
+    startActivity(LoginActivity.start(this))
 }
 
 

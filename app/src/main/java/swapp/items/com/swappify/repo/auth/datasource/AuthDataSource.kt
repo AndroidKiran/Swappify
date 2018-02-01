@@ -18,10 +18,10 @@ import javax.inject.Inject
 @PerActivity
 class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth, private val firebaseObservableListener: FirebaseObservableListener) {
 
-    fun startPhoneVerificationObservable(phoneNumber: String, activity: Activity): Single<PhoneAuthDataModel> =
+    fun startPhoneVerificationObservable(phoneNumber: String, activity: Activity) =
             firebaseObservableListener.startPhoneVerificationListener(phoneNumber = phoneNumber, activity = activity)
 
-    fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken): Single<PhoneAuthDataModel> =
+    fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken) =
             firebaseObservableListener.resendVerificationCodeListener(phoneNumber = phoneNumber, activity = activity, token = token)
 
     fun signInWith(credential: PhoneAuthCredential?) =
@@ -32,7 +32,7 @@ class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth,
                                 val currentUser: FirebaseUser? = task.result.user
                                 PhoneAuthDataModel.create {
                                     state { LogInViewModel.State.STATE_SIGNIN_SUCCESS }
-                                    currentUser { User(currentUser?.uid, currentUser?.phoneNumber, null, null) }
+                                    currentUser { User(currentUser?.uid, currentUser?.phoneNumber) }
                                 }
                             } else {
                                 PhoneAuthDataModel.create {

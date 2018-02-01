@@ -8,9 +8,12 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import io.reactivex.Single
 import swapp.items.com.swappify.common.AppUtils.Companion.getLocale
 import swapp.items.com.swappify.common.AppUtils.Companion.isValidPhone
+import swapp.items.com.swappify.common.Constant.Companion.USER_ID
 import swapp.items.com.swappify.common.Constant.Companion.USER_PHONE_NUM
+import swapp.items.com.swappify.common.extension.firebaseResponseToResult
 import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.base.BaseViewModel
 import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
@@ -85,7 +88,8 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
                     .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
     )
 
-    private fun handleOnSuccess(result: Result<PhoneAuthDataModel>?) = if (result!!.isSuccess()) phoneAuthModelLiveData.value = result.value else handleOnError(result.error!!)
+    private fun handleOnSuccess(result: Result<PhoneAuthDataModel>?) =
+            if (result!!.isSuccess()) phoneAuthModelLiveData.value = result.value else handleOnError(result.error!!)
 
 
     private fun handleOnError(error: Throwable) = when (error) {
@@ -112,24 +116,49 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
                     .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
     )
 
-    fun saveUser(user: User) = getCompositeDisposable().add(
-            loginRepository.runUserTransaction(user)
+    fun verifyAndSave(user: User) =
+            loginRepository.getUser(user.userNumber!!)
                     .doOnSubscribe { isLoading.set(true) }
                     .doAfterTerminate { isLoading.set(false) }
-                    .subscribe({
-                        if (it.isSuccess()) {
-                            val phoneAuthDataModel = PhoneAuthDataModel.create {
-                                state { State.STATE_USER_WRITE_SUCCESS }
-                            }
-                            val preferenceUtils = loginRepository.appUtilManager.preferencesHelper
-                            preferenceUtils.set(USER_PHONE_NUM, user.userNumber)
-                            handleOnSuccess(Result(phoneAuthDataModel, null))
+                    .toFlatMap(user)
+                    .toSubscribe()
+
+
+
+    private fun Single<Result<User>>.toFlatMap(user: User) =
+            this.flatMap {
+                when {
+                    it.isSuccess() -> {
+                        if (it.value.userNumber.isNullOrEmpty()) {
+                            loginRepository.saveUser(user)
                         } else {
-                            handleOnError(it.error!!)
+                            Single.just<User>(it.value)
+                                    .firebaseResponseToResult()
                         }
-                    }, {
-                        handleOnError(it)
-                    })
-    )
+                    }
+                    else -> Single.error(it.error)
+                }
+            }
+
+    private fun Single<Result<User>>.toSubscribe() =
+            this.subscribe({
+                if (it.isSuccess()) {
+                    val userUpdated = it.value
+                    val preferenceUtils = loginRepository.appUtilManager.preferencesHelper
+                    preferenceUtils.set(USER_PHONE_NUM, userUpdated.userNumber)
+                    preferenceUtils.set(USER_ID, userUpdated.userID)
+
+                    val phoneAuthDataModel = PhoneAuthDataModel.create {
+                        currentUser { userUpdated }
+                        state { State.STATE_USER_WRITE_SUCCESS }
+                    }
+
+                    handleOnSuccess(Result(phoneAuthDataModel, null))
+                } else {
+                    handleOnError(it.error!!)
+                }
+            }, {
+                handleOnError(it)
+            })
 
 }

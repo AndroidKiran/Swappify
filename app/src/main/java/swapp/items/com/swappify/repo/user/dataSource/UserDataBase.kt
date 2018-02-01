@@ -27,5 +27,12 @@ class UserDataBase @Inject constructor(fireStore: FirebaseFirestore,
             .firebaseResponseToResult()
 
     private fun toUser(): Function<DocumentSnapshot, User> =
-            Function { documentSnapshot -> documentSnapshot.toObject(User::class.java) }
+            Function {
+                if (it.exists()) {
+                    it.toObject(User::class.java)
+                } else {
+                    User()
+                }
+            }
+
 }

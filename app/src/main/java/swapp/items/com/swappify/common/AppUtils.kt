@@ -77,8 +77,11 @@ class AppUtils {
         fun isLoggedIn(preferenceHelper: PreferenceHelper?)
                 = !preferenceHelper?.getStringPreference(Constant.USER_PHONE_NUM, "").isNullOrEmpty()
 
-        fun isIntroDone(preferenceHelper: PreferenceHelper)
+        fun isIntroDone(preferenceHelper: PreferenceHelper?)
                 = preferenceHelper?.getBooleanPreference(Constant.INTRO_COMPLETED, false)
+
+        fun isProfileComplete(preferenceHelper: PreferenceHelper?)
+                = preferenceHelper?.getBooleanPreference(Constant.IS_PROFILE_COMPLETE, false)
 
     }
 }

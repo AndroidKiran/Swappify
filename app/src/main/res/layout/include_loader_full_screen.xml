@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_trans_gradient"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="@{isLoading ? View.VISIBLE : View.GONE}">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/circular_progress"
+            android:layout_width="@dimen/dimen_48"
+            android:layout_height="@dimen/dimen_48"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:elevation="@dimen/dimen_8"
+            android:shape="ring"
+            app:cardBackgroundColor="@color/primary_dark"
+            app:cardCornerRadius="@dimen/dimen_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_container">
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="@dimen/dimen_32"
+                android:layout_height="@dimen/dimen_32"
+                android:layout_gravity="center" />
+
+        </android.support.v7.widget.CardView>
+
+    </FrameLayout>
+</layout>

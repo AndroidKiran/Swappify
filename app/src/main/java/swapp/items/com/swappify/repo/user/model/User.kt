@@ -1,6 +1,20 @@
 package swapp.items.com.swappify.repo.user.model
 
-data class User constructor(val userID: String?,
-                            val userNumber: String?,
-                            var userName: String?,
-                            var userLocation: String?)
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
+
+@PaperParcel
+data class User @JvmOverloads constructor(var userID: String?,
+                                              var userNumber: String?,
+                                              var userName: String? = "",
+                                              var userLocation: String? = "",
+                                              var userPic: String? = "") : PaperParcelable {
+
+    constructor():this("", "", "", "", "")
+
+    companion object {
+        @JvmField
+        val CREATOR = PaperParcelUser.CREATOR
+    }
+
+}

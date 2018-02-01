@@ -26,30 +26,38 @@ class RunUserTransactionOnSubscribe constructor(private val documentReference: D
             Transaction.Function<User>, OnSuccessListener<User>, OnFailureListener {
 
         override fun apply(transaction: Transaction): User? {
-            val user:User?
             val documentSnapshot= transaction.get(documentReference)
             if (documentSnapshot.exists()) {
-                user = documentSnapshot.toObject(User::class.java)
-                if (user.userName.isNullOrEmpty() && !newUserValue.userName.isNullOrEmpty()) {
-                    user.userName = newUserValue.userName
+                documentSnapshot.toObject(User::class.java).let {
+
+                    if (it.userName.isNullOrEmpty() && !newUserValue.userName.isNullOrEmpty()) {
+                        it.userName = newUserValue.userName
+                    }
+
+                    if (it.userLocation.isNullOrEmpty() && !newUserValue.userLocation.isNullOrEmpty()) {
+                        it.userLocation = newUserValue.userLocation
+                    }
+
+                    if (it.userPic.isNullOrEmpty() && !newUserValue.userPic.isNullOrEmpty()) {
+                        it.userPic = newUserValue.userLocation
+                    }
+
+                    if (!it.userName.isNullOrEmpty() && !it.userLocation.isNullOrEmpty()) {
+                        val userJson = Gson().toJson(it)
+                        val map = mutableMapOf<String, Objects>()
+                        val userMap = Gson().fromJson<Map<String, Objects>>(userJson, map.javaClass)
+                        transaction.update(documentReference, userMap)
+                    }
+                    return it
                 }
 
-                if (user.userLocation.isNullOrEmpty() && !newUserValue.userLocation.isNullOrEmpty()) {
-                    user.userLocation = newUserValue.userLocation
-                }
 
-                if (!user.userName.isNullOrEmpty() || !user.userLocation.isNullOrEmpty()) {
-                    val userJson = Gson().toJson(user)
-                    val map = mutableMapOf<String, Objects>()
-                    val userMap = Gson().fromJson<Map<String, Objects>>(userJson, map.javaClass)
-                    transaction.update(documentReference, userMap)
-                }
             } else {
-                user = newUserValue
-                transaction.set(documentReference, user, SetOptions.merge())
+                transaction.set(documentReference, newUserValue, SetOptions.merge()).apply {
+                    return newUserValue
+                }
             }
-
-            return user
+            return null
         }
 
         override fun onSuccess(user: User?) {
