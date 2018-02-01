@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
+
+        <import type="swapp.items.com.swappify.common.AppUtils" />
 
         <variable
             name="viewModel"
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_40"
             android:onClick="@{() -> clickCallBack.onClickNext()}"
-            android:visibility="@{viewModel.phoneError == false || viewModel.mobileNumber == null || viewModel.countryCode == null || viewModel.isLoading == true? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.phoneError == false || viewModel.mobileNumber == null || viewModel.countryCode == null || viewModel.isLoading == true ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,29 +40,26 @@
 
         <RelativeLayout
             android:id="@+id/phone_container"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_16"
             android:background="@color/pale_grey"
-            android:gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <android.support.v7.widget.AppCompatTextView
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/country_code"
-                style="@style/AppTheme.Widget.TextView.Primary.Bold"
+                style="@style/AppTheme.Button.Flat"
+                android:layout_width="@dimen/dimen_86"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dimen_16"
                 android:background="?android:attr/selectableItemBackground"
                 android:drawableEnd="@drawable/vc_down_cheveron_grey"
-                android:drawablePadding="@dimen/dimen_4"
-                android:minHeight="@dimen/dimen_48"
-                android:onClick="@{() -> clickCallBack.onClickCountryCode()}"
-                android:padding="@dimen/dimen_8"
                 android:enabled="@{!viewModel.isLoading}"
+                android:onClick="@{() -> clickCallBack.onClickCountryCode()}"
                 android:text="@{viewModel.countryCode}"
-                android:textSize="@dimen/font_16"
                 tools:text="+91" />
 
 
@@ -75,11 +73,11 @@
                 android:layout_toEndOf="@id/country_code"
                 android:afterTextChanged="@{(editable) -> clickCallBack.afterMobileNumChanged(editable)}"
                 android:background="@null"
+                android:enabled="@{!viewModel.isLoading}"
                 android:hint="@string/str_mobile_num"
                 android:inputType="number"
                 android:maxLength="15"
                 android:maxLines="1"
-                android:enabled="@{!viewModel.isLoading}"
                 android:minEms="10"
                 android:text="@{viewModel.mobileNumber}" />
 
@@ -87,7 +85,8 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/error_phone_num"
-            style="@style/AppTheme.Widget.TextView.Secondary.Regular"
+            style="@style/AppTheme.Text.Small.Light"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_16"
@@ -95,9 +94,8 @@
             android:layout_marginTop="@dimen/dimen_8"
             android:gravity="center_horizontal"
             android:text="@string/err_invalid_phone"
-            android:textColor="@color/faded_red"
-            android:textSize="@dimen/font_14"
-            android:visibility="@{viewModel.phoneError == false ? View.VISIBLE : View.GONE}"
+            android:textColor="?attr/colorErrorState"
+            android:visibility="@{(viewModel.phoneError == false &amp;&amp; AppUtils.isStringNullOrEmpty(viewModel.mobileNumber.get()) == false) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone_container"
@@ -110,9 +108,9 @@
             android:layout_marginTop="32dp"
             android:elevation="@dimen/dimen_8"
             android:shape="ring"
+            android:visibility="@{viewModel.isLoading == true ? View.VISIBLE : View.GONE}"
             app:cardBackgroundColor="@color/primary_dark"
             app:cardCornerRadius="@dimen/dimen_24"
-            android:visibility="@{viewModel.isLoading == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone_container">

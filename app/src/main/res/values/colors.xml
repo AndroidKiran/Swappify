@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="primary">#9C27B0</color>
-    <color name="primary_dark">#7B1FA2</color>
-    <color name="primary_light">#E1BEE7</color>-->
-    <color name="primary">#424242</color>
-    <color name="primary_light">#6d6d6d</color>
-    <color name="primary_dark">#1b1b1b</color>
-    <color name="accent_light">#FFC107</color>
-    <color name="accent_dark">#ffa000</color>
-    <color name="accent_alpha">#f5daac</color>
+
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
-    <color name="white">#ffffff</color>
     <color name="divider">#BDBDBD</color>
 
     <color name="window_background">#eaeaea</color>
-    <color name="pale_grey">#f0f0f6</color>
     <color name="faded_red">#d84c4d</color>
 
     <!--Search view -->
@@ -42,5 +32,25 @@
     <color name="text_hint_default">#BDBDBD</color>
     <color name="line_focused">#3F51B5</color>
     <color name="line_default">#C5CAE9</color>
+
+
+    <color name="primary">#424242</color>
+    <color name="primary_light">#6d6d6d</color>
+    <color name="primary_dark">#1b1b1b</color>
+    <color name="accent_light">#FFC107</color>
+    <color name="accent_dark">#ffa000</color>
+    <color name="accent_alpha">#f5daac</color>
+
+    <!--Neutral Colors--> 
+    <color name="white">#ffffff</color>
+    <color name="pale_grey">#f0f0f6</color>
+
+    <!--Typography Colors-->
+    <color name="black">#000000</color>
+    <color name="charcoal_grey">#2d2d32</color>
+    <color name="steel">#787887</color>
+    <color name="cool_grey">#b4b4be</color>
+    <color name="true_green">#00a500</color>
+    <color name="red_orange">#ff2d00</color>
 
 </resources>

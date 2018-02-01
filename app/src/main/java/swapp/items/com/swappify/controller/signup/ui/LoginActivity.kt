@@ -162,7 +162,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
 
             LogInViewModel.State.STATE_SIGNIN_FAILED -> {
                 activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
-                        ResourcesCompat.getColor(resources, R.color.faded_red, theme))
+                        ResourcesCompat.getColor(resources, R.color.red_orange, theme))
             }
 
             LogInViewModel.State.STATE_SIGNIN_SUCCESS -> {
@@ -198,8 +198,6 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     override fun onSMSReceived(bundle: Bundle?) {
         val code = bundle?.getString(SMSReceiver.VERIFICATION_CODE, "")
         activityLogInBinding.otpVerifyScreen.pinView.setText(code)
-        /* activityLogInBinding.otpVerifyScreen.pinView.setLineColor(
-                 ResourcesCompat.getColor(resources, R.color.accent_light, theme))*/
         logInViewModel.state.set(LogInViewModel.State.STATE_OTP_VERIFICATION)
     }
 

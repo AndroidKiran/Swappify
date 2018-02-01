@@ -9,26 +9,24 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="AppTheme.TextInputLayout" >
+    <style name="AppTheme.TextInputLayout" parent="@style/Widget.Design.TextInputLayout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="colorControlNormal">@color/primary</item>
-        <item name="android:textColorHint">@color/primary_light</item>
-        <item name="colorControlActivated">@color/primary_light</item>
-        <item name="colorControlHighlight">@color/primary_light</item>
+        <item name="android:textColorHint">?attr/colorTextHint</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
     </style>
 
     <style name="AppTheme.TextInputLayout.First.Child" parent="AppTheme.TextInputLayout">
         <item name="android:layout_marginTop">@dimen/dimen_16</item>
     </style>
 
-    <style name="AppTheme.TextInputLayout.NoWidth">
+    <style name="AppTheme.TextInputLayout.NoWidth" parent="AppTheme.TextInputLayout">
         <item name="android:layout_width">@dimen/dimen_0</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
 
-    <style name="AppTheme.TextInputLayout.NoWidth.White" parent="AppTheme.TextInputLayout.NoWidth">
+    <style name="AppTheme.TextInputLayout.NoWidth.White">
         <item name="colorControlNormal">@color/white</item>
         <item name="android:textColorHint">@color/pale_grey</item>
         <item name="colorControlActivated">@color/white</item>
@@ -42,6 +40,7 @@
         <item name="android:paddingTop">@dimen/dimen_16</item>
         <item name="android:paddingBottom">@dimen/dimen_16</item>
         <item name="android:textSize">@dimen/font_16</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
     </style>
 
     <style name="AppTheme.EditText.Single.Line" parent="AppTheme.EditText">
@@ -49,18 +48,18 @@
         <item name="android:ellipsize">marquee</item>
     </style>
 
-    <style name="AppTheme.EditText.Item" >
+    <style name="AppTheme.EditText.Item">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_20</item>
     </style>
 
-    <style name="AppTheme.EditText.Item.Tiny" parent="AppTheme.EditText.Item">
+    <style name="AppTheme.EditText.Item.Tiny">
         <item name="android:textSize">@dimen/font_12</item>
         <item name="android:lines">1</item>
     </style>
 
-    <style name="AppTheme.EditText.Item.White" parent="AppTheme.EditText.Item">
+    <style name="AppTheme.EditText.Item.White">
         <item name="android:textColor">@color/white</item>
         <item name="colorControlNormal">@color/pale_grey</item>
     </style>

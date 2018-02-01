@@ -32,7 +32,6 @@
                 android:layout_height="@dimen/dimen_232"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleMarginBottom="@dimen/dimen_94"
-                app:expandedTitleTextAppearance="@style/CollapsingTextAppearance.Inverse"
                 app:layout_collapseParallaxMultiplier="0.7"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -59,14 +58,10 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardview"
+                style="@style/AppTheme.CardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="4dp"
-                android:layout_marginStart="@dimen/dimen_16"
-                android:layout_marginEnd="@dimen/dimen_16"
-                app:cardPreventCornerOverlap="true">
+                app:cardUseCompatPadding="false"
+                android:layout_height="wrap_content">
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/slider_view"
@@ -76,11 +71,12 @@
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/heading_tv"
-                        style="@style/AppTheme.Widget.TextView.Primary.Bold"
+                        style="@style/AppTheme.Text.Large"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/dimen_10"
                         android:text="@string/str_personal_info"
                         android:textAllCaps="true"
-                        android:textSize="@dimen/font_24"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -165,7 +161,9 @@
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/save_button"
-                        style="@style/AppTheme.Button.Raised"
+                        style="@style/AppTheme.Button.Solid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_16"
                         android:onClick="@{() -> callBack.onSaveProfileClick()}"
                         android:text="@string/str_save_profile"
@@ -197,6 +195,7 @@
                 android:layout_height="match_parent"
                 app:cardBackgroundColor="@color/window_background"
                 app:cardElevation="@dimen/dimen_4"
+                app:cardMaxElevation="@dimen/dimen_6"
                 app:cardCornerRadius="@dimen/dimen_80" />
 
             <android.support.v7.widget.AppCompatImageView
@@ -211,20 +210,20 @@
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/camera_button"
-                android:layout_width="@dimen/dimen_90"
+                android:layout_width="@dimen/dimen_80"
                 android:layout_height="@dimen/dimen_32"
                 android:layout_gravity="bottom|start"
-                android:background="?attr/colorPrimary"
+                android:background="@drawable/background_button_solid"
                 android:elevation="@dimen/dimen_6"
                 android:onClick="@{() -> callBack.onCameraClick()}"
                 app:srcCompat="@drawable/vc_add_a_photo" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/gallery_button"
-                android:layout_width="@dimen/dimen_90"
+                android:layout_width="@dimen/dimen_80"
                 android:layout_height="@dimen/dimen_32"
                 android:layout_gravity="bottom|end"
-                android:background="?attr/colorPrimary"
+                android:background="@drawable/background_button_solid"
                 android:elevation="@dimen/dimen_6"
                 android:onClick="@{() -> callBack.onGalleryClick()}"
                 app:srcCompat="@drawable/vc_photo" />

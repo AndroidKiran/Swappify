@@ -19,7 +19,7 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/phone_num"
-            style="@style/AppTheme.Widget.TextView.Primary.Regular"
+            style="@style/AppTheme.Text.Heading1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
@@ -27,10 +27,9 @@
             android:background="@color/white"
             android:gravity="center"
             android:minHeight="@dimen/dimen_48"
-            android:textSize="@dimen/font_18"
+            android:text="@{@string/str_mobile_number(viewModel.countryCode,viewModel.mobileNumber)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@{@string/str_mobile_number(viewModel.countryCode,viewModel.mobileNumber)}"
             tools:text="+917204730956" />
 
         <android.support.v7.widget.CardView
@@ -58,14 +57,15 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/auto_verify_text"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
+            style="@style/AppTheme.Text.Heading3.Reverse.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginStart="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
             android:gravity="center"
             android:text="@string/str_auto_verify"
-            android:textSize="@dimen/font_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/circular_progress"
@@ -73,7 +73,9 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/time_remaining"
-            style="@style/AppTheme.Widget.TextView.Secondary.Bold"
+            style="@style/AppTheme.Text.Small.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginStart="@dimen/dimen_16"
@@ -81,7 +83,6 @@
             android:gravity="center"
             android:text="@string/str_remaining_time"
             android:textAllCaps="true"
-            android:textSize="@dimen/font_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/auto_verify_text"
@@ -89,7 +90,9 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/time_counter"
-            style="@style/AppTheme.Widget.TextView.Primary.Regular"
+            style="@style/AppTheme.Text.Heading3.Reverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginStart="@dimen/dimen_16"
@@ -98,7 +101,6 @@
             android:text="@{@string/str_time_counter(viewModel.remainingTime)}"
             android:textAllCaps="true"
             android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/font_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/time_remaining"

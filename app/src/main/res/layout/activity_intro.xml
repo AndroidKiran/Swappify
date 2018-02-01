@@ -39,7 +39,9 @@
 
         <Button
             android:id="@+id/signUpButton"
-            style="@style/AppTheme.Button.Raised"
+            style="@style/AppTheme.Button.Solid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/str_sign_up"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

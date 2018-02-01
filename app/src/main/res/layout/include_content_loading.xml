@@ -42,7 +42,7 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/contentLoadingMsg"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold"
+            style="@style/AppTheme.Text.Heading1.Reverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16"

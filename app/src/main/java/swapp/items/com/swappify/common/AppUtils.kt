@@ -10,78 +10,83 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AppUtils {
-
-    companion object {
-
-        val format = SimpleDateFormat("MMM dd yyyy", Locale.US)
+object AppUtils {
 
 
-        fun loadJSONFromAsset(context: Application?, assetPath: String?): String {
+    val format = SimpleDateFormat("MMM dd yyyy", Locale.US)
 
-            try {
-                val asset = context?.assets?.open(assetPath)
-                val size = asset?.available()
+    @JvmStatic
+    fun loadJSONFromAsset(context: Application?, assetPath: String?): String {
 
-                val buffer = ByteArray(size!!)
-                asset.read(buffer)
-                asset.close()
+        try {
+            val asset = context?.assets?.open(assetPath)
+            val size = asset?.available()
 
-                return String(buffer)
+            val buffer = ByteArray(size!!)
+            asset.read(buffer)
+            asset.close()
 
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            return String(buffer)
 
-            return ""
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
 
-        fun getLocale(context: Context): Locale {
-            val locale: Locale
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                locale = context.resources.configuration.locales.get(0)
-            } else {
-                locale = context.resources.configuration.locale
-            }
-            return locale
-        }
-
-        fun isValidPhone(mobileNumber: String?, countryCode: String?): Boolean {
-
-            if (mobileNumber == null || countryCode == null) {
-                return false
-            }
-
-            val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
-            val phoneNumber: Phonenumber.PhoneNumber
-            try {
-                phoneNumber = phoneUtil.parse(countryCode.plus(mobileNumber), countryCode)
-            } catch (e: NumberParseException) {
-                return false
-            }
-
-            if (phoneUtil.isValidNumber(phoneNumber)) {
-                val numberType = phoneUtil.getNumberType(phoneNumber)
-                if (numberType == PhoneNumberUtil.PhoneNumberType.FIXED_LINE_OR_MOBILE
-                        || numberType == PhoneNumberUtil.PhoneNumberType.MOBILE) {
-                    return true
-                }
-            }
-
-            return phoneNumber.countryCode == 91 && phoneNumber.nationalNumber.toString()
-                    .matches("[789]\\d{9}".toRegex())
-        }
-
-        fun toMMMddyyyy(time: Long?): String = format.format(Date(time!!))
-
-        fun isLoggedIn(preferenceHelper: PreferenceHelper?)
-                = !preferenceHelper?.getStringPreference(Constant.USER_PHONE_NUM, "").isNullOrEmpty()
-
-        fun isIntroDone(preferenceHelper: PreferenceHelper?)
-                = preferenceHelper?.getBooleanPreference(Constant.INTRO_COMPLETED, false)
-
-        fun isProfileComplete(preferenceHelper: PreferenceHelper?)
-                = preferenceHelper?.getBooleanPreference(Constant.IS_PROFILE_COMPLETE, false)
-
+        return ""
     }
+
+    @JvmStatic
+    fun getLocale(context: Context): Locale {
+        val locale: Locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = context.resources.configuration.locales.get(0)
+        } else {
+            locale = context.resources.configuration.locale
+        }
+        return locale
+    }
+
+    @JvmStatic
+    fun isValidPhone(mobileNumber: String?, countryCode: String?): Boolean {
+
+        if (mobileNumber == null || countryCode == null) {
+            return false
+        }
+
+        val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
+        val phoneNumber: Phonenumber.PhoneNumber
+        try {
+            phoneNumber = phoneUtil.parse(countryCode.plus(mobileNumber), countryCode)
+        } catch (e: NumberParseException) {
+            return false
+        }
+
+        if (phoneUtil.isValidNumber(phoneNumber)) {
+            val numberType = phoneUtil.getNumberType(phoneNumber)
+            if (numberType == PhoneNumberUtil.PhoneNumberType.FIXED_LINE_OR_MOBILE
+                    || numberType == PhoneNumberUtil.PhoneNumberType.MOBILE) {
+                return true
+            }
+        }
+
+        return phoneNumber.countryCode == 91 && phoneNumber.nationalNumber.toString()
+                .matches("[789]\\d{9}".toRegex())
+    }
+
+    @JvmStatic
+    fun toMMMddyyyy(time: Long?): String = format.format(Date(time!!))
+
+    @JvmStatic
+    fun isLoggedIn(preferenceHelper: PreferenceHelper?) = !preferenceHelper?.getStringPreference(Constant.USER_PHONE_NUM, "").isNullOrEmpty()
+
+    @JvmStatic
+    fun isIntroDone(preferenceHelper: PreferenceHelper?) = preferenceHelper?.getBooleanPreference(Constant.INTRO_COMPLETED, false)
+
+    @JvmStatic
+    fun isProfileComplete(preferenceHelper: PreferenceHelper?) = preferenceHelper?.getBooleanPreference(Constant.IS_PROFILE_COMPLETE, false)
+
+    @JvmStatic
+    fun isStringNullOrEmpty(string: String): Boolean = string.isNullOrEmpty()
+
+
 }

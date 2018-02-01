@@ -2,33 +2,32 @@
 <resources>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dimen_48</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:paddingLeft">@dimen/dimen_8</item>
-        <item name="android:paddingRight">@dimen/dimen_8</item>
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:drawablePadding">@dimen/dimen_8</item>
-        <item name="android:textSize">@dimen/font_18</item>
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AppTheme.Button.Solid" parent="AppTheme.Button">
+        <item name="android:background">@drawable/background_button_solid</item>
     </style>
 
 
-    <style name="AppTheme.Button.Raised" parent="AppTheme.Button">
-        <item name="android:background">@drawable/btn_color_accent</item>
+    <style name="AppTheme.Button.Flat" parent="AppTheme.Button.Borderless">
+        <item name="android:background">@drawable/background_button_flat</item>
     </style>
 
 
     <style name="AppTheme.Button.Borderless" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/dimen_48</item>
         <item name="android:textColor">@color/accent_light</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:padding">@dimen/dimen_8</item>
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:background">@drawable/btn_color_transparent</item>
-        <item name="android:drawablePadding">@dimen/dimen_8</item>
-        <item name="android:textSize">@dimen/font_14</item>
+        <item name="android:textSize">@dimen/font_18</item>
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+
+    <style name="AppTheme.Button.Raised" parent="AppTheme.Button.Borderless">
+        <item name="android:background">@drawable/background_button_raised</item>
     </style>
 
 </resources>

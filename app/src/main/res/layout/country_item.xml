@@ -22,8 +22,9 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView2"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold"
+            style="@style/AppTheme.Text.Heading1"
             android:layout_width="@dimen/dimen_56"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="@dimen/dimen_8"
             android:gravity="start"
@@ -37,8 +38,9 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView4"
-            style="@style/AppTheme.Widget.TextView.Primary.Regular"
+            style="@style/AppTheme.Text.Heading2.Light"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginTop="@dimen/dimen_8"
             android:ellipsize="end"

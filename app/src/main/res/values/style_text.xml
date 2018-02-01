@@ -1,46 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.TextView">
-        <item name="android:ellipsize">end</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:lineSpacingExtra">@dimen/dimen_2</item>
+    <style name="AppTheme.Text"/>
+
+    <!--Title-->
+    <style name="AppTheme.Text.Title">
+        <item name="android:textColor">?colorText</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
     </style>
 
-    <style name="AppTheme.Widget.TextView.Primary.Regular" parent="AppTheme.TextView">
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:typeface">normal</item>
+    <style name="AppTheme.Text.Title.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
     </style>
 
-    <style name="AppTheme.Widget.TextView.Primary.Bold" parent="AppTheme.TextView">
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textStyle">bold</item>
+    <style name="AppTheme.Text.Title.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
     </style>
 
-    <style name="AppTheme.Widget.TextView.Secondary.Regular" parent="AppTheme.TextView">
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:typeface">normal</item>
+    <style name="AppTheme.Text.Title.Reverse">
+        <item name="android:textColor">?attr/colorTextReverse</item>
     </style>
 
-    <style name="AppTheme.Widget.TextView.Secondary.Bold" parent="AppTheme.TextView">
-        <item name="android:textColor">@color/secondary_text</item>
+    <style name="AppTheme.Text.Title.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
     </style>
 
-    <style name="AppTheme.Widget.TextView.Primary.Bold.White" parent="AppTheme.TextView">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
+    <style name="AppTheme.Text.Title.Reverse.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
     </style>
 
-    <style name="AppTheme.Widget.TextView.Error" parent="AppTheme.TextView">
-        <item name="android:textColor">@color/faded_red</item>
-        <item name="android:textStyle">normal</item>
+    <!--Large-->
+    <style name="AppTheme.Text.Large">
+        <item name="android:textColor">?colorText</item>
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
     </style>
 
-    <style name="CollapsingTextAppearance" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title"/>
-    <style name="CollapsingTextAppearance.Inverse" >
-        <item name="android:textSize">30sp</item>
+    <style name="AppTheme.Text.Large.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Large.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Large.Reverse">
+        <item name="android:textColor">?attr/colorTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Large.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Large.Reverse.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <!--Heading1-->
+    <style name="AppTheme.Text.Heading1">
+        <item name="android:textColor">?colorText</item>
+        <item name="android:textSize">@dimen/text_heading1</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading1.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading1.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading1.Reverse" >
+        <item name="android:textColor">?attr/colorTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading1.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading1.Reverse.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <!--Heading 2-->
+    <style name="AppTheme.Text.Heading2">
+        <item name="android:textColor">?colorSubText</item>
+        <item name="android:textSize">@dimen/text_heading2</item>
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading2.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading2.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading2.Reverse">
+        <item name="android:textColor">?colorSubTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading2.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading2.Reverse.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <!--Heading 3-->
+    <style name="AppTheme.Text.Heading3">
+        <item name="android:textColor">?colorSubText</item>
+        <item name="android:textSize">@dimen/text_heading3</item>
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading3.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading3.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading3.Reverse">
+        <item name="android:textColor">?colorSubTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading3.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Heading3.Reverse.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph1">
+        <item name="android:textColor">?colorText</item>
+        <item name="android:textSize">@dimen/text_paragraph1</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph1.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph1.light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph1.Reverse">
+        <item name="android:textColor">?colorTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph1.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph1.Reverse.light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph2">
+        <item name="android:textColor">?colorText</item>
+        <item name="android:textSize">@dimen/text_paragraph2</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph2.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph2.light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph2.Reverse">
+        <item name="android:textColor">?colorTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph2.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Paragraph2.Reverse.light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+
+    <style name="AppTheme.Text.Small">
+        <item name="android:textColor">?colorSubText</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
+    </style>
+
+    <style name="AppTheme.Text.Small.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Small.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
+    </style>
+
+    <style name="AppTheme.Text.Small.Reverse">
+        <item name="android:textColor">?colorSubTextReverse</item>
+    </style>
+
+    <style name="AppTheme.Text.Small.Reverse.Bold">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Small.Reverse.Light">
+        <item name="android:fontFamily">@font/roboto_condensed_light</item>
     </style>
 
 </resources>

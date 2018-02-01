@@ -40,7 +40,9 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/resend_btn"
-            style="@style/AppTheme.Button.Borderless"
+            style="@style/AppTheme.Button.Flat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:onClick="@{() -> clickCallBack.onClickResendOtp()}"
             android:text="@string/str_resend_otp"

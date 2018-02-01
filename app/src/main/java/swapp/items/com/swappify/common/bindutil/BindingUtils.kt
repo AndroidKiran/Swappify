@@ -16,9 +16,8 @@ import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
 
 
 
-class BindingUtils {
+object BindingUtils {
 
-    companion object {
 
         @JvmStatic
         @BindingAdapter(value = "imageUrl")
@@ -112,6 +111,6 @@ class BindingUtils {
             }
             textView.text = text
         }
-    }
+
 }
 

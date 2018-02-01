@@ -35,7 +35,6 @@
                 android:layout_height="@dimen/dimen_256"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleMarginBottom="@dimen/dimen_94"
-                app:expandedTitleTextAppearance="@style/CollapsingTextAppearance.Inverse"
                 app:layout_collapseParallaxMultiplier="0.7"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:title="Title">
@@ -84,7 +83,9 @@
 
                         <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/heading_tv"
-                            style="@style/AppTheme.Widget.TextView.Primary.Bold"
+                            style="@style/AppTheme.Text.Large"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/dimen_10"
                             android:text="@string/str_information"
                             android:textAllCaps="true"

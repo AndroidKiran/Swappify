@@ -45,8 +45,9 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/header"
-            style="@style/AppTheme.Widget.TextView.Primary.Bold.White"
+            style="@style/AppTheme.Text.Large.Reverse.Bold"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16"
             android:gravity="center_horizontal"
             android:textSize="@dimen/font_18"
@@ -58,8 +59,9 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/sub_header"
-            style="@style/AppTheme.Widget.TextView.Secondary.Regular"
+            style="@style/AppTheme.Text.Heading1.Reverse"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_16"
             android:layout_marginStart="@dimen/dimen_16"

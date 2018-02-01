@@ -25,8 +25,8 @@
             tools:src="@drawable/black_radius" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/textView3"
-            style="@style/AppTheme.Widget.TextView.Secondary.Regular"
+            android:id="@+id/empty_txt"
+            style="@style/AppTheme.Text.Heading1.Reverse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_16"

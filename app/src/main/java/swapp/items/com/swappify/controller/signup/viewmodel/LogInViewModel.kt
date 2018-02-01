@@ -9,8 +9,8 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import io.reactivex.Single
-import swapp.items.com.swappify.common.AppUtils.Companion.getLocale
-import swapp.items.com.swappify.common.AppUtils.Companion.isValidPhone
+import swapp.items.com.swappify.common.AppUtils.getLocale
+import swapp.items.com.swappify.common.AppUtils.isValidPhone
 import swapp.items.com.swappify.common.Constant.Companion.USER_ID
 import swapp.items.com.swappify.common.Constant.Companion.USER_PHONE_NUM
 import swapp.items.com.swappify.common.extension.firebaseResponseToResult
@@ -71,7 +71,7 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
         return countryCode
     }
 
-    fun validateMobileNum() = phoneError.set(isValidPhone(mobileNumber.get(), countryCode.get()))
+    fun validateMobileNum() = phoneError.apply { set(isValidPhone(mobileNumber.get(), countryCode.get())) }
 
 
     fun startPhoneNumberVerification(activity: Activity, phoneNumber: String) = getCompositeDisposable().add(
@@ -122,7 +122,6 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
                     .doAfterTerminate { isLoading.set(false) }
                     .toFlatMap(user)
                     .toSubscribe()
-
 
 
     private fun Single<Result<User>>.toFlatMap(user: User) =

@@ -86,4 +86,24 @@
         <attr name="currentPageIndicatorColor" format="color" />
     </declare-styleable>
 
+
+    <attr name="colorText" format="reference|color" />
+    <attr name="colorSubText" format="reference|color" />
+    <attr name="colorTextReverse" format="reference|color" />
+    <attr name="colorSubTextReverse" format="reference|color" />
+    <attr name="colorTextHint" format="reference|color" />
+    <attr name="colorNegative" format="reference|color" />
+    <attr name="colorBodyLink" format="reference|color" />
+    <attr name="colorErrorState" format="reference|color" />
+    <attr name="colorSuccessState" format="reference|color" />
+    <attr name="colorLine" format="reference|color" />
+    <attr name="colorButtonTransparentHighlight" format="reference|color" />
+
+    <attr name="colorButton" format="reference|color" />
+    <attr name="colorButtonDisabled" format="reference|color" />
+    <attr name="colorButtonPressed" format="reference|color" />
+    <attr name="colorButtonNegative" format="reference|color" />
+    <attr name="colorButtonNegativePressed" format="reference|color" />
+    <attr name="colorButtonSolid" format="reference|color" />
+
 </resources>

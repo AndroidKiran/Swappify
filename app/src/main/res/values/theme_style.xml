@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent_dark</item>
+        <item name="android:windowBackground">@color/search_dark_background</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/cool_grey</item>
+        <item name="colorControlActivated">@color/accent_dark</item>
+        <item name="colorButtonNormal">@color/accent_dark</item>
+        <item name="colorNegative">@color/steel</item>
+        <item name="colorBodyLink">@color/accent_dark</item>
+        <item name="colorErrorState">@color/red_orange</item>
+        <item name="colorSuccessState">@color/true_green</item>
+        <item name="colorLine">@color/cool_grey</item>
+
+        <!-- Text attributes -->
+        <item name="colorText">@color/charcoal_grey</item>
+        <item name="colorSubText">@color/steel</item>
+        <item name="colorTextReverse">@color/white</item>
+        <item name="colorTextHint">@color/cool_grey</item>
+        <item name="colorSubTextReverse">@color/pale_grey</item>
+
+        <item name="colorButton">@color/accent_dark</item>
+        <item name="colorButtonDisabled">@color/cool_grey</item>
+        <item name="colorButtonPressed">@color/accent_light</item>
+        <item name="colorButtonNegative">@color/steel</item>
+        <item name="colorButtonNegativePressed">@color/cool_grey</item>
+        <item name="colorButtonSolid">@color/white</item>
+        <item name="colorButtonTransparentHighlight">@color/cool_grey</item>
+        <item name="pinViewStyle">@style/PinWidget.PinView</item>
+    </style>
+
+
+    <style name="AppTheme.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar.Overflow</item>
+    </style>
+
+    <style name="ThemeOverlay.AppCompat.Dark.ActionBar.Overflow" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:itemBackground">@drawable/btn_color_white_full</item>
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Widget" />
+
+
+    <style name="AppTheme.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardCornerRadius">@dimen/dimen_2</item>
+        <item name="cardElevation">@dimen/dimen_4</item>
+        <item name="cardMaxElevation">@dimen/dimen_6</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="AppTheme.CardView.Full">
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="android:padding">@null</item>
+        <item name="cardCornerRadius">@null</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginBottom">@dimen/dimen_8</item>
+    </style>
+
+
+    <style name="AppTheme.ImageView">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_16</item>
+        <item name="android:layout_marginRight">@dimen/dimen_16</item>
+    </style>
+
+    <style name="AppTheme.ImageView.icon_96" parent="AppTheme.ImageView">
+        <item name="android:layout_width">@dimen/dimen_96</item>
+        <item name="android:layout_height">@dimen/dimen_96</item>
+    </style>
+
+    <style name="AppTheme.ImageView.icon_48" parent="AppTheme.ImageView">
+        <item name="android:layout_width">@dimen/dimen_48</item>
+        <item name="android:layout_height">@dimen/dimen_48</item>
+    </style>
+
+</resources>
