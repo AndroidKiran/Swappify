@@ -5,13 +5,9 @@ import android.net.Uri
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Observable
-import io.reactivex.Single
-import swapp.items.com.swappify.common.extension.firebaseResponseToResult
 import swapp.items.com.swappify.common.extension.getObservableAsync
 import swapp.items.com.swappify.common.extension.getSingleAsync
-import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.firebase.listener.FirebaseAppStorage
-import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.AppUtilManager
 import swapp.items.com.swappify.repo.auth.datasource.AuthDataSource
@@ -28,30 +24,21 @@ class LoginRepository @Inject constructor(private val authDataSource: AuthDataSo
 
     private val schedulerProvider = appUtilManager.schedulerProvider
 
-    fun startPhoneVerification(phoneNumber: String, activity: Activity) = authDataSource.startPhoneVerificationObservable(phoneNumber, activity)
-            .firebaseResponseToResult()
-            .getSingleAsync(schedulerProvider)
+    fun startPhoneVerification(phoneNumber: String, activity: Activity) =
+            authDataSource.startPhoneVerificationObservable(phoneNumber, activity).getSingleAsync(schedulerProvider)
 
-    fun resendVerificationCode(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken) = authDataSource.resendVerificationCodeObservable(phoneNumber, activity, token)
-            .firebaseResponseToResult()
-            .getSingleAsync(schedulerProvider)
+    fun resendVerificationCode(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken) =
+            authDataSource.resendVerificationCodeObservable(phoneNumber, activity, token).getSingleAsync(schedulerProvider)
 
-    fun signInWith(credential: PhoneAuthCredential?): Single<Result<PhoneAuthDataModel>> = authDataSource.signInWith(credential)
-            .firebaseResponseToResult()
-            .getSingleAsync(schedulerProvider)
+    fun signInWith(credential: PhoneAuthCredential?) = authDataSource.signInWith(credential).getSingleAsync(schedulerProvider)
 
-    fun getUser(mobile: String) = userDataBase.fetch(mobile).getSingleAsync(schedulerProvider)
+    fun saveOrUpdateUser(user: User?) = userDataBase.updateUser(user).getSingleAsync(schedulerProvider)
 
-    fun saveUser(user: User) = userDataBase.write(user).getSingleAsync(schedulerProvider)
-
-    fun runUserTransaction(user: User) = userDataBase.runUserTransaction(user).getSingleAsync(schedulerProvider)
-
-    fun updateUserWithImage(uri: Uri, user: User): Single<Result<User>> = storage.uploadListener(uri, user.userName, user.userNumber)
+    fun saveOrUpdateUserWithImage(uri: Uri, user: User?) = storage.uploadListener(uri, user?.userNumber, user?.userNumber)
             .flatMap { url ->
-                user.userPic = url
-                runUserTransaction(user)
-            }
-
+                user?.apply { userPic = url }
+                saveOrUpdateUser(user)
+            }.getSingleAsync(schedulerProvider)
 
     fun initAutoVerify(time: Int) = Observable.interval(1, TimeUnit.SECONDS)
             .getObservableAsync(schedulerProvider)

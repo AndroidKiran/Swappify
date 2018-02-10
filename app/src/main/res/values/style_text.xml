@@ -115,7 +115,7 @@
     <style name="AppTheme.Text.Heading3">
         <item name="android:textColor">?colorSubText</item>
         <item name="android:textSize">@dimen/text_heading3</item>
-        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+        <item name="android:fontFamily">@font/roboto_condensed_regular</item>
     </style>
 
     <style name="AppTheme.Text.Heading3.Bold">

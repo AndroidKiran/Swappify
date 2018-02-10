@@ -13,7 +13,6 @@ import swapp.items.com.swappify.common.AppUtils.getLocale
 import swapp.items.com.swappify.common.AppUtils.isValidPhone
 import swapp.items.com.swappify.common.Constant.Companion.USER_ID
 import swapp.items.com.swappify.common.Constant.Companion.USER_PHONE_NUM
-import swapp.items.com.swappify.common.extension.firebaseResponseToResult
 import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.base.BaseViewModel
 import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
@@ -38,7 +37,7 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
 
     var remainingTime = ObservableInt(60)
 
-    var isLoading = ObservableBoolean(false)
+    var isLoading = ObservableBoolean()
 
     var phoneAuthModelLiveData = SingleLiveEvent<PhoneAuthDataModel>()
 
@@ -76,15 +75,15 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
 
     fun startPhoneNumberVerification(activity: Activity, phoneNumber: String) = getCompositeDisposable().add(
             loginRepository.startPhoneVerification(phoneNumber, activity)
-                    .doOnSubscribe { isLoading.set(true) }
-                    .doAfterTerminate { isLoading.set(false) }
+                    .doOnSubscribe { isLoading.apply { set(true) } }
+                    .doAfterTerminate { isLoading.apply { set(false) }}
                     .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
     )
 
     fun resendOtp(activity: Activity, phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken) = getCompositeDisposable().add(
             loginRepository.resendVerificationCode(phoneNumber, activity, token)
-                    .doOnSubscribe { isLoading.set(true) }
-                    .doAfterTerminate { isLoading.set(false) }
+                    .doOnSubscribe { isLoading.apply { set(true) } }
+                    .doAfterTerminate { isLoading.apply { set(false) }}
                     .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
     )
 
@@ -111,33 +110,17 @@ class LogInViewModel @Inject constructor(loginDataManager: LoginDataManager, swa
 
     fun signInWith(credential: PhoneAuthCredential) = getCompositeDisposable().add(
             loginRepository.signInWith(credential)
-                    .doOnSubscribe { isLoading.set(true) }
-                    .doAfterTerminate { isLoading.set(false) }
+                    .doOnSubscribe { isLoading.apply { set(true) } }
+                    .doAfterTerminate { isLoading.apply { set(false) }}
                     .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
     )
 
     fun verifyAndSave(user: User) =
-            loginRepository.getUser(user.userNumber!!)
-                    .doOnSubscribe { isLoading.set(true) }
-                    .doAfterTerminate { isLoading.set(false) }
-                    .toFlatMap(user)
+            loginRepository.saveOrUpdateUser(user)
+                    .doOnSubscribe { isLoading.apply { set(true) } }
+                    .doAfterTerminate { isLoading.apply { set(false) }}
                     .toSubscribe()
 
-
-    private fun Single<Result<User>>.toFlatMap(user: User) =
-            this.flatMap {
-                when {
-                    it.isSuccess() -> {
-                        if (it.value.userNumber.isNullOrEmpty()) {
-                            loginRepository.saveUser(user)
-                        } else {
-                            Single.just<User>(it.value)
-                                    .firebaseResponseToResult()
-                        }
-                    }
-                    else -> Single.error(it.error)
-                }
-            }
 
     private fun Single<Result<User>>.toSubscribe() =
             this.subscribe({

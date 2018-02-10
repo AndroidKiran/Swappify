@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.view.View
@@ -21,7 +22,8 @@ import swapp.items.com.swappify.components.search.ISearchOnClickListener
 import swapp.items.com.swappify.components.search.ISearchOnQueryChangeListener
 import swapp.items.com.swappify.components.search.SearchAdapter
 import swapp.items.com.swappify.components.search.SearchItem
-import swapp.items.com.swappify.controller.addgame.model.GameModel
+import swapp.items.com.swappify.components.search.SearchView.Constants.SPEECH_REQUEST_CODE
+import swapp.items.com.swappify.controller.addgame.model.SearchGameModel
 import swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controller.base.BaseActivity
 import swapp.items.com.swappify.controller.configs.RecyclerViewConfiguration
@@ -154,6 +156,24 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         }
     }
 
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            data?.let {
+                data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let {
+                    if (it.isNotEmpty()) {
+                        val searchText = it[0]
+                        if (!searchText.isNullOrEmpty()) {
+                            activityAddGameBinding.searchView.setQuery(searchText)
+                        }
+                    }
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onBackPressed() {
         if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -168,18 +188,22 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
         val searchQuery = savedInstanceState?.getString(SEARCH_QUERY, "")
         addGameViewModel.searchQueryLiveData.value = searchQuery
 
-        val gameModel = savedInstanceState?.getParcelable<GameModel>(GAME_MODEL)
-        addGameViewModel.gameModel.set(gameModel)
+        val gameModel = savedInstanceState?.getParcelable<SearchGameModel>(GAME_MODEL)
+        addGameViewModel.searchGameModel.set(gameModel)
 
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString(SEARCH_QUERY, addGameViewModel.searchInputText.get())
-        outState?.putParcelable(GAME_MODEL, addGameViewModel.gameModel.get())
+        outState?.apply {
+            val queryEditable = addGameViewModel.searchInputText.get()
+            queryEditable?.let {
+                editable -> putString(SEARCH_QUERY, editable)
+            }
+            putParcelable(GAME_MODEL, addGameViewModel.searchGameModel.get())
+        }
+
         super.onSaveInstanceState(outState)
     }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
     companion object {
 
@@ -187,7 +211,6 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
         const val GAME_MODEL = "game_model"
 
-        fun start(context: Context)
-                = Intent(context, AddGameActivity::class.java)
+        fun start(context: Context) = Intent(context, AddGameActivity::class.java)
     }
 }

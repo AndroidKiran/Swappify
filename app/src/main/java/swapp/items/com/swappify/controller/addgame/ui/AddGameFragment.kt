@@ -4,10 +4,15 @@ import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.v4.content.res.ResourcesCompat
 import android.text.Editable
+import android.view.ContextThemeWrapper
 import android.view.MotionEvent
 import android.view.View
 import android.webkit.URLUtil
@@ -24,6 +29,8 @@ import swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controller.base.BaseFragment
 import swapp.items.com.swappify.databinding.FragmentAddGameBinding
 import javax.inject.Inject
+
+
 
 
 class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>(), AppBarLayout.OnOffsetChangedListener {
@@ -49,10 +56,12 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     }
 
     override fun executePendingVariablesBinding() {
-        fragmentAddGameBinding = getViewDataBinding()
-        fragmentAddGameBinding.setVariable(BR.addItemViewModel, addGameViewModel)
-        fragmentAddGameBinding.setVariable(BR.viewCallBack, listener)
-        fragmentAddGameBinding.executePendingBindings()
+        fragmentAddGameBinding = getViewDataBinding().apply {
+            setVariable(BR.addItemViewModel, addGameViewModel)
+            setVariable(BR.viewCallBack, listener)
+            executePendingBindings()
+        }
+
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -62,6 +71,8 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         fragmentAddGameBinding.platformSpinner.onItemSelectedListener = onSpinnerItemSelectionListener
         fragmentAddGameBinding.releaseDateEditText.setManager(childFragmentManager)
         fragmentAddGameBinding.releaseDateEditText.setDateFormat(format = AppUtils.format)
+
+        setGalleyVectorDrawable()
     }
 
 
@@ -127,8 +138,8 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
                 return
             }
 
-            val platform = addGameViewModel.platFormsList?.get(position)
-            addGameViewModel.gameModel.get().setGamePlatform(platform)
+            val platform = addGameViewModel.platForms?.get(position)
+            addGameViewModel.searchGameModel.get().setGamePlatform(platform)
 
         }
     }
@@ -140,33 +151,33 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
         override fun afterTextChanged(editable: Editable) {
 
             if (fragmentAddGameBinding.nameEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameName(editable.toString())
+                addGameViewModel.searchGameModel.get().setGameName(editable.toString())
             }
 
             if (fragmentAddGameBinding.developerEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameDeveloper(editable.toString())
+                addGameViewModel.searchGameModel.get().setGameDeveloper(editable.toString())
             }
 
             if (fragmentAddGameBinding.genreEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameGenre(editable.toString())
+                addGameViewModel.searchGameModel.get().setGameGenre(editable.toString())
             }
 
             if (fragmentAddGameBinding.publisherEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGamePlublisher(editable.toString())
+                addGameViewModel.searchGameModel.get().setGamePlublisher(editable.toString())
             }
 
             if (fragmentAddGameBinding.releaseDateEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameReleaseDate(editable.toString())
+                addGameViewModel.searchGameModel.get().setGameReleaseDate(editable.toString())
             }
 
             if (fragmentAddGameBinding.summaryEditText.isFocused) {
-                addGameViewModel.gameModel.get().setGameSummary(editable.toString())
+                addGameViewModel.searchGameModel.get().setGameSummary(editable.toString())
             }
         }
 
         override fun onAddGameClick() {
             if(addGameViewModel.validateGame()) {
-                val url = addGameViewModel.gameModel.get().url
+                val url = addGameViewModel.searchGameModel.get().url
                 if(URLUtil.isHttpsUrl(url) || URLUtil.isHttpUrl(url)) {
                     addGameViewModel.addGame()
                 } else {
@@ -197,11 +208,19 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
             val uriString = data?.getStringExtra(URI)
             if (!uriString.isNullOrEmpty()) {
                 val uri = Uri.parse(uriString)
-                addGameViewModel.gameModel.get().setGameUri("$uri")
+                addGameViewModel.searchGameModel.get().setGameUri("$uri")
             }
         }
     }
 
+    private fun setGalleyVectorDrawable() {
+        val wrapper = ContextThemeWrapper(context, R.style.AppTheme)
+        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.vc_photo, wrapper.theme)
+        val porterDuffColorFilter = PorterDuffColorFilter(Color.WHITE,
+                PorterDuff.Mode.SRC_ATOP)
+        drawable?.colorFilter = porterDuffColorFilter
+        fragmentAddGameBinding.galleryButton.setImageDrawable(drawable)
+    }
     companion object {
         const val PERCENTAGE_TO_SHOW_ANCHOR = 30
         const val SCALE_ANIMATION_DURATION: Long = 400

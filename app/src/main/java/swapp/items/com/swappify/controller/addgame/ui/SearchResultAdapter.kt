@@ -3,7 +3,7 @@ package swapp.items.com.swappify.controller.addgame.ui
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import swapp.items.com.swappify.controller.addgame.model.GameModel
+import swapp.items.com.swappify.controller.addgame.model.SearchGameModel
 import swapp.items.com.swappify.controller.base.BaseViewHolder
 import swapp.items.com.swappify.databinding.SearchResultItemBinding
 import swapp.items.com.swappify.injection.scopes.PerFragment
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @PerFragment
 class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inject constructor() : RecyclerView.Adapter<BaseViewHolder>() {
 
-    var searchResults = arrayListOf<GameModel>()
+    var searchResults = arrayListOf<SearchGameModel>()
     private var clickNavigator: N? = null
 
     var navigator: N?
@@ -38,8 +38,8 @@ class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inj
 
     override fun getItemCount(): Int = searchResults.size
 
-    fun setData(list: List<GameModel>?) {
-        searchResults = list as ArrayList<GameModel>
+    fun setData(list: List<SearchGameModel>?) {
+        searchResults = list as ArrayList<SearchGameModel>
         notifyDataSetChanged()
     }
 
@@ -63,6 +63,6 @@ class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inj
     }
 
     interface SearchResultItemListener {
-        fun onItemClick(gameModel: GameModel?)
+        fun onItemClick(searchGameModel: SearchGameModel?)
     }
 }

@@ -34,7 +34,7 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView_item_text"
-            style="@style/AppTheme.Text.Heading1"
+            style="@style/AppTheme.Text.Heading3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

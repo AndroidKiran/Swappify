@@ -43,8 +43,7 @@
     <!--Multistate-->
     <string name="str_retry">Retry</string>
     <string name="str_no_countries">No countries available to choose</string>
-    <string name="rationale_sms">This app needs access to your sms to read all your great messages.</string>
-    <string name="perm_telephony">android.provider.Telephony.SMS_RECEIVED</string>
+
 
     <!--Progress msgs-->
     <string name="msg_validating">Validating\u2026</string>
@@ -61,7 +60,7 @@
 		Morbi efficitur dictum leo, sit amet volutpat lorem sodales nec. Quisque et erat et turpis fringilla condimentum.
 	</string>
 
-    <string name="str_name">Name</string>
+    <string name="str_game_name">Game name</string>
     <string name="str_genre">Genre</string>
     <string name="str_developer">Developer</string>
     <string name="str_release_date">Release Date</string>
@@ -95,5 +94,16 @@
     <string name="str_city">City</string>
     <string name="str_save_profile">Save profile</string>
     <string name="str_personal_info">Personal Info</string>
+    <string name="err_location">Please provide your location</string>
+    <string name="str_provide_location">Provide your location</string>
+    <string name="str_location_info">Location will help to optimise the search and find gamers around you, whom you can share and play games.</string>
+    <string name="str_your_name">Your name</string>
+    <string name="err_your_name">Please enter your name</string>
+
+    <string name="perm_location">We use Location Permission to know your location and optimised search to find Gamers and game around you</string>
+    <string name="perm_sms">We use SMS Permission for detecting verification codes sent by GameCreed.</string>
+    <string name="perm_telephony">android.provider.Telephony.SMS_RECEIVED</string>
+    <string name="perm_image">We use Camera to capture snapshots for uploading your Profile/Games images</string>
+
 
 </resources>

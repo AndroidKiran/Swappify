@@ -20,7 +20,7 @@ class FirebaseAppStorage @Inject constructor(private val storage: FirebaseStorag
                 .setContentDisposition("GAME_COVER")
                 .build()
 
-        return listener.storageUploadEvent(storage.reference.child(getPath(fileName!!, userId!!))
+        return listener.storageUpload(storage.reference.child(getPath(fileName!!, userId!!))
                         .putFile(uri!!, metadata), asUploadUrl())
     }
 
@@ -28,8 +28,12 @@ class FirebaseAppStorage @Inject constructor(private val storage: FirebaseStorag
             Function { taskSnapshot -> taskSnapshot.downloadUrl.toString() }
 
 
-    private fun getPath(fileName: String, userId: String): String {
-        val currentTimeInMillis = Calendar.getInstance().timeInMillis
-        return userId + "/" + currentTimeInMillis + "_" + fileName
-    }
+    private fun getPath(fileName: String, userId: String) =
+            if (fileName != userId) {
+                Calendar.getInstance().timeInMillis.let {
+                    "$userId/${it}_$fileName"
+                }
+            } else {
+                "$userId/$fileName"
+            }
 }

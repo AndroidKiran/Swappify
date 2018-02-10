@@ -2,7 +2,7 @@
 <resources>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?attr/colorTextReverse</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@font/roboto_condensed_bold</item>
         <item name="android:gravity">center</item>
@@ -19,15 +19,22 @@
 
 
     <style name="AppTheme.Button.Borderless" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:textColor">@color/accent_light</item>
+        <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">@dimen/font_18</item>
+        <item name="android:textSize">@dimen/font_14</item>
         <item name="android:fontFamily">@font/roboto_condensed_bold</item>
     </style>
 
 
     <style name="AppTheme.Button.Raised" parent="AppTheme.Button.Borderless">
         <item name="android:background">@drawable/background_button_raised</item>
+    </style>
+
+    <style name="AppTheme.ImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:textColor">?attr/colorTextReverse</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>

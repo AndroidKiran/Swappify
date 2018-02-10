@@ -108,7 +108,7 @@ class OverlapPickerActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             chooseCode = SELECT_PHOTO
             startActivityForResult(pictureChooseIntent, chooseCode)
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_sms),
+            EasyPermissions.requestPermissions(this, getString(R.string.perm_image),
                     RC_WRITE_EXT_PER, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
@@ -133,7 +133,7 @@ class OverlapPickerActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             }
 
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_sms),
+            EasyPermissions.requestPermissions(this, getString(R.string.perm_image),
                     RC_CAMERA_PER, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }

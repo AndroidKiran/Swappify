@@ -6,8 +6,8 @@ import android.os.Bundle
 import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.AppUtils
+import swapp.items.com.swappify.common.extension.startAddGameActivity
 import swapp.items.com.swappify.common.extension.startEditProfileActivity
-import swapp.items.com.swappify.common.extension.startHomeActivity
 import swapp.items.com.swappify.common.extension.startIntroActivity
 import swapp.items.com.swappify.common.extension.startLoginActivity
 import swapp.items.com.swappify.controller.base.BaseActivity
@@ -49,7 +49,7 @@ class LauncherActivity : BaseActivity<ActivityLauncherBinding, LauncherViewModel
             if (!AppUtils.isProfileComplete(launcherViewModel.preferenceHelper)!!) {
                 startEditProfileActivity()
             } else {
-                startHomeActivity()
+                startAddGameActivity()
             }
         }
     }

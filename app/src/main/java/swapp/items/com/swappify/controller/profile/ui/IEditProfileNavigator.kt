@@ -10,6 +10,10 @@ interface IEditProfileNavigator {
 
     fun onSaveProfileClick()
 
+    fun onGetLocationClick()
+
+    fun onLocationInfoClick()
+
     fun afterTextChanged(editable: Editable)
 
 }

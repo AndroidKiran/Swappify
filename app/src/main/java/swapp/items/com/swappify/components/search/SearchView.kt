@@ -11,6 +11,8 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Parcel
+import android.os.Parcelable
 import android.speech.RecognizerIntent
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
@@ -52,7 +54,6 @@ class SearchView : FrameLayout, View.OnClickListener {
 
     private var onQueryChangeListener: ISearchOnQueryChangeListener? = null
     private var onClickListener: ISearchOnClickListener? = null;
-//    private var savedState: SavedState? = null
     private var animationDuration = ANIMATION_DURATION
     private var isSearchArrowHamburgerState = DrawerArrowDrawable.STATE_HAMBURGER
     private var isSearchArrowSearchState = ASearchArrowDrawable.STATE_SEARCH
@@ -148,7 +149,7 @@ class SearchView : FrameLayout, View.OnClickListener {
 
     fun setTextStyle(style: Int) {
         textStyle = style
-        searchEditText.setTypeface(Typeface.create(textFont, textStyle))
+        searchEditText.typeface = Typeface.create(textFont, textStyle)
     }
 
 
@@ -604,27 +605,6 @@ class SearchView : FrameLayout, View.OnClickListener {
         this.onClickListener = onClickListener
     }
 
-//    override fun onSaveInstanceState(): Parcelable {
-//        val superState = super.onSaveInstanceState()
-//        savedState = SavedState(superState)
-//        savedState?.query = if (userQuery != null) userQuery.toString() else null
-//        savedState?.isSearchOpen = isSearchOpen
-//        return savedState!!
-//    }
-
-//    override fun onRestoreInstanceState(state: Parcelable?) {
-//        if (state !is SavedState) {
-//            super.onRestoreInstanceState(state)
-//            return
-//        }
-//        savedState = state
-//        if (savedState!!.isSearchOpen) {
-//            open(true)
-//            setQueryWithoutSubmitting(savedState?.query)
-//        }
-//        super.onRestoreInstanceState(savedState?.superState)
-//    }
-
     fun getAdapter(): RecyclerView.Adapter<*> = recyclerView.adapter
 
 
@@ -696,9 +676,17 @@ class SearchView : FrameLayout, View.OnClickListener {
         }
     }
 
+    fun setQuery(query: CharSequence) {
+        setQueryWithoutSubmitting(query)
+
+        if (!query.isNullOrEmpty()) {
+            onSubmitQuery()
+        }
+    }
+
     private fun setQueryWithoutSubmitting(query: CharSequence?) {
-        searchEditText.setText(query)
-        if (query != null && query.isNotEmpty()) {
+        if (!query.isNullOrEmpty()) {
+            searchEditText.setText(query)
             searchEditText.setSelection(searchEditText.length())
             userQuery = query
         } else {
@@ -880,31 +868,44 @@ class SearchView : FrameLayout, View.OnClickListener {
         }
     }
 
-//    private class SavedState : View.BaseSavedState {
-//
-//        internal var query: String? = null
-//        internal var isSearchOpen: Boolean = false
-//
-//        internal constructor(superState: Parcelable) : super(superState)
-//
-//        internal constructor(parcel: Parcel) : super(parcel) {
-//            this.query = parcel.readString()
-//            this.isSearchOpen = parcel.readInt() == 1
-//        }
-//
-//        override fun writeToParcel(out: Parcel, flags: Int) {
-//            super.writeToParcel(out, flags)
-//            out.writeString(query)
-//            out.writeInt(if (isSearchOpen) 1 else 0)
-//        }
-//
-//        companion object {
-//            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
-//                override fun createFromParcel(Parcel: Parcel): SavedState = SavedState(Parcel)
-//
-//                override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
-//            }
-//        }
-//
-//    }
+   /* override fun onRestoreInstanceState(state: Parcelable?) {
+        val savedState = state as SearchView.SavedState
+        super.onRestoreInstanceState(savedState.superState)
+        setQueryWithoutSubmitting(savedState.query)
+
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val superState = super.onSaveInstanceState()
+        val savedState = SavedState(superState)
+         userQuery?.let {
+             savedState.query = it.toString()
+        }
+        return savedState
+    }*/
+
+    private class SavedState : View.BaseSavedState {
+
+        var query: String? = ""
+
+        constructor(superState: Parcelable) : super(superState)
+
+        private constructor(parcel: Parcel) : super(parcel) {
+            this.query = parcel.readString()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeString(query)
+        }
+
+        companion object {
+            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(Parcel: Parcel): SavedState = SavedState(Parcel)
+
+                override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+            }
+        }
+
+    }
 }

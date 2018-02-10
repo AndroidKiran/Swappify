@@ -4,10 +4,12 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.net.Uri
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.firestore.GeoPoint
 import swapp.items.com.swappify.common.Constant
 import swapp.items.com.swappify.common.Constant.Companion.IS_PROFILE_COMPLETE
 import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.base.BaseViewModel
+import swapp.items.com.swappify.controller.profile.model.Place
 import swapp.items.com.swappify.firebase.utils.Result
 import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.mvvm.SingleLiveEvent
@@ -23,45 +25,71 @@ class EditProfileViewModel @Inject constructor(private val loginRepository: Logi
 
     var name = ObservableField<String>()
 
-    var country = ObservableField<String>()
-
-    var city = ObservableField<String>()
-
     var finishActivityLiveData = SingleLiveEvent<Boolean>()
 
     var isLoading = ObservableBoolean(false)
 
-    fun getUser(): User {
-        val preferenceUtils = loginRepository.appUtilManager.preferencesHelper
-        val user = User(preferenceUtils.getStringPreference(Constant.USER_ID, ""),
-                preferenceUtils.getStringPreference(Constant.USER_PHONE_NUM, "")
-        )
-        user.userName = name.get()
-        user.userLocation = country.get()
-       return user
+    var locationUri = ObservableField<String>()
+
+    var place: ObservableField<Place>? = ObservableField()
+
+    var errorLocation = ObservableBoolean()
+
+    var errorName = ObservableBoolean()
+
+    private val preferenceHelper = loginRepository.appUtilManager.preferencesHelper
+
+    init {
+        locationUri.set("https://maps.googleapis.com/maps/api/staticmap?center=Albany,+NY&zoom=17&scale=1&size=600x300&maptype=roadmap&format=jpg&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7CAlbany,+NY")
     }
 
-    fun updateUser(user: User) =
-            loginRepository.runUserTransaction(user)
-                    .doOnSubscribe { isLoading.set(true) }
-                    .doAfterTerminate { isLoading.set(false) }
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })!!
+    fun validate(): Boolean {
+        var isValid = true
 
-
-    fun updateUser(user: User, uri: Uri) =
-            loginRepository.updateUserWithImage(uri, user)
-                    .doOnSubscribe { isLoading.set(true) }
-                    .doAfterTerminate { isLoading.set(false) }
-                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })!!
-
-
-    private fun handleOnSuccess(result: Result<User>?) {
-        if (result!!.isSuccess()) {
-            val preferenceHelper = loginRepository.appUtilManager.preferencesHelper
-            preferenceHelper.set(IS_PROFILE_COMPLETE, true)
-            finishActivityLiveData.value = true
+        if (name.get().isNullOrEmpty()) {
+            isValid = false
+            errorName.set(true)
         } else {
-            handleOnError(result.error)
+            errorName.set(false)
+        }
+
+        if (place == null) {
+            isValid = false
+            errorLocation.set(true)
+        } else {
+            errorLocation.set(false)
+        }
+
+        return isValid
+    }
+
+    fun setLocationUri(place: Place?) = place?.also {
+        this.place?.set(it)
+        this.locationUri.set("https://maps.googleapis.com/maps/api/staticmap?center=${it.latitude},${it.longitude}&zoom=12&size=280x280&markers=color:red|${it.latitude},${it.longitude}")
+    }
+
+    private fun getUser() = User("", preferenceHelper.getStringPreference(Constant.USER_PHONE_NUM, ""),
+            name.get(), picUri.get(), place?.get()?.let { GeoPoint(it.latitude!!, it.longitude!!) })
+
+    private fun getObservable() = getUser().let {
+        if (it.userPic.isNullOrEmpty()) {
+            loginRepository.saveOrUpdateUser(it)
+        } else {
+            loginRepository.saveOrUpdateUserWithImage(Uri.parse(it.userPic), it)
+        }
+    }
+
+    fun verifyAndUpdate() =
+            getObservable()
+                    .doOnSubscribe { isLoading.apply { set(true) } }
+                    .doAfterTerminate { isLoading.apply { set(false) } }
+                    .subscribe({ handleOnSuccess(it) }, { handleOnError(it) })
+
+    private fun handleOnSuccess(result: Result<User>?) = result?.run {
+        if (this.isSuccess()) {
+            finishActivityLiveData.apply { value = true }
+        } else {
+            handleOnError(this.error)
         }
     }
 
@@ -78,4 +106,9 @@ class EditProfileViewModel @Inject constructor(private val loginRepository: Logi
 
         }
     }
+
+    public fun markProfileComplete() {
+        preferenceHelper.set(IS_PROFILE_COMPLETE, true)
+    }
+
 }

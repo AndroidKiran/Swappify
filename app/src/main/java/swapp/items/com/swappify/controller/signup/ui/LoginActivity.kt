@@ -172,13 +172,14 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
             }
 
             LogInViewModel.State.STATE_USER_WRITE_SUCCESS -> {
-                val user = phoneAuthDataModel.user
-                if (user?.userLocation.isNullOrEmpty()) {
-                    startEditProfileActivity()
-                } else {
-                    startHomeActivity()
+                phoneAuthDataModel.user?.let {
+                    if (it.geoPoint == null) {
+                        startEditProfileActivity()
+                    } else {
+                        startHomeActivity()
+                    }
+                    finish()
                 }
-                finish()
             }
 
             else -> {
@@ -217,7 +218,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
             attachReceiver()
             logInViewModel.isSmsReadPermissionGranted.set(true)
         } else {
-            EasyPermissions.requestPermissions(this@LoginActivity, getString(R.string.rationale_sms),
+            EasyPermissions.requestPermissions(this@LoginActivity, getString(R.string.perm_sms),
                     RC_SMS_PERM, Manifest.permission.RECEIVE_SMS)
         }
     }

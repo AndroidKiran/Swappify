@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent_dark</item>
-        <item name="android:windowBackground">@color/search_dark_background</item>
+        <item name="android:windowBackground">?attr/colorWindowBackGround</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorControlNormal">@color/cool_grey</item>
@@ -30,7 +30,9 @@
         <item name="colorButtonNegativePressed">@color/cool_grey</item>
         <item name="colorButtonSolid">@color/white</item>
         <item name="colorButtonTransparentHighlight">@color/cool_grey</item>
+        <item name="colorWindowBackGround">@color/search_dark_background</item>
         <item name="pinViewStyle">@style/PinWidget.PinView</item>
+        <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
 
@@ -55,8 +57,8 @@
     <style name="AppTheme.CardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="cardCornerRadius">@dimen/dimen_2</item>
-        <item name="cardElevation">@dimen/dimen_4</item>
+        <item name="cardCornerRadius">@dimen/dimen_4</item>
+        <item name="cardElevation">@dimen/dimen_6</item>
         <item name="cardMaxElevation">@dimen/dimen_6</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="cardUseCompatPadding">true</item>
@@ -69,7 +71,7 @@
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:layout_marginLeft">0dp</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_8</item>
+        <item name="android:layout_marginBottom">@dimen/dimen_6</item>
     </style>
 
 

@@ -86,6 +86,9 @@ object AppUtils {
     fun isProfileComplete(preferenceHelper: PreferenceHelper?) = preferenceHelper?.getBooleanPreference(Constant.IS_PROFILE_COMPLETE, false)
 
     @JvmStatic
+    fun getUserId(preferenceHelper: PreferenceHelper?) = preferenceHelper?.getStringPreference(Constant.USER_PHONE_NUM, "")
+
+    @JvmStatic
     fun isStringNullOrEmpty(string: String): Boolean = string.isNullOrEmpty()
 
 

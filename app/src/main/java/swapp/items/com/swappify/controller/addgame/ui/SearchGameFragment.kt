@@ -10,7 +10,7 @@ import swapp.items.com.swappify.BR
 import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.extension.*
 import swapp.items.com.swappify.components.BindedMultiStateView
-import swapp.items.com.swappify.controller.addgame.model.GameModel
+import swapp.items.com.swappify.controller.addgame.model.SearchGameModel
 import swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel
 import swapp.items.com.swappify.controller.base.BaseFragment
 import swapp.items.com.swappify.controller.configs.ContentLoadingConfiguration
@@ -108,28 +108,32 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
 
     private fun observeGameModelChange() {
         addGameViewModel.gameModelLiveData.observe(this) {
+            it?.also { searchGameModel->
 
-            if (!it?.url.isNullOrEmpty() && it?.url!!.contains("t_thumb")) {
-                it.url = it.url?.replace("t_thumb", "t_cover_big")
+                searchGameModel.url?.let {
+                    if (it.isNotEmpty() && it.contains("t_thumb")) {
+                        searchGameModel.url = it.replace("t_thumb", "t_cover_big")
+                    }
+                }
+
+                addGameViewModel.searchGameModel.apply { set(searchGameModel) }
+
+                val genres = searchGameModel.genres
+                val developers = searchGameModel.developers
+                val publishers = searchGameModel.publishers
+
+                val genreId = if (genres != null) genres[0] else 0
+                val developerId = if (developers != null) developers[0] else 0
+                val publisherId = if (publishers != null) publishers[0] else 0
+
+                addGameViewModel.getOptionalData(genreId, developerId, publisherId)
+                addGameViewModel.disableErrorField()
             }
-
-            addGameViewModel.gameModel.set(it)
-
-            val genres = it?.genres
-            val developers = it?.developers
-            val publishers = it?.publishers
-
-            val genreId = if (genres != null) genres[0] else 0
-            val developerId = if (developers != null) developers[0] else 0
-            val publisherId = if (publishers != null) publishers[0] else 0
-
-            addGameViewModel.getOptionalData(genreId, developerId, publisherId)
-            addGameViewModel.disableErrorField()
         }
     }
 
-    override fun onItemClick(gameModel: GameModel?) {
-        addGameViewModel.gameModelLiveData.value = gameModel
+    override fun onItemClick(searchGameModel: SearchGameModel?) {
+        addGameViewModel.gameModelLiveData.value = searchGameModel
         activity.onBackPressed()
     }
 

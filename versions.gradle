@@ -12,7 +12,7 @@ versions.jsr305 = "3.0.1"
 versions.kotlin = "1.2.0"
 versions.multi_dex = "1.0.2"
 versions.okhttp = "3.8.0"
-versions.play_service = "11.4.2"
+versions.play_service = "11.8.0"
 versions.phone_lib = "8.6.0"
 versions.rx_kotlin = "2.1.0"
 versions.rx_android = "2.0.1"
@@ -100,6 +100,10 @@ paperparcel.runtime = "nz.bradcampbell:paperparcel:$versions.paperparcel"
 paperparcel.kotlin = "nz.bradcampbell:paperparcel-kotlin:$versions.paperparcel"
 paperparcel.compiler = "nz.bradcampbell:paperparcel-compiler:$versions.paperparcel"
 deps.paperparcel = paperparcel
+
+def playservice = [:]
+playservice.places = "com.google.android.gms:play-services-places:play_service"
+deps.playservice = playservice
 
 deps.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
 deps.gson = "com.google.code.gson:gson:$versions.gson"

@@ -98,6 +98,7 @@
     <attr name="colorSuccessState" format="reference|color" />
     <attr name="colorLine" format="reference|color" />
     <attr name="colorButtonTransparentHighlight" format="reference|color" />
+    <attr name="colorWindowBackGround" format="reference|color" />
 
     <attr name="colorButton" format="reference|color" />
     <attr name="colorButtonDisabled" format="reference|color" />

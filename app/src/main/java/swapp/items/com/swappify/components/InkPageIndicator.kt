@@ -781,7 +781,7 @@ class InkPageIndicator @JvmOverloads constructor(context: Context, attrs: Attrib
     internal class SavedState : BaseSavedState {
         var currentPage: Int = 0
 
-        constructor(superState: Parcelable) : super(superState) {}
+        constructor(superState: Parcelable) : super(superState)
 
         private constructor(parcel: Parcel) : super(parcel) {
             currentPage = parcel.readInt()
@@ -795,7 +795,7 @@ class InkPageIndicator @JvmOverloads constructor(context: Context, attrs: Attrib
         companion object {
 
             val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
-                override fun createFromParcel(`in`: Parcel): SavedState = SavedState(`in`)
+                override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel)
 
                 override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
             }

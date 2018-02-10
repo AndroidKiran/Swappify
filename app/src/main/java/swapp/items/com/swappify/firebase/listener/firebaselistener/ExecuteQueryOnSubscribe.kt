@@ -2,37 +2,36 @@ package swapp.items.com.swappify.firebase.listener.firebaselistener
 
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import io.reactivex.SingleEmitter
 import io.reactivex.SingleOnSubscribe
 import io.reactivex.functions.Function
 import java.lang.Exception
 
-class GetValueOnSubscribe<T> constructor(private val documentReference: DocumentReference, private val marshaller: Function<DocumentSnapshot, T>) :SingleOnSubscribe<T> {
+class ExecuteQueryOnSubscribe<T> constructor(private val query: Query, private val marshaller: Function<QuerySnapshot, T>) :SingleOnSubscribe<T> {
 
     override fun subscribe(emitter: SingleEmitter<T>) {
         val rxGetValueListener = RxGetValueListener(emitter, marshaller)
-        documentReference.get()
+        query.get()
                 .addOnSuccessListener(rxGetValueListener)
                 .addOnFailureListener(rxGetValueListener)
     }
 
-    inner class RxGetValueListener<T> constructor(private val emitter: SingleEmitter<T>, private val marshaller: Function<DocumentSnapshot, T>): OnSuccessListener<DocumentSnapshot>, OnFailureListener {
+    inner class RxGetValueListener<T> constructor(private val emitter: SingleEmitter<T>, private val marshaller: Function<QuerySnapshot, T>): OnSuccessListener<QuerySnapshot>, OnFailureListener {
 
-        override fun onSuccess(documentSnapshot: DocumentSnapshot?) {
+        override fun onSuccess(querySnapshot: QuerySnapshot?) {
             if (emitter.isDisposed) {
                 return
             }
-            documentSnapshot?.run {
-                if (documentSnapshot.exists()) {
-                    emitter.onSuccess(marshaller.apply(documentSnapshot))
+            querySnapshot?.run {
+                if (!querySnapshot.isEmpty) {
+                    emitter.onSuccess(marshaller.apply(querySnapshot))
                 } else {
                     emitter.onError(FirebaseFirestoreException("No data found", FirebaseFirestoreException.Code.NOT_FOUND))
                 }
             }
-
         }
 
         override fun onFailure(exception: Exception) {

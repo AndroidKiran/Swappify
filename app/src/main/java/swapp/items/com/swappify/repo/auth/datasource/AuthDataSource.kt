@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.Single
+import swapp.items.com.swappify.common.extension.firebaseResponseToResult
 import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
 import swapp.items.com.swappify.firebase.listener.FirebaseObservableListener
@@ -20,9 +21,11 @@ class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth,
 
     fun startPhoneVerificationObservable(phoneNumber: String, activity: Activity) =
             firebaseObservableListener.startPhoneVerificationListener(phoneNumber = phoneNumber, activity = activity)
+                    .firebaseResponseToResult()
 
     fun resendVerificationCodeObservable(phoneNumber: String, activity: Activity, token: PhoneAuthProvider.ForceResendingToken) =
             firebaseObservableListener.resendVerificationCodeListener(phoneNumber = phoneNumber, activity = activity, token = token)
+                    .firebaseResponseToResult()
 
     fun signInWith(credential: PhoneAuthCredential?) =
             Single.create<PhoneAuthDataModel>({ emitter ->
@@ -47,7 +50,7 @@ class AuthDataSource @Inject constructor(private val firebaseAuth: FirebaseAuth,
                                 emitter.onSuccess(phoneAuthDataModel)
                             }
                         })
-            })
+            }).firebaseResponseToResult()
 
 
 }

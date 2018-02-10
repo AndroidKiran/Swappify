@@ -39,10 +39,11 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/retryBtn"
             style="@style/AppTheme.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16"
             android:onClick="@{errorViewConfig.errorRetryClickListener}"
-            android:text="@string/str_retry"
-            android:textSize="@dimen/font_18"/>
+            android:text="@string/str_retry"/>
 
     </LinearLayout>
 
