@@ -9,7 +9,7 @@
         <import type="android.graphics.drawable.Drawable" />
 
         <variable
-            name="gameViewModel"
+            name="searchGameModel"
             type="swapp.items.com.swappify.controller.addgame.model.SearchGameModel" />
 
     </data>
@@ -36,7 +36,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bind:imageUrlWithRoundCornerTrans="@{gameViewModel.url}" />
+                bind:imageUrlWithRoundCornerTrans="@{searchGameModel.url}" />
 
 
             <android.support.v7.widget.AppCompatImageView
@@ -59,7 +59,7 @@
                 android:layout_marginStart="@dimen/dimen_16"
                 android:ellipsize="marquee"
                 android:maxLines="2"
-                android:text="@{gameViewModel.name}"
+                android:text="@{searchGameModel.name}"
                 android:textSize="@dimen/font_18"
                 app:layout_constraintBottom_toTopOf="@+id/tv_game_release_data"
                 app:layout_constraintEnd_toStartOf="@id/iv_add_game"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_16"
                 android:maxLines="1"
-                android:text="@{gameViewModel.releaseDate}"
+                android:text="@{searchGameModel.releaseDate}"
                 android:textSize="@dimen/font_14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/iv_add_game"

@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="addItemViewModel"
+            name="addGameViewModel"
             type="swapp.items.com.swappify.controller.addgame.viewmodel.AddGameViewModel" />
 
         <variable

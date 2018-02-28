@@ -5,7 +5,6 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.net.Uri
 import com.google.firebase.FirebaseNetworkException
-import swapp.items.com.swappify.R
 import swapp.items.com.swappify.common.extension.switchMap
 import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.addgame.model.GameModel
@@ -24,13 +23,13 @@ class AddGameViewModel @Inject constructor(addGameDataManager: AddGameDataManage
     private val gameRepository = addGameDataManager.gameRepository
     private val preferenceHelper = addGameDataManager.appUtilManager.preferencesHelper
 
-    var platForms = application.resources.getStringArray(R.array.platforms)
+    var platForms: Array<String> = emptyArray()
 
     var searchInputText = ObservableField<String>()
     var searchQueryLiveData = MutableLiveData<String>()
 
     var gameModelLiveData = SingleLiveEvent<SearchGameModel>()
-    var searchGameModel = ObservableField<SearchGameModel>()
+    var searchGameModel = ObservableField<SearchGameModel>(SearchGameModel())
     var finishActivityLiveData = SingleLiveEvent<Boolean>()
 
     var errorGameName = ObservableBoolean()

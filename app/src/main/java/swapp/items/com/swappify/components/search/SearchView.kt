@@ -552,17 +552,17 @@ class SearchView : FrameLayout, View.OnClickListener {
 
         when (version) {
             VERSION_MARGINS_TOOLBAR_SMALL -> {
-                val top = context.resources.getDimensionPixelSize(R.dimen.dimen_5)
-                val leftRight = context.resources.getDimensionPixelSize(R.dimen.dimen_8)
-                val bottom = 0
+                val top = context.resources.getDimensionPixelSize(R.dimen.dimen_0)
+                val leftRight = context.resources.getDimensionPixelSize(R.dimen.dimen_0)
+                val bottom = context.resources.getDimensionPixelSize(R.dimen.dimen_0)
 
                 cardViewParams.setMargins(leftRight, top, leftRight, bottom)
             }
 
             VERSION_MARGINS_TOOLBAR_BIG -> {
-                val top = context.resources.getDimensionPixelSize(R.dimen.dimen_5)
-                val leftRight = context.resources.getDimensionPixelSize(R.dimen.dimen_8)
-                val bottom = 0
+                val top = context.resources.getDimensionPixelSize(R.dimen.dimen_0)
+                val leftRight = context.resources.getDimensionPixelSize(R.dimen.dimen_0)
+                val bottom = context.resources.getDimensionPixelSize(R.dimen.dimen_0)
 
                 cardViewParams.setMargins(leftRight, top, leftRight, bottom)
 

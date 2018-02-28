@@ -31,11 +31,11 @@ import swapp.items.com.swappify.controller.country.ui.CountryPickerFragment
 import swapp.items.com.swappify.controller.signup.SMSReceiver
 import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
 import swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel
-import swapp.items.com.swappify.databinding.ActivityLogInBinding
+import swapp.items.com.swappify.databinding.ActivityLoginBinding
 import javax.inject.Inject
 
 
-class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasSupportFragmentInjector,
+class LoginActivity : BaseActivity<ActivityLoginBinding, LogInViewModel>(), HasSupportFragmentInjector,
         IFragmentCallback, SMSReceiver.SMSReceivedListener, EasyPermissions.PermissionCallbacks {
 
 
@@ -48,7 +48,7 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
     @Inject
     lateinit var logInViewModel: LogInViewModel
 
-    private lateinit var activityLogInBinding: ActivityLogInBinding
+    private lateinit var activityLogInBinding: ActivityLoginBinding
 
     private var smsReceiver: SMSReceiver? = null
 
@@ -58,14 +58,15 @@ class LoginActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(), HasS
         return logInViewModel
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_log_in
+    override fun getLayoutId(): Int = R.layout.activity_login
 
 
     override fun executePendingVariablesBinding() {
-        activityLogInBinding = getViewDataBinding()
-        activityLogInBinding.setVariable(BR.viewModel, logInViewModel)
-        activityLogInBinding.setVariable(BR.clickCallBack, clickCallBack)
-        activityLogInBinding.setVariable(BR.snackBarConfig, snackBarConfiguration)
+        activityLogInBinding = getViewDataBinding().also {
+            it.setVariable(BR.logInViewModel, logInViewModel)
+            it.setVariable(BR.clickCallBack, clickCallBack)
+            it.setVariable(BR.snackBarConfig, snackBarConfiguration)
+        }
     }
 
 

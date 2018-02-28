@@ -4,6 +4,8 @@ import android.app.Activity
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.UploadTask
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Function
 import swapp.items.com.swappify.controller.signup.model.PhoneAuthDataModel
@@ -35,8 +37,8 @@ class FirebaseObservableListener @Inject constructor() {
     fun <T> getValue(documentReference: DocumentReference, marshaller: Function<DocumentSnapshot, T>): Single<T> =
             Single.create(GetValueOnSubscribe(documentReference, marshaller))
 
-    fun <T> executeQuery(query: Query, marshaller: Function<QuerySnapshot, T>): Single<T> =
-            Single.create(ExecuteQueryOnSubscribe(query, marshaller))
+    fun <T> executeQuery(query: Query, marshaller: Function<QuerySnapshot, T>): Flowable<T> =
+            Flowable.create(ExecuteQueryOnSubscribe(query, marshaller), BackpressureStrategy.MISSING)
 
     fun saveOrUpdateUser(firestore: FirebaseFirestore, documentReference: DocumentReference, user: User): Single<User> =
             Single.create(SaveOrUpdateUserOnSubscribe(firestore, documentReference, user))

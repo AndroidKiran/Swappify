@@ -5,8 +5,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import swapp.items.com.swappify.controller.home.game.ui.GamesFragment
-import swapp.items.com.swappify.controller.home.game.viewmodel.GamesViewModel
+import swapp.items.com.swappify.controller.game.ui.GamesFragment
+import swapp.items.com.swappify.controller.game.viewmodel.GamesViewModel
 import swapp.items.com.swappify.controller.home.viewmodel.HomeViewModel
 import swapp.items.com.swappify.injection.qualifiers.ViewModelKey
 import swapp.items.com.swappify.injection.scopes.PerFragment
@@ -17,7 +17,7 @@ abstract class HomeActivityProviderModule {
     @Binds
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
-    abstract fun provideHomeViewModel(viewModel: HomeViewModel): ViewModel
+    abstract fun provideHomeViewModel(homeViewMode: HomeViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -27,4 +27,5 @@ abstract class HomeActivityProviderModule {
     @PerFragment
     @ContributesAndroidInjector()
     abstract fun provideGamesFragment(): GamesFragment
+
 }

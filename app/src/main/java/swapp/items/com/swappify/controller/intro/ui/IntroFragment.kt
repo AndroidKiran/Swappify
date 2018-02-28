@@ -31,8 +31,9 @@ class IntroFragment : BaseFragment<FragmentIntroBinding, IntroViewModel>() {
     override fun getLayoutId() = R.layout.fragment_intro
 
     override fun executePendingVariablesBinding() {
-        fragmentIntroBinding = getViewDataBinding()
-        fragmentIntroBinding.setVariable(BR.viewModel, introViewModel)
+        fragmentIntroBinding = getViewDataBinding().also {
+            it.setVariable(BR.introViewModel, introViewModel)
+        }
     }
 
     companion object {

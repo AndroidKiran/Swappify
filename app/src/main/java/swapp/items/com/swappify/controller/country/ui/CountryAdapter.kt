@@ -47,7 +47,7 @@ class CountryAdapter<N : CountryAdapter.CountryItemViewModelListener> @Inject co
 
         override fun onBind(position: Int) {
             val country = countriesList[position]
-            binding.itemViewModel = country
+            binding.countryItemViewModel = country
             binding.executePendingBindings()
             binding.root.setOnClickListener({ itemNavigator?.onItemClick(country) })
         }

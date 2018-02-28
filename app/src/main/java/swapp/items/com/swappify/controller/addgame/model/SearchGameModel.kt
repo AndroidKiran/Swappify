@@ -136,7 +136,7 @@ data class SearchGameModel constructor(@SerializedName("id")
 
     fun toGameModel(preferenceHelper: PreferenceHelper): GameModel{
         val userId = AppUtils.getUserId(preferenceHelper)
-        return GameModel(this.id, userId, this.name, this.url, this.platform, this.developer,
+        return GameModel(this.id.toString(), userId, this.name, this.url, this.platform, this.developer,
                 this.genre, this.publisher, this.releaseDate, this.summary)
     }
 

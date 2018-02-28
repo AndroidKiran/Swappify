@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/vc_person"
+        android:title="@string/str_profile"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_games"
+        android:icon="@drawable/vc_info"
+        android:title="@string/str_games"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_chat"
+        android:icon="@drawable/vc_chat"
+        android:title="@string/str_chat"
+        app:showAsAction="ifRoom" />
+</menu>

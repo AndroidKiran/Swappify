@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.RecognizerIntent
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
@@ -29,7 +31,6 @@ import swapp.items.com.swappify.controller.base.BaseActivity
 import swapp.items.com.swappify.controller.configs.RecyclerViewConfiguration
 import swapp.items.com.swappify.databinding.ActivityAddGameBinding
 import javax.inject.Inject
-
 
 class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>(), HasSupportFragmentInjector,
         SearchAdapter.SearchViewItemListener {
@@ -61,12 +62,14 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
     override fun getLayoutId(): Int = R.layout.activity_add_game
 
     override fun executePendingVariablesBinding() {
-        activityAddGameBinding = getViewDataBinding()
-        activityAddGameBinding.setVariable(BR.addGameViewModel, addGameViewModel)
-        activityAddGameBinding.setVariable(BR.searchOnClickListener, onSearchClickListener)
-        activityAddGameBinding.setVariable(BR.searchOnQueryChangeListener, onSearchQueryChangeListeners)
-        activityAddGameBinding.setVariable(BR.searchRecyclerViewConfig, recyclerViewConfiguration)
-        activityAddGameBinding.setVariable(BR.snackBarConfig, snackBarConfiguration)
+        activityAddGameBinding = getViewDataBinding().also {
+            it.setVariable(BR.addGameViewModel, addGameViewModel)
+            it.setVariable(BR.searchOnClickListener, onSearchClickListener)
+            it.setVariable(BR.searchOnQueryChangeListener, onSearchQueryChangeListeners)
+            it.setVariable(BR.searchRecyclerViewConfig, recyclerViewConfiguration)
+            it.setVariable(BR.snackBarConfig, snackBarConfiguration)
+        }
+
     }
 
 
@@ -134,7 +137,9 @@ class AddGameActivity : BaseActivity<ActivityAddGameBinding, AddGameViewModel>()
 
         val isBottomSheetHidden = bottomSheetBehavior?.state == BottomSheetBehavior.STATE_COLLAPSED
         if (!it.isNullOrEmpty() && isBottomSheetHidden) {
-            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            Handler(Looper.getMainLooper()).postDelayed({
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            }, 800)
         }
     }
 

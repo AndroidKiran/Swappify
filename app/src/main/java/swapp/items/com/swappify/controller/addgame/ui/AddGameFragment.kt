@@ -39,6 +39,7 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     private var isViewHidden = false
     private var maxScrollSize = 0
 
+
     @Inject
     lateinit var viewFactory: ViewModelProvider.Factory
 
@@ -56,12 +57,15 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
     }
 
     override fun executePendingVariablesBinding() {
-        fragmentAddGameBinding = getViewDataBinding().apply {
-            setVariable(BR.addItemViewModel, addGameViewModel)
-            setVariable(BR.viewCallBack, listener)
-            executePendingBindings()
+        fragmentAddGameBinding = getViewDataBinding().also {
+            it.setVariable(BR.addGameViewModel, addGameViewModel)
+            it.setVariable(BR.callBack, listener)
         }
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        addGameViewModel.platForms = resources.getStringArray(R.array.platforms)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -137,9 +141,8 @@ class AddGameFragment : BaseFragment<FragmentAddGameBinding, AddGameViewModel>()
             if (position == -1) {
                 return
             }
-
             val platform = addGameViewModel.platForms?.get(position)
-            addGameViewModel.searchGameModel.get().setGamePlatform(platform)
+            addGameViewModel.searchGameModel.get()?.setGamePlatform(platform)
 
         }
     }

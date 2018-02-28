@@ -86,6 +86,17 @@
         <attr name="currentPageIndicatorColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="ZoomTabViewPager">
+        <attr name="hvTextSize"  type="integer" format="dimension" />
+        <attr name="hvTextColor"  type="integer" format="color" />
+        <attr name="hvTextColorActiveTab"  type="integer" format="color" />
+        <attr name="hvTextAlpha"  type="integer" format="float" />
+        <attr name="hvTextAlphaActiveTab"  type="integer" format="float" />
+        <attr name="hvTextScale"  type="integer" format="float" />
+        <attr name="hvTextScaleActiveTab" type="integer" format="float" />
+        <attr name="hvPadding" type="integer" format="dimension" />
+    </declare-styleable>
+
 
     <attr name="colorText" format="reference|color" />
     <attr name="colorSubText" format="reference|color" />

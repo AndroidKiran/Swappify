@@ -4,7 +4,7 @@
 
     <data>
         <variable
-            name="viewModel"
+            name="launcherViewModel"
             type="swapp.items.com.swappify.controller.launcher.viewmodel.LauncherViewModel"/>
     </data>
 

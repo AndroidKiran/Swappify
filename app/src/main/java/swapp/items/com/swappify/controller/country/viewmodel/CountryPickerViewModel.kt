@@ -22,9 +22,9 @@ class CountryPickerViewModel @Inject constructor(countryPickerDataManager: Count
 
     private val gson: Gson = appUtilDataManager.gson
 
-    var reload: MutableLiveData<Boolean> = MutableLiveData()
+    var reload: MutableLiveData<Boolean>? = null
 
-    var countriesLiveData = reload.switchMap {
+    var countriesLiveData = reload?.switchMap {
         if (!it) {
             MutableLiveData<List<Country>>()
         } else {
@@ -33,7 +33,7 @@ class CountryPickerViewModel @Inject constructor(countryPickerDataManager: Count
     }!!
 
     init {
-        reload.value = true
+        reload?.value = true
     }
 
     private fun getCountryList() = Flowable.create({ emitter: FlowableEmitter<List<Country>> ->

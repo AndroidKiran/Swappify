@@ -2,6 +2,7 @@ package swapp.items.com.swappify.controller.home.viewmodel
 
 import swapp.items.com.swappify.controller.SwapApplication
 import swapp.items.com.swappify.controller.base.BaseViewModel
+import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.AppUtilManager
 import javax.inject.Inject
 

@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="logInViewModel"
             type="swapp.items.com.swappify.controller.signup.viewmodel.LogInViewModel" />
 
     </data>
@@ -27,7 +27,7 @@
             android:background="@color/white"
             android:gravity="center"
             android:minHeight="@dimen/dimen_48"
-            android:text="@{@string/str_mobile_number(viewModel.countryCode,viewModel.mobileNumber)}"
+            android:text="@{@string/str_mobile_number(logInViewModel.countryCode,logInViewModel.mobileNumber)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="+917204730956" />
@@ -98,7 +98,7 @@
             android:layout_marginStart="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_6"
             android:gravity="center"
-            android:text="@{@string/str_time_counter(viewModel.remainingTime)}"
+            android:text="@{@string/str_time_counter(logInViewModel.remainingTime)}"
             android:textAllCaps="true"
             android:textColor="?attr/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"

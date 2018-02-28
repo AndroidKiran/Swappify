@@ -104,6 +104,9 @@
     <string name="perm_sms">We use SMS Permission for detecting verification codes sent by GameCreed.</string>
     <string name="perm_telephony">android.provider.Telephony.SMS_RECEIVED</string>
     <string name="perm_image">We use Camera to capture snapshots for uploading your Profile/Games images</string>
+    <string name="str_profile">Profile</string>
+    <string name="str_games">Games</string>
+    <string name="str_chat">Chat</string>
 
 
 </resources>

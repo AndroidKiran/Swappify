@@ -53,7 +53,7 @@ class SearchResultAdapter<N : SearchResultAdapter.SearchResultItemListener> @Inj
         override fun onBind(position: Int) {
             val gameModel = searchResults[position]
             gameModel.update(gameModel.cover?.url, gameModel.firstReleaseDate)
-            binding.gameViewModel = gameModel
+            binding.searchGameModel = gameModel
             binding.executePendingBindings()
             binding.root.setOnClickListener({
                 clickNavigator?.onItemClick(gameModel)

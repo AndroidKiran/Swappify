@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatDialogFragment
 import swapp.items.com.swappify.controller.addgame.ui.AddGameActivity
 import swapp.items.com.swappify.controller.home.ui.HomeActivity
 import swapp.items.com.swappify.controller.intro.ui.IntroActivity
-import swapp.items.com.swappify.controller.profile.ui.EditProfileActivity
+import swapp.items.com.swappify.controller.editprofile.ui.EditProfileActivity
 import swapp.items.com.swappify.controller.signup.ui.LoginActivity
 
 fun AppCompatActivity.addFragmentSafely(fragment: Fragment,

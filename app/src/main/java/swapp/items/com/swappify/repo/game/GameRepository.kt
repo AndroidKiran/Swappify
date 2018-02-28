@@ -3,14 +3,10 @@ package swapp.items.com.swappify.repo.game
 import android.arch.lifecycle.LiveData
 import android.net.Uri
 import android.support.v4.util.ArrayMap
-import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import swapp.items.com.swappify.common.LocationHelper
-import swapp.items.com.swappify.common.LocationHelper.Companion.NORTH_EAST
-import swapp.items.com.swappify.common.LocationHelper.Companion.SOUTH_WEST
-import swapp.items.com.swappify.common.extension.getObservableAsync
+import swapp.items.com.swappify.common.extension.getFlowableAsync
 import swapp.items.com.swappify.common.extension.getSingleAsync
 import swapp.items.com.swappify.common.extension.retrofitResponseToResult
 import swapp.items.com.swappify.common.extension.toLiveData
@@ -23,7 +19,7 @@ import swapp.items.com.swappify.injection.scopes.PerActivity
 import swapp.items.com.swappify.repo.AppUtilManager
 import swapp.items.com.swappify.repo.game.datasource.GameDataBase
 import swapp.items.com.swappify.repo.user.dataSource.UserDataBase
-import swapp.items.com.swappify.repo.user.model.User
+import java.util.*
 import javax.inject.Inject
 
 @PerActivity
@@ -43,7 +39,7 @@ class GameRepository @Inject constructor(private val gameApi: IGameApi,
         }
 
         return gameApi.searchGames(options = data)
-                .getObservableAsync(schedulerProvider)
+                .getFlowableAsync(schedulerProvider)
                 .onErrorResumeNext(Flowable.empty())
                 .toLiveData()
     }
@@ -67,27 +63,23 @@ class GameRepository @Inject constructor(private val gameApi: IGameApi,
 
     }
 
-    fun getOptionalData(gameId: Int? = 0, developer: Int? = 0, publisher: Int? = 0)
-            = Single.zip(getGenresFor(gameId), getCompaniesFor(ids = "$developer,$publisher"), asPair())
+    fun getOptionalData(gameId: Int? = 0, developer: Int? = 0, publisher: Int? = 0) = Single.zip(getGenresFor(gameId), getCompaniesFor(ids = "$developer,$publisher"), asPair())
             .getSingleAsync(schedulerProvider)
 
     private fun asPair(): BiFunction<Result<List<OptionsModel>>, Result<List<OptionsModel>>,
-            Pair<Result<List<OptionsModel>>, Result<List<OptionsModel>>>>
-            = BiFunction { genreList, companiesList -> Pair(genreList, companiesList) }
+            Pair<Result<List<OptionsModel>>, Result<List<OptionsModel>>>> = BiFunction { genreList, companiesList -> Pair(genreList, companiesList) }
 
-    fun addGame(gameModel: GameModel?): Single<Result<GameModel>>
-            = gameDataBase.setGame(gameModel)
+    fun addGame(gameModel: GameModel?): Single<Result<GameModel>> = gameDataBase.setGame(gameModel)
             .getSingleAsync(schedulerProvider)
 
-    fun addGameWithImage(uri: Uri?, gameModel: GameModel?, userId: String?): Single<Result<GameModel>>
-            = storage.uploadListener(uri, gameModel?.name!!, userId)
+    fun addGameWithImage(uri: Uri?, gameModel: GameModel?, userId: String?): Single<Result<GameModel>> = storage.uploadListener(uri, gameModel?.name!!, userId)
             .flatMap { url: String ->
                 gameModel.url = url
                 addGame(gameModel)
             }.getSingleAsync(schedulerProvider)
 
 
-    fun getNearByGames(geoPoint: GeoPoint?): Single<Result<List<User>>> {
+   /* fun getNearByGames(geoPoint: GeoPoint?): Single<Result<List<User>>> {
 
         val locationHelper = LocationHelper()
 
@@ -99,31 +91,31 @@ class GameRepository @Inject constructor(private val gameApi: IGameApi,
             locationHelper.boundingBoxCoordinates(this, 1000, NORTH_EAST)
         }
 
-      /*  let lat = 0.0144927536231884
-        let lon = 0.0181818181818182
+        *//*  let lat = 0.0144927536231884
+          let lon = 0.0181818181818182
 
-        let lowerLat = latitude - (lat * distance)
-        let lowerLon = longitude - (lon * distance)
+          let lowerLat = latitude - (lat * distance)
+          let lowerLon = longitude - (lon * distance)
 
-        let greaterLat = latitude + (lat * distance)
-        let greaterLon = longitude + (lon * distance)
+          let greaterLat = latitude + (lat * distance)
+          let greaterLon = longitude + (lon * distance)
 
-        let lesserGeopoint = GeoPoint(latitude: lowerLat, longitude: lowerLon)
-        let greaterGeopoint = GeoPoint(latitude: greaterLat, longitude: greaterLon)
-*/
-        return if (lesserGeoPoint != null && greaterGeoPoint != null) {
+          let lesserGeopoint = GeoPoint(latitude: lowerLat, longitude: lowerLon)
+          let greaterGeopoint = GeoPoint(latitude: greaterLat, longitude: greaterLon)
+  *//*
+        *//*return if (lesserGeoPoint != null && greaterGeoPoint != null) {
             userDataBase.getNearByGamers(lesserGeoPoint, greaterGeoPoint)
         } else {
-            Single.create { mutableListOf<User>() }
-        }.getSingleAsync(schedulerProvider)
-                .retrofitResponseToResult()
-    }
+            Flowable.create { mutableListOf<User>() }
+        }.getFlowableAsync(schedulerProvider)
+                .retrofitResponseToResult()*//*
+    }*/
 
-    fun getGames(userNumber: String?, gameName: String?, genre: String?) =
-            gameDataBase.getGames(userNumber, gameName, genre)
-                    .getSingleAsync(schedulerProvider)
-
-
+    fun getGames(userNumber: String?, gameName: String?, genre: String?, createdAt: Date?) =
+            gameDataBase.getGames(userNumber, gameName, genre, createdAt)
+                    .getFlowableAsync(schedulerProvider)
+                    .onErrorResumeNext(Flowable.empty())
+                    .toLiveData()
 
     companion object {
         private const val KEY_LIMIT = "limit"

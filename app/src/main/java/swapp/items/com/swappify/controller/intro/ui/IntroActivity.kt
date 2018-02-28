@@ -43,11 +43,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(), HasS
     override fun getLayoutId() = R.layout.activity_intro
 
     override fun executePendingVariablesBinding() {
-        activityIntroViewBinding = getViewDataBinding()
-        activityIntroViewBinding.setVariable(BR.viewModel, introViewModel)
+        activityIntroViewBinding = getViewDataBinding().also {
+            it.setVariable(BR.introViewModel, introViewModel)
+        }
     }
-
-    private val NUM_OF_PAGE : Int = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +86,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(), HasS
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
     companion object {
+        const val NUM_OF_PAGE : Int = 3
         fun start(context: Context) = Intent(context, IntroActivity::class.java)
     }
 

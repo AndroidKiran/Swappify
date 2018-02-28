@@ -53,13 +53,13 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding, AddGameViewMo
     }
 
     override fun executePendingVariablesBinding() {
-        fragmentSearchGameBinding = getViewDataBinding()
-        fragmentSearchGameBinding.setVariable(BR.addItemViewModel, addGameViewModel)
-        fragmentSearchGameBinding.setVariable(BR.recyclerViewConfig, recyclerViewConfiguration)
-        fragmentSearchGameBinding.setVariable(BR.contentLoadingBindingConfig, contentLoadingConfiguration)
-        fragmentSearchGameBinding.setVariable(BR.emptyViewBindingConfig, emptyViewConfiguration)
-        fragmentSearchGameBinding.setVariable(BR.errorViewBindingConfig, errorViewConfiguration)
-        fragmentSearchGameBinding.executePendingBindings()
+        fragmentSearchGameBinding = getViewDataBinding().also {
+            it.setVariable(BR.addGameViewModel, addGameViewModel)
+            it.setVariable(BR.recyclerViewConfig, recyclerViewConfiguration)
+            it.setVariable(BR.contentLoadingBindingConfig, contentLoadingConfiguration)
+            it.setVariable(BR.emptyViewBindingConfig, emptyViewConfiguration)
+            it.setVariable(BR.errorViewBindingConfig, errorViewConfiguration)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

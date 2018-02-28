@@ -16,7 +16,7 @@ fun <T> Single<T>.getSingleAsync(schedulerProvider: BaseSchedulerProvider): Sing
 fun <T> Observable<T>.getObservableAsync(schedulerProvider: BaseSchedulerProvider): Observable<T> =
         this.subscribeOn(schedulerProvider.io()).observeOn(schedulerProvider.ui())
 
-fun <T> Flowable<T>.getObservableAsync(schedulerProvider: BaseSchedulerProvider): Flowable<T> =
+fun <T> Flowable<T>.getFlowableAsync(schedulerProvider: BaseSchedulerProvider): Flowable<T> =
         this.subscribeOn(schedulerProvider.io()).observeOn(schedulerProvider.ui())
 
 fun <T> Publisher<T>.toLiveData() =
@@ -33,6 +33,12 @@ fun <T> Observable<T>.retrofitResponseToResult(): Observable<Result<T>> =
 
 
 fun <T> Single<T>.retrofitResponseToResult(): Single<Result<T>> =
+        this.map { it.asResult() }
+                .onErrorReturn {
+                    return@onErrorReturn it.asErrorResult<T>()
+                }
+
+fun <T> Flowable<T>.retrofitResponseToResult(): Flowable<Result<T>> =
         this.map { it.asResult() }
                 .onErrorReturn {
                     return@onErrorReturn it.asErrorResult<T>()

@@ -109,13 +109,14 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
     override fun getLayoutId(): Int = R.layout.fragment_country
 
     override fun executePendingVariablesBinding() {
-        fragmentCountryPickerBinding = getViewDataBinding()
-        fragmentCountryPickerBinding?.setVariable(BR.androidViewModel, countryPickerViewModel)
-        fragmentCountryPickerBinding?.setVariable(BR.toolbarConfig, toolbarConfiguration)
-        fragmentCountryPickerBinding?.setVariable(BR.recyclerViewConfig, recyclerViewConfiguration)
-        fragmentCountryPickerBinding?.setVariable(BR.errorViewConfig, errorViewConfiguration)
-        fragmentCountryPickerBinding?.setVariable(BR.emptyViewConfig, emptyViewConfiguration)
-        fragmentCountryPickerBinding?.setVariable(BR.contentLoadingViewConfig, contentLoadingConfiguration)
+        fragmentCountryPickerBinding = getViewDataBinding().also {
+            it.setVariable(BR.countryViewModel, countryPickerViewModel)
+            it.setVariable(BR.toolbarConfig, toolbarConfiguration)
+            it.setVariable(BR.recyclerViewConfig, recyclerViewConfiguration)
+            it.setVariable(BR.errorViewConfig, errorViewConfiguration)
+            it.setVariable(BR.emptyViewConfig, emptyViewConfiguration)
+            it.setVariable(BR.contentLoadingViewConfig, contentLoadingConfiguration)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -135,7 +136,7 @@ class CountryPickerFragment : BaseDialogFragment<FragmentCountryBinding, Country
     }
 
     private val onRetryClickListener = View.OnClickListener {
-        countryPickerViewModel.reload.value = true
+        countryPickerViewModel.reload?.value = true
         fragmentCountryPickerBinding?.multiStateViewLayout?.multiStateView?.setViewState(BindedMultiStateView.VIEW_STATE_LOADING)
     }
 
